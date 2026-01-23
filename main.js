@@ -1074,10 +1074,6 @@ function buildRecommendBlock(data) {
   columnsViewport.appendChild(columnsInner);
   columnsWrap.appendChild(columnsViewport);
 
-  const actionRow = document.createElement("div");
-  actionRow.className = "recommend-actions-row";
-  actionRow.appendChild(actionGroup);
-  table.appendChild(actionRow);
   table.appendChild(labelsCol);
   table.appendChild(columnsWrap);
 
@@ -1113,31 +1109,7 @@ function buildRecommendBlock(data) {
       defaultRowId
     );
     updateRecommendVisibility();
-    attackBtn.disabled =
-      currentCardIndex === 0 && rowOrder[currentRowIndex] === "growth";
-    guardBtn.disabled =
-      currentCardIndex === cardOrder.length - 1 &&
-      rowOrder[currentRowIndex] === "stable";
   };
-
-  guardBtn.addEventListener("click", () => {
-    currentRowIndex -= 1;
-    if (currentRowIndex < 0) {
-      currentRowIndex = rowOrder.length - 1;
-      currentCardIndex = (currentCardIndex + 1) % cardOrder.length;
-    }
-    applySelection();
-  });
-
-  attackBtn.addEventListener("click", () => {
-    currentRowIndex += 1;
-    if (currentRowIndex >= rowOrder.length) {
-      currentRowIndex = 0;
-      currentCardIndex =
-        (currentCardIndex - 1 + cardOrder.length) % cardOrder.length;
-    }
-    applySelection();
-  });
 
   wrap.addEventListener("click", (event) => {
     const target = event.target;
@@ -2107,12 +2079,13 @@ function createProductCard(asin, data) {
 
     if (!calcPanel) return;
     const unitCost = num(costInput.value) || num(data["仕入れ目安単価"]);
+    const shipping = num(data["送料"]);
+    const tariff = num(data["関税"]);
     const unitSalesUSD = sellUSD > 0 ? sellUSD : 0;
     const unitPaymentJPY = unitSalesUSD * FX_RATE;
     const unitProfitJPY = unitPaymentJPY - unitCost - shipping - tariff;
     const totalProfitCalc = totalPaymentJPY - totalCost - shipping - tariff;
-    const shipping = num(data["送料"]);
-    const tariff = num(data["関税"]);
+    const profitRateCalc = totalPaymentJPY > 0 ? (totalProfitCalc / totalPaymentJPY) * 100 : 0;
 
     unitCostEl.textContent = unitCost > 0 ? fmtJPY(Math.round(unitCost)) : "—";
     totalCostEl.textContent = totalQty > 0 ? fmtJPY(Math.round(totalCost)) : "—";
@@ -2131,7 +2104,7 @@ function createProductCard(asin, data) {
     }
     calcAvgEl.textContent = totalQty > 0 ? fmtJPY(avgCost) : "—";
     calcQtyEl.textContent = totalQty > 0 ? `${totalQty}` : "—";
-    calcRateEl.textContent = totalQty > 0 && sellUSD > 0 ? `${profitRate.toFixed(1)}%` : "—";
+    calcRateEl.textContent = totalQty > 0 && sellUSD > 0 ? `${profitRateCalc.toFixed(1)}%` : "—";
   };
 
   sellInput.addEventListener("input", () => {
