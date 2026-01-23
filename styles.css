@@ -1465,8 +1465,8 @@ body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-expressio
   color:#1d4ed8;
   letter-spacing:0.5px;
 }
-body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-note{
-  font-size:11px;
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-symbol{
+  font-weight:700;
   color:#64748b;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-meta{

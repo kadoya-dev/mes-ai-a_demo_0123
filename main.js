@@ -1537,7 +1537,7 @@ function createProductCard(asin, data) {
           <div class="l4-variable">
             <div class="var-cards">
               <div class="center-card var-fba">
-                <div class="k">FBA最安値</div>
+                <div class="k">FBA最安値（過去3ヶ月FBA最安値）</div>
                 <div class="v js-fbaLowest">－</div>
               </div>
               <div class="center-card var-sell">
@@ -1671,30 +1671,43 @@ function createProductCard(asin, data) {
             <div class="calc-row">
               <div class="calc-row-label">単価</div>
               <div class="calc-row-items">
-                <div class="calc-item"><span class="calc-item-label">① 仕入れ目安単価</span><b class="js-unitCost">—</b></div>
-                <div class="calc-item"><span class="calc-item-label">② 販売額＄単価</span><b class="js-unitSales">—</b></div>
-                <div class="calc-item"><span class="calc-item-label">③ 入金額単価</span><b class="js-unitPayment">—</b></div>
-                <div class="calc-item"><span class="calc-item-label">④ 粗利益額単価</span><b class="js-unitProfit">—</b></div>
-                <div class="calc-item"><span class="calc-item-label">⑤ 送料</span><b class="js-shipping">—</b></div>
-                <div class="calc-item"><span class="calc-item-label">⑥ 関税</span><b class="js-tariff">—</b></div>
-                <div class="calc-item"><span class="calc-item-label">⑦ 合計個数</span><b class="js-totalQty">—</b></div>
+                <div class="calc-item"><span class="calc-item-label">仕入れ目安単価</span><b class="js-unitCost">—</b></div>
+                <div class="calc-item"><span class="calc-item-label">販売額＄単価</span><b class="js-unitSales">—</b></div>
+                <div class="calc-item"><span class="calc-item-label">入金額単価</span><b class="js-unitPayment">—</b></div>
+                <div class="calc-item"><span class="calc-item-label">粗利益額単価</span><b class="js-unitProfit">—</b></div>
+                <div class="calc-item"><span class="calc-item-label">送料</span><b class="js-shipping">—</b></div>
+                <div class="calc-item"><span class="calc-item-label">関税</span><b class="js-tariff">—</b></div>
+                <div class="calc-item"><span class="calc-item-label">合計個数</span><b class="js-totalQty">—</b></div>
               </div>
             </div>
             <div class="calc-row">
               <div class="calc-row-label">合計</div>
               <div class="calc-row-items">
-                <div class="calc-item"><span class="calc-item-label">① 仕入れ額合計</span><b class="js-totalCost">—</b></div>
-                <div class="calc-item"><span class="calc-item-label">② 販売額合計</span><b class="js-totalSales">—</b></div>
-                <div class="calc-item"><span class="calc-item-label">③ 入金額合計</span><b class="js-totalPayment">—</b></div>
-                <div class="calc-item"><span class="calc-item-label">④ 粗利益額合計</span><b class="js-totalProfit">—</b></div>
-                <div class="calc-item"><span class="calc-item-label">⑤ 送料</span><b>—</b></div>
-                <div class="calc-item"><span class="calc-item-label">⑥ 関税</span><b>—</b></div>
-                <div class="calc-item"><span class="calc-item-label">⑦ 合計個数</span><b class="js-totalQty">—</b></div>
+                <div class="calc-item"><span class="calc-item-label">仕入れ額合計</span><b class="js-totalCost">—</b></div>
+                <div class="calc-item"><span class="calc-item-label">販売額合計</span><b class="js-totalSales">—</b></div>
+                <div class="calc-item"><span class="calc-item-label">入金額合計</span><b class="js-totalPayment">—</b></div>
+                <div class="calc-item"><span class="calc-item-label">粗利益額合計</span><b class="js-totalProfit">—</b></div>
+                <div class="calc-item"><span class="calc-item-label">送料</span><b>—</b></div>
+                <div class="calc-item"><span class="calc-item-label">関税</span><b>—</b></div>
+                <div class="calc-item"><span class="calc-item-label">合計個数</span><b class="js-totalQty">—</b></div>
               </div>
             </div>
             <div class="calc-formula">
-              <span class="formula-expression">③ − (① × ⑦) − ⑤ − ⑥ = ④</span>
-              <span class="formula-note">※単価は⑦=1として計算</span>
+              <span class="formula-expression">
+                <span class="js-formulaPayment">入金額単価—</span>
+                <span class="formula-symbol">−</span>
+                <span>(</span>
+                <span class="js-formulaCost">仕入れ目安単価—</span>
+                <span class="formula-symbol">×</span>
+                <span class="js-formulaQty">合計個数—</span>
+                <span>)</span>
+                <span class="formula-symbol">−</span>
+                <span class="js-formulaShipping">送料—</span>
+                <span class="formula-symbol">−</span>
+                <span class="js-formulaTariff">関税—</span>
+                <span class="formula-symbol">=</span>
+                <span class="js-formulaProfit">粗利益額合計—</span>
+              </span>
             </div>
             <div class="calc-meta">
               <div class="calc-meta-row"><span>仕入れ平均額</span><b class="js-calcAvg">—</b></div>
@@ -2038,6 +2051,12 @@ function createProductCard(asin, data) {
   const shippingEl = calcPanel?.querySelector(".js-shipping");
   const tariffEl = calcPanel?.querySelector(".js-tariff");
   const totalQtyEls = calcPanel?.querySelectorAll(".js-totalQty");
+  const formulaPaymentEl = calcPanel?.querySelector(".js-formulaPayment");
+  const formulaCostEl = calcPanel?.querySelector(".js-formulaCost");
+  const formulaQtyEl = calcPanel?.querySelector(".js-formulaQty");
+  const formulaShippingEl = calcPanel?.querySelector(".js-formulaShipping");
+  const formulaTariffEl = calcPanel?.querySelector(".js-formulaTariff");
+  const formulaProfitEl = calcPanel?.querySelector(".js-formulaProfit");
   const calcAvgEl = calcPanel?.querySelector(".js-calcAvg");
   const calcQtyEl = calcPanel?.querySelector(".js-calcQty");
   const calcRateEl = calcPanel?.querySelector(".js-calcRate");
@@ -2101,6 +2120,30 @@ function createProductCard(asin, data) {
       totalQtyEls.forEach((el) => {
         el.textContent = totalQty > 0 ? `${totalQty}` : "—";
       });
+    }
+    const qtyLabel = totalQty > 0 ? `${totalQty}個` : "—";
+    if (formulaPaymentEl) {
+      const paymentLabel = unitPaymentJPY > 0 ? fmtJPY(Math.round(unitPaymentJPY)) : "—";
+      formulaPaymentEl.textContent = `入金額単価${paymentLabel}`;
+    }
+    if (formulaCostEl) {
+      const costLabel = unitCost > 0 ? fmtJPY(Math.round(unitCost)) : "—";
+      formulaCostEl.textContent = `仕入れ目安単価${costLabel}`;
+    }
+    if (formulaQtyEl) {
+      formulaQtyEl.textContent = `合計個数${qtyLabel}`;
+    }
+    if (formulaShippingEl) {
+      const shippingLabel = shipping > 0 ? fmtJPY(Math.round(shipping)) : "—";
+      formulaShippingEl.textContent = `送料${shippingLabel}`;
+    }
+    if (formulaTariffEl) {
+      const tariffLabel = tariff > 0 ? fmtJPY(Math.round(tariff)) : "—";
+      formulaTariffEl.textContent = `関税${tariffLabel}`;
+    }
+    if (formulaProfitEl) {
+      const profitLabel = totalQty > 0 && unitPaymentJPY > 0 ? fmtJPY(Math.round(totalProfitCalc)) : "—";
+      formulaProfitEl.textContent = `粗利益額合計${profitLabel}`;
     }
     calcAvgEl.textContent = totalQty > 0 ? fmtJPY(avgCost) : "—";
     calcQtyEl.textContent = totalQty > 0 ? `${totalQty}` : "—";
