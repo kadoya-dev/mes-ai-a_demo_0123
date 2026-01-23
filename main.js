@@ -894,16 +894,19 @@ function buildCenterCards(container, ctx, data) {
     "推奨仕入数(60日)",
     "推奨仕入数(30日)"
   ];
-  const compactIds = new Set([
+  const compactIds = new Set([]);
+  const salesSummaryIds = new Set([
     "予測90日販売数",
     "予測60日販売数",
     "予測30日販売数",
     "90日販売数",
     "60日販売数",
-    "30日販売数"
+    "30日販売数",
+    "180日販売数"
   ]);
   const inlineGroupIds = ["セラー数", "サイズ感", "在庫数", "返品率"];
   let inlineGroupWrap = null;
+  let salesSummaryInserted = false;
   let recommendInserted = false;
 
   zoneState.center.forEach((token) => {
@@ -941,6 +944,14 @@ function buildCenterCards(container, ctx, data) {
       row.appendChild(k);
       row.appendChild(v);
       inlineGroupWrap.appendChild(row);
+      return;
+    }
+
+    if (salesSummaryIds.has(id)) {
+      if (!salesSummaryInserted) {
+        container.appendChild(buildSalesSummaryBlock(data));
+        salesSummaryInserted = true;
+      }
       return;
     }
 
@@ -1119,6 +1130,53 @@ function buildRecommendBlock(data) {
   });
 
   applySelection();
+
+  return wrap;
+}
+
+function buildSalesSummaryBlock(data) {
+  const wrap = document.createElement("div");
+  wrap.className = "sales-summary";
+
+  const days = [180, 120, 90, 60, 30];
+  const list = document.createElement("div");
+  list.className = "sales-summary-list";
+
+  days.forEach((day) => {
+    const card = document.createElement("div");
+    card.className = "sales-summary-card";
+
+    const head = document.createElement("div");
+    head.className = "sales-summary-day";
+    head.textContent = `${day}日間`;
+    card.appendChild(head);
+
+    const actual = document.createElement("div");
+    actual.className = "sales-summary-value";
+    const actualRaw = data[`${day}日販売数`];
+    actual.textContent = actualRaw == null || actualRaw === "" ? "－" : Number(actualRaw).toLocaleString("ja-JP");
+    card.appendChild(actual);
+
+    const forecast = document.createElement("div");
+    forecast.className = "sales-summary-subvalue";
+    const forecastRaw = data[`予測${day}日販売数`];
+    forecast.textContent =
+      forecastRaw == null || forecastRaw === "" ? "－" : Number(forecastRaw).toLocaleString("ja-JP");
+    card.appendChild(forecast);
+
+    list.appendChild(card);
+  });
+
+  const actualLabel = document.createElement("div");
+  actualLabel.className = "sales-summary-row-label sales-summary-label-actual";
+  actualLabel.textContent = "販売数(実績)";
+  wrap.appendChild(actualLabel);
+  wrap.appendChild(list);
+
+  const forecastLabel = document.createElement("div");
+  forecastLabel.className = "sales-summary-row-label sales-summary-label-forecast";
+  forecastLabel.textContent = "販売数(予測)";
+  wrap.appendChild(forecastLabel);
 
   return wrap;
 }

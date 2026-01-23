@@ -1183,6 +1183,48 @@ body:is(.fourth-layout, .fifth-layout) .l4-center .recommend-wrap{
   flex-direction:column;
   gap:8px;
 }
+body:is(.fourth-layout, .fifth-layout) .l4-center .sales-summary{
+  grid-column: 1 / -1;
+  display:grid;
+  gap:6px;
+  border:1px solid #e2e8f0;
+  border-radius:16px;
+  padding:10px 12px;
+  background:#ffffff;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-center .sales-summary-row-label{
+  font-size:12px;
+  font-weight:800;
+  color:#0f172a;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-center .sales-summary-list{
+  display:grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap:8px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-center .sales-summary-card{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:14px;
+  padding:8px 6px;
+  text-align:center;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-center .sales-summary-day{
+  text-align:center;
+  font-size:12px;
+  font-weight:800;
+  color:#0f172a;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-center .sales-summary-value{
+  text-align:center;
+  font-weight:800;
+  color:#1f2937;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-center .sales-summary-subvalue{
+  text-align:center;
+  font-weight:700;
+  color:#94a3b8;
+}
 body:is(.fourth-layout, .fifth-layout) .l4-center .recommend-title{
   font-size:13px;
   font-weight:900;
