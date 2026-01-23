@@ -1201,6 +1201,7 @@ body:is(.fourth-layout, .fifth-layout) .l4-center .sales-summary-labels{
   max-height: 120px;
   overflow-y:auto;
   padding-right:4px;
+  justify-content:flex-end;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .sales-summary-row-label{
   font-size:12px;
