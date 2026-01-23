@@ -138,9 +138,7 @@ const DEFAULT_ZONES = {
     tokM("予測30日販売数"),
     tokM("90日販売数"),
     tokM("60日販売数"),
-    tokM("30日販売数"),
-    tokM("過去3月FBA最安値"),
-    tokM("FBA最安値")
+    tokM("30日販売数")
   ],
   table: [],
   hidden: [
@@ -902,9 +900,7 @@ function buildCenterCards(container, ctx, data) {
     "予測30日販売数",
     "90日販売数",
     "60日販売数",
-    "30日販売数",
-    "過去3月FBA最安値",
-    "FBA最安値"
+    "30日販売数"
   ]);
   const inlineGroupIds = ["セラー数", "サイズ感", "在庫数", "返品率"];
   let inlineGroupWrap = null;
@@ -994,15 +990,6 @@ function buildRecommendBlock(data) {
   const wrap = document.createElement("div");
   wrap.className = "recommend-wrap";
 
-  const head = document.createElement("div");
-  head.className = "recommend-head";
-
-  const heading = document.createElement("div");
-  heading.className = "recommend-title";
-  heading.textContent = "推奨仕入数";
-
-  head.appendChild(heading);
-
   const table = document.createElement("div");
   table.className = "recommend-table";
 
@@ -1025,6 +1012,11 @@ function buildRecommendBlock(data) {
 
   const labelsCol = document.createElement("div");
   labelsCol.className = "recommend-labels";
+
+  const titleCell = document.createElement("div");
+  titleCell.className = "recommend-cell recommend-cell-head";
+  titleCell.textContent = "推奨仕入数";
+  labelsCol.appendChild(titleCell);
 
   const rowDefs = [
     { id: "stable", label: "コツコツ🐢", factor: 0.85 },
@@ -1077,7 +1069,6 @@ function buildRecommendBlock(data) {
   table.appendChild(labelsCol);
   table.appendChild(columnsWrap);
 
-  wrap.appendChild(head);
   wrap.appendChild(table);
 
   const cardOrder = [

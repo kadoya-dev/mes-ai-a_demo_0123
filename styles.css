@@ -1259,7 +1259,7 @@ body:is(.fourth-layout, .fifth-layout) .l4-center .recommend-columns-inner{
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .recommend-labels{
   display:grid;
-  grid-template-rows: repeat(3, var(--recommend-row-height, 36px));
+  grid-template-rows: auto repeat(3, var(--recommend-row-height, 36px));
   gap:6px;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .recommend-col{
@@ -1301,6 +1301,14 @@ body:is(.fourth-layout, .fifth-layout) .l4-center .recommend-labels .recommend-c
 body:is(.fourth-layout, .fifth-layout) .l4-center .recommend-cell-head{
   text-align:center;
   width: 70px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-center .recommend-labels .recommend-cell-head{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  font-weight:900;
+  color:#1e3a8a;
+  padding-left:0;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .recommend-cell-value{
   text-align:right;
