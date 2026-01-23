@@ -1342,11 +1342,12 @@ body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .subhead{
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .var-cards{
   display:grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap:8px;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-sell,
-body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-profit{
+body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-profit,
+body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-fba{
   min-width:0;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-profit .v{
@@ -1401,6 +1402,70 @@ body:is(.fourth-layout, .fifth-layout) .l4-keepa .risk-item{
   align-items:center;
   gap:6px;
   text-align:center;
+}
+
+/* cart: 単価・合計サマリー */
+body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-panel{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-title{
+  font-weight:900;
+  color:#0f172a;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-grid{
+  display:grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr) minmax(0, 0.8fr);
+  gap:6px 10px;
+  align-items:center;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-header{
+  font-size:11px;
+  font-weight:700;
+  color:#64748b;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-label{
+  font-size:12px;
+  color:#334155;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-value{
+  font-weight:800;
+  text-align:right;
+  color:#0f172a;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-formula{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center;
+  padding:8px 10px;
+  background:#f8fafc;
+  border-radius:10px;
+  border:1px dashed #cbd5f5;
+  font-size:11px;
+  color:#475569;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-formula .formula-token{
+  font-weight:800;
+  color:#1d4ed8;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-formula .formula-symbol{
+  font-weight:700;
+  color:#64748b;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-meta{
+  display:grid;
+  gap:6px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-meta-row{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  color:#475569;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-meta-row b{
+  color:#0f172a;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-keepa .risk-ring{
   --risk-color: #f59e0b;
@@ -1758,14 +1823,16 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .asin-summary-row b{
 /* ─────────────────────────────
    layout4 変動項目：背景色で差別化（正）
    ───────────────────────────── */
-.l4-variable .center-card.var-sell {
+.l4-variable .center-card.var-sell,
+.l4-variable .center-card.var-fba {
   background-color: #f2f7ff; /* うっすらブルー */
 }
 .l4-variable .center-card.var-profit {
   background-color: #eef2ff; /* うっすらグリーン */
 }
 .l4-variable .center-card.var-sell,
-.l4-variable .center-card.var-profit {
+.l4-variable .center-card.var-profit,
+.l4-variable .center-card.var-fba {
   border: 1px solid rgba(0,0,0,0.04);
 }
 
@@ -1780,7 +1847,8 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .asin-summary-row b{
    （追記：既存定義の上書き用）
    ───────────────────────────── */
 .l4-variable .center-card.var-sell,
-.l4-variable .center-card.var-profit {
+.l4-variable .center-card.var-profit,
+.l4-variable .center-card.var-fba {
   background-color: #eef2ff; /* うっすらグリーン */
   border: 1px solid rgba(0,0,0,0.04);
 }
@@ -1797,7 +1865,8 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .asin-summary-row b{
 
 /* 強制適用：変動カードはデフォルトで薄緑（.center-card の白背景を上書き） */
 body:is(.fourth-layout, .fifth-layout) .l4-variable .center-card.var-sell,
-body:is(.fourth-layout, .fifth-layout) .l4-variable .center-card.var-profit {
+body:is(.fourth-layout, .fifth-layout) .l4-variable .center-card.var-profit,
+body:is(.fourth-layout, .fifth-layout) .l4-variable .center-card.var-fba {
   background-color: #eef2ff;
 }
 

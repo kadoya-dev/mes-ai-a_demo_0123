@@ -59,8 +59,6 @@ const METRICS_ALL = [
   { id: "在庫数", label: "在庫数", sourceKey: "在庫数" },
   { id: "返品率", label: "返品率", sourceKey: "返品率" },
 
-  { id: "日本最安値", label: "日本最安値", sourceKey: "日本最安値" },
-
   { id: "仕入れ目安単価", label: "仕入れ目安単価", sourceKey: "仕入れ目安単価" },
   { id: "送料", label: "送料", sourceKey: "送料" },
   { id: "関税", label: "関税", sourceKey: "関税" }
@@ -141,14 +139,8 @@ const DEFAULT_ZONES = {
     tokM("90日販売数"),
     tokM("60日販売数"),
     tokM("30日販売数"),
-    tokM("日本最安値"),
     tokM("過去3月FBA最安値"),
-    tokM("FBA最安値"),
-    tokM("送料"),
-    tokM("関税"),
-    tokM("仕入れ目安単価"),
-    tokM("入金額（円）"),
-    tokM("入金額計（円）")
+    tokM("FBA最安値")
   ],
   table: [],
   hidden: [
@@ -160,7 +152,6 @@ const DEFAULT_ZONES = {
     tokM("複数在庫指数60日分"),
     tokM("ライバル増加率"),
     tokM("粗利益予測"),
-    tokM("日本最安値"),
     tokM("粗利益率予測")
   ]
 };
@@ -912,14 +903,8 @@ function buildCenterCards(container, ctx, data) {
     "90日販売数",
     "60日販売数",
     "30日販売数",
-    "日本最安値",
     "過去3月FBA最安値",
-    "FBA最安値",
-    "送料",
-    "関税",
-    "仕入れ目安単価",
-    "入金額（円）",
-    "入金額計（円）"
+    "FBA最安値"
   ]);
   const inlineGroupIds = ["セラー数", "サイズ感", "在庫数", "返品率"];
   let inlineGroupWrap = null;
@@ -1594,11 +1579,15 @@ function createProductCard(asin, data) {
           <div class="info-grid js-infoGrid"></div>
         </div>
 
-        <div class="l4-center l4-block">
+          <div class="l4-center l4-block">
           <div class="center-cards js-centerCards"></div>
 
           <div class="l4-variable">
             <div class="var-cards">
+              <div class="center-card var-fba">
+                <div class="k">FBA最安値</div>
+                <div class="v js-fbaLowest">－</div>
+              </div>
               <div class="center-card var-sell">
                 <div class="k">販売価格（$）</div>
                 <input class="v js-sell js-sellInput" type="number" step="0.01" placeholder="例: 39.99" />
@@ -1711,6 +1700,69 @@ function createProductCard(asin, data) {
                     <button class="shop-add js-addShop" type="button">＋</button>
                     <button class="shop-remove" type="button">－</button>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="shop-panel">
+              <div class="calc-panel js-calcPanel">
+                <div class="calc-title">単価・合計サマリー</div>
+                <div class="calc-grid">
+                  <div class="calc-header">項目</div>
+                  <div class="calc-header">単価</div>
+                  <div class="calc-header">合計</div>
+
+                  <div class="calc-label">① 仕入れ目安単価</div>
+                  <div class="calc-value js-unitCost">—</div>
+                  <div class="calc-value js-totalCost">—</div>
+
+                  <div class="calc-label">② 販売額＄単価</div>
+                  <div class="calc-value js-unitSales">—</div>
+                  <div class="calc-value js-totalSales">—</div>
+
+                  <div class="calc-label">③ 入金額単価</div>
+                  <div class="calc-value js-unitPayment">—</div>
+                  <div class="calc-value js-totalPayment">—</div>
+
+                  <div class="calc-label">④ 粗利益額単価</div>
+                  <div class="calc-value js-unitProfit">—</div>
+                  <div class="calc-value js-totalProfit">—</div>
+
+                  <div class="calc-label">⑤ 送料</div>
+                  <div class="calc-value js-shipping">—</div>
+                  <div class="calc-value">—</div>
+
+                  <div class="calc-label">⑥ 関税</div>
+                  <div class="calc-value js-tariff">—</div>
+                  <div class="calc-value">—</div>
+
+                  <div class="calc-label">⑦ 合計個数</div>
+                  <div class="calc-value js-totalQty">—</div>
+                  <div class="calc-value">—</div>
+                </div>
+                <div class="calc-formula">
+                  <span class="formula-token">③</span>
+                  <span class="formula-text">入金額単価</span>
+                  <span class="formula-symbol">-</span>
+                  <span class="formula-token">①</span>
+                  <span class="formula-text">仕入れ目安単価</span>
+                  <span class="formula-symbol">×</span>
+                  <span class="formula-token">⑦</span>
+                  <span class="formula-text">合計個数</span>
+                  <span class="formula-symbol">-</span>
+                  <span class="formula-token">⑤</span>
+                  <span class="formula-text">送料</span>
+                  <span class="formula-symbol">-</span>
+                  <span class="formula-token">⑥</span>
+                  <span class="formula-text">関税</span>
+                  <span class="formula-symbol">=</span>
+                  <span class="formula-token">④</span>
+                  <span class="formula-text">粗利益額単価</span>
+                </div>
+                <div class="calc-meta">
+                  <div class="calc-meta-row"><span>仕入れ平均額</span><b class="js-calcAvg">—</b></div>
+                  <div class="calc-meta-row"><span>合計仕入れ個数</span><b class="js-calcQty">—</b></div>
+                  <div class="calc-meta-row"><span>粗利益率</span><b class="js-calcRate">—</b></div>
                 </div>
               </div>
             </div>
@@ -1969,10 +2021,15 @@ function createProductCard(asin, data) {
   const qtyInput = card.querySelector(".js-qty");
   const shopList = card.querySelector(".js-shopList");
   const extraShopList = card.querySelector(".js-extraShopList");
+  const fbaLowestEl = card.querySelector(".js-fbaLowest");
 
   if (data["販売額（ドル）"]) {
     const s = String(data["販売額（ドル）"]).replace(/[^\d.]/g, "");
     if (s) sellInput.value = s;
+  }
+  if (fbaLowestEl) {
+    const raw = data["FBA最安値"];
+    fbaLowestEl.textContent = raw == null || raw === "" ? "－" : String(raw);
   }
   if (data["FBA最安値"]) {
     const c = String(data["FBA最安値"]).replace(/[^\d]/g, "");
@@ -2056,6 +2113,21 @@ function createProductCard(asin, data) {
   const summarySalesEl = summaryEl?.querySelector(".js-summarySales");
   const summaryPaymentEl = summaryEl?.querySelector(".js-summaryPayment");
   const summaryProfitEl = summaryEl?.querySelector(".js-summaryProfit");
+  const calcPanel = card.querySelector(".js-calcPanel");
+  const unitCostEl = calcPanel?.querySelector(".js-unitCost");
+  const totalCostEl = calcPanel?.querySelector(".js-totalCost");
+  const unitSalesEl = calcPanel?.querySelector(".js-unitSales");
+  const totalSalesEl = calcPanel?.querySelector(".js-totalSales");
+  const unitPaymentEl = calcPanel?.querySelector(".js-unitPayment");
+  const totalPaymentEl = calcPanel?.querySelector(".js-totalPayment");
+  const unitProfitEl = calcPanel?.querySelector(".js-unitProfit");
+  const totalProfitEl = calcPanel?.querySelector(".js-totalProfit");
+  const shippingEl = calcPanel?.querySelector(".js-shipping");
+  const tariffEl = calcPanel?.querySelector(".js-tariff");
+  const totalQtyEl = calcPanel?.querySelector(".js-totalQty");
+  const calcAvgEl = calcPanel?.querySelector(".js-calcAvg");
+  const calcQtyEl = calcPanel?.querySelector(".js-calcQty");
+  const calcRateEl = calcPanel?.querySelector(".js-calcRate");
 
   const updateAsinSummary = () => {
     if (!summaryEl) return;
@@ -2080,8 +2152,9 @@ function createProductCard(asin, data) {
     const totalProfitJPY = totalPaymentJPY - totalCost;
     const profitRate = totalPaymentJPY > 0 ? (totalProfitJPY / totalPaymentJPY) * 100 : 0;
 
+    const avgCost = totalQty > 0 ? Math.round(totalCost / totalQty) : 0;
     summaryQtyEl.textContent = totalQty > 0 ? `${totalQty}` : "—";
-    summaryAvgEl.textContent = totalQty > 0 ? fmtJPY(Math.round(totalCost / totalQty)) : "—";
+    summaryAvgEl.textContent = totalQty > 0 ? fmtJPY(avgCost) : "—";
     summaryCostEl.textContent = totalQty > 0 ? fmtJPY(Math.round(totalCost)) : "—";
     summarySalesEl.textContent = totalQty > 0 && sellUSD > 0 ? fmtUSD(totalSalesUSD) : "—";
     summaryPaymentEl.textContent = totalQty > 0 && sellUSD > 0 ? fmtJPY(Math.round(totalPaymentJPY)) : "—";
@@ -2089,6 +2162,29 @@ function createProductCard(asin, data) {
       totalQty > 0 && sellUSD > 0
         ? `${fmtJPY(Math.round(totalProfitJPY))}（${profitRate.toFixed(1)}%）`
         : "—";
+
+    if (!calcPanel) return;
+    const unitCost = num(costInput.value) || num(data["仕入れ目安単価"]);
+    const unitSalesUSD = sellUSD > 0 ? sellUSD : 0;
+    const unitPaymentJPY = unitSalesUSD * FX_RATE;
+    const unitProfitJPY = unitPaymentJPY - unitCost;
+    const shipping = num(data["送料"]);
+    const tariff = num(data["関税"]);
+
+    unitCostEl.textContent = unitCost > 0 ? fmtJPY(Math.round(unitCost)) : "—";
+    totalCostEl.textContent = totalQty > 0 ? fmtJPY(Math.round(totalCost)) : "—";
+    unitSalesEl.textContent = unitSalesUSD > 0 ? fmtUSD(unitSalesUSD) : "—";
+    totalSalesEl.textContent = totalQty > 0 && sellUSD > 0 ? fmtUSD(totalSalesUSD) : "—";
+    unitPaymentEl.textContent = unitPaymentJPY > 0 ? fmtJPY(Math.round(unitPaymentJPY)) : "—";
+    totalPaymentEl.textContent = totalQty > 0 && unitPaymentJPY > 0 ? fmtJPY(Math.round(totalPaymentJPY)) : "—";
+    unitProfitEl.textContent = unitPaymentJPY > 0 && unitCost > 0 ? fmtJPY(Math.round(unitProfitJPY)) : "—";
+    totalProfitEl.textContent = totalQty > 0 && unitPaymentJPY > 0 ? fmtJPY(Math.round(totalProfitJPY)) : "—";
+    shippingEl.textContent = shipping > 0 ? fmtJPY(Math.round(shipping)) : "—";
+    tariffEl.textContent = tariff > 0 ? fmtJPY(Math.round(tariff)) : "—";
+    totalQtyEl.textContent = totalQty > 0 ? `${totalQty}` : "—";
+    calcAvgEl.textContent = totalQty > 0 ? fmtJPY(avgCost) : "—";
+    calcQtyEl.textContent = totalQty > 0 ? `${totalQty}` : "—";
+    calcRateEl.textContent = totalQty > 0 && sellUSD > 0 ? `${profitRate.toFixed(1)}%` : "—";
   };
 
   sellInput.addEventListener("input", () => {
