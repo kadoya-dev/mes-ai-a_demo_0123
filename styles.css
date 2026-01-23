@@ -986,11 +986,12 @@ body:is(.fourth-layout, .fifth-layout) .layout4-grid{
   grid-template-columns: 320px 1.9fr 1.9fr 410px;
 
   /* 1段目の行高さを固定＝主要項目の高さ基準 */
-  grid-template-rows: var(--l4-top-h) auto;
+  grid-template-rows: var(--l4-top-h) auto auto;
 
   grid-template-areas:
     "info center center cart"
-    "keepa mes  mes    cart";
+    "keepa mes  mes    cart"
+    "calc calc calc calc";
   gap:14px;
   align-items:stretch;
 }
@@ -1001,6 +1002,7 @@ body:is(.fourth-layout, .fifth-layout) .l4-center{ grid-area: center; }
 body:is(.fourth-layout, .fifth-layout) .l4-keepa{ grid-area: keepa; }
 body:is(.fourth-layout, .fifth-layout) .l4-mes{ grid-area: mes; }
 body:is(.fourth-layout, .fifth-layout) .l4-buy{ grid-area: cart; }
+body:is(.fourth-layout, .fifth-layout) .l4-calc{ grid-area: calc; }
 
 /* ブロック共通 */
 body:is(.fourth-layout, .fifth-layout) .l4-block{
@@ -1405,66 +1407,79 @@ body:is(.fourth-layout, .fifth-layout) .l4-keepa .risk-item{
 }
 
 /* cart: 単価・合計サマリー */
-body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-panel{
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-panel{
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap:12px;
 }
-body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-title{
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-title{
   font-weight:900;
   color:#0f172a;
 }
-body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-grid{
-  display:grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr) minmax(0, 0.8fr);
-  gap:6px 10px;
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-row{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px 12px;
+  background:#f8fafc;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-row-label{
+  font-size:12px;
+  font-weight:800;
+  color:#0f172a;
+  min-width:44px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-row-items{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 16px;
+  flex:1;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-item{
+  display:flex;
+  gap:6px;
   align-items:center;
-}
-body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-header{
-  font-size:11px;
-  font-weight:700;
-  color:#64748b;
-}
-body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-label{
   font-size:12px;
   color:#334155;
 }
-body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-value{
-  font-weight:800;
-  text-align:right;
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-item b{
+  font-size:13px;
   color:#0f172a;
 }
-body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-formula{
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula{
   display:flex;
   flex-wrap:wrap;
-  gap:6px;
+  gap:8px 12px;
   align-items:center;
-  padding:8px 10px;
-  background:#f8fafc;
+  padding:10px 12px;
+  background:#fff;
   border-radius:10px;
   border:1px dashed #cbd5f5;
-  font-size:11px;
+  font-size:12px;
   color:#475569;
 }
-body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-formula .formula-token{
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-expression{
   font-weight:800;
   color:#1d4ed8;
+  letter-spacing:0.5px;
 }
-body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-formula .formula-symbol{
-  font-weight:700;
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-note{
+  font-size:11px;
   color:#64748b;
 }
-body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-meta{
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-meta{
   display:grid;
   gap:6px;
 }
-body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-meta-row{
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-meta-row{
   display:flex;
   justify-content:space-between;
   font-size:12px;
   color:#475569;
 }
-body:is(.fourth-layout, .fifth-layout) .l4-buy .calc-meta-row b{
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-meta-row b{
   color:#0f172a;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-keepa .risk-ring{
@@ -1795,7 +1810,8 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .asin-summary-row b{
       "center center"
       "keepa keepa"
       "mes   mes"
-      "cart  cart";
+      "cart  cart"
+      "calc  calc";
   }
 }
 
