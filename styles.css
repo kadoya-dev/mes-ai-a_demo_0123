@@ -986,11 +986,12 @@ body:is(.fourth-layout, .fifth-layout) .layout4-grid{
   grid-template-columns: 320px 1.9fr 1.9fr 410px;
 
   /* 1段目の行高さを固定＝主要項目の高さ基準 */
-  grid-template-rows: var(--l4-top-h) auto;
+  grid-template-rows: var(--l4-top-h) auto auto;
 
   grid-template-areas:
     "info center center cart"
-    "keepa mes  mes    cart";
+    "keepa mes  mes    cart"
+    "calc calc calc calc";
   gap:14px;
   align-items:stretch;
 }
@@ -1001,6 +1002,7 @@ body:is(.fourth-layout, .fifth-layout) .l4-center{ grid-area: center; }
 body:is(.fourth-layout, .fifth-layout) .l4-keepa{ grid-area: keepa; }
 body:is(.fourth-layout, .fifth-layout) .l4-mes{ grid-area: mes; }
 body:is(.fourth-layout, .fifth-layout) .l4-buy{ grid-area: cart; }
+body:is(.fourth-layout, .fifth-layout) .l4-calc{ grid-area: calc; }
 
 /* ブロック共通 */
 body:is(.fourth-layout, .fifth-layout) .l4-block{
@@ -1342,11 +1344,12 @@ body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .subhead{
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .var-cards{
   display:grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap:8px;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-sell,
-body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-profit{
+body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-profit,
+body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-fba{
   min-width:0;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-profit .v{
@@ -1401,6 +1404,105 @@ body:is(.fourth-layout, .fifth-layout) .l4-keepa .risk-item{
   align-items:center;
   gap:6px;
   text-align:center;
+}
+
+/* cart: 単価・合計サマリー */
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-panel{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-title{
+  font-weight:900;
+  color:#0f172a;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-row{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px 12px;
+  background:#f8fafc;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-row-label{
+  font-size:12px;
+  font-weight:800;
+  color:#0f172a;
+  min-width:44px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-row-items{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 16px;
+  flex:1;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-item{
+  display:flex;
+  gap:6px;
+  align-items:center;
+  font-size:12px;
+  color:#334155;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-item b{
+  font-size:13px;
+  color:#0f172a;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:10px 12px;
+  background:#fff;
+  border-radius:10px;
+  border:1px dashed #cbd5f5;
+  font-size:12px;
+  color:#475569;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-title{
+  font-weight:900;
+  color:#0f172a;
+  margin-right:4px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#eef2ff;
+  color:#1d4ed8;
+  font-weight:700;
+  white-space:nowrap;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-pill.is-strong{
+  background:#0f172a;
+  color:#fff;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-symbol{
+  font-weight:700;
+  color:#64748b;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 20px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-meta-row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  font-size:12px;
+  color:#475569;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-meta-row b{
+  color:#0f172a;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-keepa .risk-ring{
   --risk-color: #f59e0b;
@@ -1730,7 +1832,8 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .asin-summary-row b{
       "center center"
       "keepa keepa"
       "mes   mes"
-      "cart  cart";
+      "cart  cart"
+      "calc  calc";
   }
 }
 
@@ -1758,14 +1861,16 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .asin-summary-row b{
 /* ─────────────────────────────
    layout4 変動項目：背景色で差別化（正）
    ───────────────────────────── */
-.l4-variable .center-card.var-sell {
+.l4-variable .center-card.var-sell,
+.l4-variable .center-card.var-fba {
   background-color: #f2f7ff; /* うっすらブルー */
 }
 .l4-variable .center-card.var-profit {
   background-color: #eef2ff; /* うっすらグリーン */
 }
 .l4-variable .center-card.var-sell,
-.l4-variable .center-card.var-profit {
+.l4-variable .center-card.var-profit,
+.l4-variable .center-card.var-fba {
   border: 1px solid rgba(0,0,0,0.04);
 }
 
@@ -1780,7 +1885,8 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .asin-summary-row b{
    （追記：既存定義の上書き用）
    ───────────────────────────── */
 .l4-variable .center-card.var-sell,
-.l4-variable .center-card.var-profit {
+.l4-variable .center-card.var-profit,
+.l4-variable .center-card.var-fba {
   background-color: #eef2ff; /* うっすらグリーン */
   border: 1px solid rgba(0,0,0,0.04);
 }
@@ -1797,7 +1903,8 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .asin-summary-row b{
 
 /* 強制適用：変動カードはデフォルトで薄緑（.center-card の白背景を上書き） */
 body:is(.fourth-layout, .fifth-layout) .l4-variable .center-card.var-sell,
-body:is(.fourth-layout, .fifth-layout) .l4-variable .center-card.var-profit {
+body:is(.fourth-layout, .fifth-layout) .l4-variable .center-card.var-profit,
+body:is(.fourth-layout, .fifth-layout) .l4-variable .center-card.var-fba {
   background-color: #eef2ff;
 }
 
