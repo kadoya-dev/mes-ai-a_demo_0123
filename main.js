@@ -1693,21 +1693,34 @@ function createProductCard(asin, data) {
               </div>
             </div>
             <div class="calc-formula">
-              <span class="formula-expression">
-                <span class="js-formulaPayment">入金額単価—</span>
+              <div class="formula-row">
+                <span class="formula-pill js-formulaPayment">入金額単価—</span>
                 <span class="formula-symbol">−</span>
-                <span>(</span>
-                <span class="js-formulaCost">仕入れ目安単価—</span>
+                <span class="formula-symbol">(</span>
+                <span class="formula-pill js-formulaCost">仕入れ目安単価—</span>
                 <span class="formula-symbol">×</span>
-                <span class="js-formulaQty">合計個数—</span>
-                <span>)</span>
+                <span class="formula-pill js-formulaQty">合計個数—</span>
+                <span class="formula-symbol">)</span>
                 <span class="formula-symbol">−</span>
-                <span class="js-formulaShipping">送料—</span>
+                <span class="formula-pill js-formulaShipping">送料—</span>
                 <span class="formula-symbol">−</span>
-                <span class="js-formulaTariff">関税—</span>
+                <span class="formula-pill js-formulaTariff">関税—</span>
                 <span class="formula-symbol">=</span>
-                <span class="js-formulaProfit">粗利益額合計—</span>
-              </span>
+                <span class="formula-pill is-strong js-formulaProfit">粗利益額単価—</span>
+              </div>
+              <div class="formula-row">
+                <span class="formula-pill js-formulaPaymentTotal">入金額合計—</span>
+                <span class="formula-symbol">−</span>
+                <span class="formula-symbol">(</span>
+                <span class="formula-pill js-formulaCostTotal">仕入れ額合計—</span>
+                <span class="formula-symbol">)</span>
+                <span class="formula-symbol">−</span>
+                <span class="formula-pill js-formulaShippingTotal">送料—</span>
+                <span class="formula-symbol">−</span>
+                <span class="formula-pill js-formulaTariffTotal">関税—</span>
+                <span class="formula-symbol">=</span>
+                <span class="formula-pill is-strong js-formulaProfitTotal">粗利益額合計—</span>
+              </div>
             </div>
             <div class="calc-meta">
               <div class="calc-meta-row"><span>仕入れ平均額</span><b class="js-calcAvg">—</b></div>
@@ -2057,6 +2070,11 @@ function createProductCard(asin, data) {
   const formulaShippingEl = calcPanel?.querySelector(".js-formulaShipping");
   const formulaTariffEl = calcPanel?.querySelector(".js-formulaTariff");
   const formulaProfitEl = calcPanel?.querySelector(".js-formulaProfit");
+  const formulaPaymentTotalEl = calcPanel?.querySelector(".js-formulaPaymentTotal");
+  const formulaCostTotalEl = calcPanel?.querySelector(".js-formulaCostTotal");
+  const formulaShippingTotalEl = calcPanel?.querySelector(".js-formulaShippingTotal");
+  const formulaTariffTotalEl = calcPanel?.querySelector(".js-formulaTariffTotal");
+  const formulaProfitTotalEl = calcPanel?.querySelector(".js-formulaProfitTotal");
   const calcAvgEl = calcPanel?.querySelector(".js-calcAvg");
   const calcQtyEl = calcPanel?.querySelector(".js-calcQty");
   const calcRateEl = calcPanel?.querySelector(".js-calcRate");
@@ -2142,8 +2160,28 @@ function createProductCard(asin, data) {
       formulaTariffEl.textContent = `関税${tariffLabel}`;
     }
     if (formulaProfitEl) {
-      const profitLabel = totalQty > 0 && unitPaymentJPY > 0 ? fmtJPY(Math.round(totalProfitCalc)) : "—";
-      formulaProfitEl.textContent = `粗利益額合計${profitLabel}`;
+      const profitLabel = unitPaymentJPY > 0 ? fmtJPY(Math.round(unitProfitJPY)) : "—";
+      formulaProfitEl.textContent = `粗利益額単価${profitLabel}`;
+    }
+    if (formulaPaymentTotalEl) {
+      const paymentTotalLabel = totalQty > 0 && unitPaymentJPY > 0 ? fmtJPY(Math.round(totalPaymentJPY)) : "—";
+      formulaPaymentTotalEl.textContent = `入金額合計${paymentTotalLabel}`;
+    }
+    if (formulaCostTotalEl) {
+      const costTotalLabel = totalQty > 0 ? fmtJPY(Math.round(totalCost)) : "—";
+      formulaCostTotalEl.textContent = `仕入れ額合計${costTotalLabel}`;
+    }
+    if (formulaShippingTotalEl) {
+      const shippingTotalLabel = shipping > 0 ? fmtJPY(Math.round(shipping)) : "—";
+      formulaShippingTotalEl.textContent = `送料${shippingTotalLabel}`;
+    }
+    if (formulaTariffTotalEl) {
+      const tariffTotalLabel = tariff > 0 ? fmtJPY(Math.round(tariff)) : "—";
+      formulaTariffTotalEl.textContent = `関税${tariffTotalLabel}`;
+    }
+    if (formulaProfitTotalEl) {
+      const profitTotalLabel = totalQty > 0 && unitPaymentJPY > 0 ? fmtJPY(Math.round(totalProfitCalc)) : "—";
+      formulaProfitTotalEl.textContent = `粗利益額合計${profitTotalLabel}`;
     }
     calcAvgEl.textContent = totalQty > 0 ? fmtJPY(avgCost) : "—";
     calcQtyEl.textContent = totalQty > 0 ? `${totalQty}` : "—";
