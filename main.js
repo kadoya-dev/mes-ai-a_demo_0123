@@ -1167,16 +1167,21 @@ function buildSalesSummaryBlock(data) {
     list.appendChild(card);
   });
 
+  const labelsWrap = document.createElement("div");
+  labelsWrap.className = "sales-summary-labels";
+
   const actualLabel = document.createElement("div");
   actualLabel.className = "sales-summary-row-label sales-summary-label-actual";
   actualLabel.textContent = "販売数(実績)";
-  wrap.appendChild(actualLabel);
-  wrap.appendChild(list);
+  labelsWrap.appendChild(actualLabel);
 
   const forecastLabel = document.createElement("div");
   forecastLabel.className = "sales-summary-row-label sales-summary-label-forecast";
   forecastLabel.textContent = "販売数(予測)";
-  wrap.appendChild(forecastLabel);
+  labelsWrap.appendChild(forecastLabel);
+
+  wrap.appendChild(labelsWrap);
+  wrap.appendChild(list);
 
   return wrap;
 }

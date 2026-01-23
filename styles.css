@@ -1032,13 +1032,13 @@ body:is(.fourth-layout, .fifth-layout) .l4-info .l4-info-media{
 }
 body:is(.fourth-layout, .fifth-layout) .l4-info .l4-info-media .image-box{
   padding: 8px;
-  min-height: 240px;
+  min-height: 210px;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-info .l4-info-media .image-box img{
-  height: 240px;
+  height: 210px;
   width:100%;
   object-fit:cover;
 }
@@ -1186,16 +1186,24 @@ body:is(.fourth-layout, .fifth-layout) .l4-center .recommend-wrap{
 body:is(.fourth-layout, .fifth-layout) .l4-center .sales-summary{
   grid-column: 1 / -1;
   display:grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 70px 1fr;
   gap:6px 12px;
-  align-items:center;
+  align-items:start;
   border:1px solid #e2e8f0;
   border-radius:16px;
   padding:10px 12px;
   background:#ffffff;
 }
+body:is(.fourth-layout, .fifth-layout) .l4-center .sales-summary-labels{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  max-height: 120px;
+  overflow-y:auto;
+  padding-right:4px;
+}
 body:is(.fourth-layout, .fifth-layout) .l4-center .sales-summary-row-label{
-  font-size:13px;
+  font-size:12px;
   font-weight:800;
   color:#0f172a;
   white-space:nowrap;
