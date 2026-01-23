@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>MES-AI-A 商品分析（レイアウト5）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="stylesheet" href="./styles.css?v=20260107_2" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+</head>
+<body class="fifth-layout">
+
+<header class="app-header">
+  <div class="header-left">
+    <div class="header-title-row">
+      <h1>MES-AI-A 商品分析 0116-13</h1>
+      <div id="appVersion" class="header-version" aria-label="アプリのバージョン"></div>
+    </div>
+    <div class="sub">ASINクリックでカード追加</div>
+  </div>
+
+  <div class="header-right">
+    <div id="headerStatus" class="header-status"></div>
+  </div>
+</header>
+
+<main class="page-body">
+  <section class="asin-catalog card">
+    <div class="asin-catalog-head">
+      <div class="asin-catalog-title">データがあるASIN（クリックで表示）</div>
+    </div>
+    <div class="asin-catalog-body" id="asinCatalog"></div>
+  </section>
+
+  <section id="cartSummary" class="cart-summary card">
+    <div class="cart-head">
+      <div class="card-title">今日の合計</div>
+      <div class="cart-note">※ 仕入れ額(￥)と販売価格($)×為替(固定)で予測</div>
+    </div>
+    <div class="cart-grid">
+      <div><span>合計数</span><b id="cartItemCount">0個</b></div>
+      <div><span>販売額合計</span><b id="cartTotalSales">＄0.00(＄0.00)</b></div>
+      <div><span>仕入れ額合計</span><b id="cartTotalCost">￥0(￥0)</b></div>
+      <div><span>入金額合計</span><b id="cartTotalPayment">￥0(￥0)</b></div>
+      <div><span>粗利益額合計</span><b id="cartTotalProfit">￥0(￥0)</b></div>
+      <div><span>粗利益率</span><b id="cartProfitRate">0.0%</b></div>
+    </div>
+  </section>
+
+  <div id="emptyState" class="empty card">
+    ASINをクリックして商品を表示してください
+  </div>
+
+  <div id="itemsContainer" class="items-stack"></div>
+</main>
+
+<script src="./asin-data.js?v=20250219"></script>
+<script src="./main.js?v=20250219"></script>
+</body>
+</html>

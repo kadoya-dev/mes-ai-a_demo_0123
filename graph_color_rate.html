@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>赤字ライン背景｜パターンB（価格が上下しやすい）</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+
+<style>
+  body{
+    margin:0;
+    background:#f3f4f6;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    color:#111827;
+  }
+  .wrapper{
+    max-width:1100px;
+    margin:24px auto;
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 10px 28px rgba(0,0,0,.08);
+    padding:16px 18px 18px;
+  }
+  h1{ font-size:15px; margin:0 0 8px; font-weight:700; }
+  .controls{
+    display:flex; flex-wrap:wrap; align-items:center; gap:12px;
+    margin: 8px 0 12px;
+  }
+  .controls label{ font-size:12px; color:#374151; }
+  .controls input[type="number"]{
+    width:80px; padding:4px 6px; border:1px solid #d1d5db; border-radius:6px; font-size:12px;
+  }
+  .hint{ font-size:12px; color:#6b7280; }
+  .chartBox{ height:300px; position:relative; }
+  canvas{ width:100% !important; height:100% !important; display:block; }
+</style>
+</head>
+
+<body>
+<div class="wrapper">
+  <h1>ランキング / セラー数 / 価格 + 赤字ライン（背景色）｜パターンB</h1>
+
+  <div class="controls">
+    <label>赤字ライン（USD）</label>
+    <input id="lossInput" type="number" step="0.1" value="5.7">
+    <label style="display:flex;align-items:center;gap:6px;">
+      <input id="lossToggle" type="checkbox" checked>
+      赤字ライン表示
+    </label>
+    <span class="hint">最安値が赤字ラインを割ったかどうかで背景色が変化</span>
+  </div>
+
+  <div class="chartBox">
+    <canvas id="chartB"></canvas>
+  </div>
+</div>
+
+<script>
+Chart.register(window['chartjs-plugin-annotation']);
+
+let LOSS_LINE = 5.7;
+const ORANGE = '#f59e0b';
+
+const LOSS_FILL_BLUE_1 = 'rgba(59,130,246,.08)';
+const LOSS_FILL_BLUE_2 = 'rgba(59,130,246,.14)';
+const LOSS_FILL_BLUE_3 = 'rgba(59,130,246,.22)';
+const LOSS_FILL_RED_1  = 'rgba(220,38,38,.08)';
+const LOSS_FILL_RED_2  = 'rgba(220,38,38,.14)';
+const LOSS_FILL_RED_3  = 'rgba(220,38,38,.22)';
+
+function getDivergencePct(minPrice, lossLine){
+  if(!lossLine) return 0;
+  return Math.abs((lossLine - minPrice) / lossLine) * 100;
+}
+
+function computeLossFill(priceArray, lossLine){
+  const minPrice = Math.min(...priceArray);
+  const div = getDivergencePct(minPrice, lossLine);
+  const level = div >= 10 ? 3 : div >= 5 ? 2 : 1;
+  const bad = minPrice < lossLine;
+
+  if(!bad){
+    return level===3?LOSS_FILL_BLUE_3:level===2?LOSS_FILL_BLUE_2:LOSS_FILL_BLUE_1;
+  }else{
+    return level===3?LOSS_FILL_RED_3:level===2?LOSS_FILL_RED_2:LOSS_FILL_RED_1;
+  }
+}
+
+const lossBgPlugin = {
+  id:'lossBg',
+  beforeDatasetsDraw(chart,args,opts){
+    if(opts.enabled === false) return;
+    const {ctx,chartArea,scales}=chart;
+    const y = scales.yPrice.getPixelForValue(opts.loss);
+    ctx.save();
+    ctx.fillStyle = opts.fill;
+    ctx.fillRect(chartArea.left,y,chartArea.right-chartArea.left,chartArea.bottom-y);
+    ctx.restore();
+  }
+};
+Chart.register(lossBgPlugin);
+
+// ===== パターンB専用データ =====
+function makeRng(seed){
+  let s=seed>>>0;
+  return ()=>((s=(s*1664525+1013904223)%4294967296)/4294967296);
+}
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+
+function buildDataB(){
+  const N=180;
+  const labels=[...Array(N)].map((_,i)=>`${N-i}日`);
+  const rand=makeRng(202);
+  const noise=s=>(rand()-0.5)*s;
+
+  const price=[], sellers=[], rank=[];
+  let r=61000;
+
+  for(let i=0;i<N;i++){
+    let p=8.8+Math.sin(i/7)*0.8+Math.sin(i/17)*0.5;
+    if(i>120&&i<145) p-=0.9;
+    if(i>150&&i<160) p-=2.0;
+    p=clamp(p+noise(0.25),5.2,12);
+    price.push(Math.round(p*10)/10);
+
+    let s=6+Math.round(Math.abs(Math.sin(i/10))*4);
+    if(i>150) s+=2;
+    sellers.push(clamp(s,5,13));
+
+    r+=noise(1100);
+    if(i===60||i===140) r+=8000;
+    if(i===152) r-=9000;
+    rank.push(Math.round(clamp(r,46000,72000)));
+  }
+  return {labels,price,sellers,rank};
+}
+
+const dataB=buildDataB();
+
+const chartB=new Chart(document.getElementById('chartB'),{
+  type:'line',
+  data:{
+    labels:dataB.labels,
+    datasets:[
+      {label:'ランキング',data:dataB.rank,yAxisID:'yRank',borderColor:'#3b82f6',borderWidth:2,pointRadius:0},
+      {label:'セラー数',data:dataB.sellers,yAxisID:'ySeller',borderColor:'#fb7185',borderWidth:2,pointRadius:0},
+      {label:'価格(USD)',data:dataB.price,yAxisID:'yPrice',borderColor:ORANGE,borderWidth:2,pointRadius:0}
+    ]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{
+      lossBg:{enabled:true,loss:LOSS_LINE,fill:computeLossFill(dataB.price,LOSS_LINE)},
+      annotation:{
+        annotations:{
+          loss:{
+            type:'line',
+            yMin:LOSS_LINE,
+            yMax:LOSS_LINE,
+            yScaleID:'yPrice',
+            borderColor:ORANGE,
+            borderDash:[6,6],
+            borderWidth:1.5,
+            label:{display:true,content:'赤字ライン'}
+          }
+        }
+      }
+    },
+    scales:{
+      yRank:{position:'left'},
+      ySeller:{position:'right',grid:{drawOnChartArea:false}},
+      yPrice:{position:'right',offset:true,grid:{drawOnChartArea:false}}
+    }
+  }
+});
+
+lossInput.oninput=()=>{
+  LOSS_LINE=parseFloat(lossInput.value);
+  chartB.options.plugins.lossBg.loss=LOSS_LINE;
+  chartB.options.plugins.lossBg.fill=computeLossFill(dataB.price,LOSS_LINE);
+  chartB.options.plugins.annotation.annotations.loss.yMin=LOSS_LINE;
+  chartB.options.plugins.annotation.annotations.loss.yMax=LOSS_LINE;
+  chartB.update();
+};
+lossToggle.onchange=()=>{
+  const v=lossToggle.checked;
+  chartB.options.plugins.lossBg.enabled=v;
+  chartB.options.plugins.annotation.annotations.loss.display=v;
+  chartB.update();
+};
+</script>
+</body>
+</html>
