@@ -1465,6 +1465,11 @@ body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-row{
   gap:6px;
   align-items:center;
 }
+body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-title{
+  font-weight:900;
+  color:#0f172a;
+  margin-right:4px;
+}
 body:is(.fourth-layout, .fifth-layout) .l4-calc .calc-formula .formula-pill{
   display:inline-flex;
   align-items:center;
