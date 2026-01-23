@@ -59,8 +59,6 @@ const METRICS_ALL = [
   { id: "在庫数", label: "在庫数", sourceKey: "在庫数" },
   { id: "返品率", label: "返品率", sourceKey: "返品率" },
 
-  { id: "日本最安値", label: "日本最安値", sourceKey: "日本最安値" },
-
   { id: "仕入れ目安単価", label: "仕入れ目安単価", sourceKey: "仕入れ目安単価" },
   { id: "送料", label: "送料", sourceKey: "送料" },
   { id: "関税", label: "関税", sourceKey: "関税" }
@@ -141,7 +139,6 @@ const DEFAULT_ZONES = {
     tokM("90日販売数"),
     tokM("60日販売数"),
     tokM("30日販売数"),
-    tokM("日本最安値"),
     tokM("過去3月FBA最安値"),
     tokM("FBA最安値"),
     tokM("送料"),
@@ -160,7 +157,6 @@ const DEFAULT_ZONES = {
     tokM("複数在庫指数60日分"),
     tokM("ライバル増加率"),
     tokM("粗利益予測"),
-    tokM("日本最安値"),
     tokM("粗利益率予測")
   ]
 };
@@ -912,7 +908,6 @@ function buildCenterCards(container, ctx, data) {
     "90日販売数",
     "60日販売数",
     "30日販売数",
-    "日本最安値",
     "過去3月FBA最安値",
     "FBA最安値",
     "送料",
@@ -1594,11 +1589,15 @@ function createProductCard(asin, data) {
           <div class="info-grid js-infoGrid"></div>
         </div>
 
-        <div class="l4-center l4-block">
+          <div class="l4-center l4-block">
           <div class="center-cards js-centerCards"></div>
 
           <div class="l4-variable">
             <div class="var-cards">
+              <div class="center-card var-fba">
+                <div class="k">FBA最安値</div>
+                <div class="v js-fbaLowest">－</div>
+              </div>
               <div class="center-card var-sell">
                 <div class="k">販売価格（$）</div>
                 <input class="v js-sell js-sellInput" type="number" step="0.01" placeholder="例: 39.99" />
@@ -1969,10 +1968,15 @@ function createProductCard(asin, data) {
   const qtyInput = card.querySelector(".js-qty");
   const shopList = card.querySelector(".js-shopList");
   const extraShopList = card.querySelector(".js-extraShopList");
+  const fbaLowestEl = card.querySelector(".js-fbaLowest");
 
   if (data["販売額（ドル）"]) {
     const s = String(data["販売額（ドル）"]).replace(/[^\d.]/g, "");
     if (s) sellInput.value = s;
+  }
+  if (fbaLowestEl) {
+    const raw = data["FBA最安値"];
+    fbaLowestEl.textContent = raw == null || raw === "" ? "－" : String(raw);
   }
   if (data["FBA最安値"]) {
     const c = String(data["FBA最安値"]).replace(/[^\d]/g, "");

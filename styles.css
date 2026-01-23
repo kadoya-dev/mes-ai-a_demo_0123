@@ -1342,11 +1342,12 @@ body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .subhead{
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .var-cards{
   display:grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap:8px;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-sell,
-body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-profit{
+body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-profit,
+body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-fba{
   min-width:0;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-center .l4-variable .center-card.var-profit .v{
@@ -1758,14 +1759,16 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .asin-summary-row b{
 /* ─────────────────────────────
    layout4 変動項目：背景色で差別化（正）
    ───────────────────────────── */
-.l4-variable .center-card.var-sell {
+.l4-variable .center-card.var-sell,
+.l4-variable .center-card.var-fba {
   background-color: #f2f7ff; /* うっすらブルー */
 }
 .l4-variable .center-card.var-profit {
   background-color: #eef2ff; /* うっすらグリーン */
 }
 .l4-variable .center-card.var-sell,
-.l4-variable .center-card.var-profit {
+.l4-variable .center-card.var-profit,
+.l4-variable .center-card.var-fba {
   border: 1px solid rgba(0,0,0,0.04);
 }
 
@@ -1780,7 +1783,8 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .asin-summary-row b{
    （追記：既存定義の上書き用）
    ───────────────────────────── */
 .l4-variable .center-card.var-sell,
-.l4-variable .center-card.var-profit {
+.l4-variable .center-card.var-profit,
+.l4-variable .center-card.var-fba {
   background-color: #eef2ff; /* うっすらグリーン */
   border: 1px solid rgba(0,0,0,0.04);
 }
@@ -1797,7 +1801,8 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .asin-summary-row b{
 
 /* 強制適用：変動カードはデフォルトで薄緑（.center-card の白背景を上書き） */
 body:is(.fourth-layout, .fifth-layout) .l4-variable .center-card.var-sell,
-body:is(.fourth-layout, .fifth-layout) .l4-variable .center-card.var-profit {
+body:is(.fourth-layout, .fifth-layout) .l4-variable .center-card.var-profit,
+body:is(.fourth-layout, .fifth-layout) .l4-variable .center-card.var-fba {
   background-color: #eef2ff;
 }
 
