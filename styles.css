@@ -455,6 +455,19 @@ a{ color:inherit; }
   font-weight:900;
   color:#0f172a;
   background: rgba(255,255,255,.9);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.breakdown-item span{
+  font-size:11px;
+  color:#475569;
+  font-weight:800;
+}
+.breakdown-item b{
+  font-size:13px;
+  font-weight:900;
 }
 .breakdown-item.highlight{
   font-size:15px;
