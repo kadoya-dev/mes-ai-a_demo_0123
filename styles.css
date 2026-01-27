@@ -411,7 +411,26 @@ a{ color:inherit; }
   display:flex;
   flex-direction:column;
   gap:6px;
-  align-items:stretch;
+  align-items:flex-end;
+}
+.breakdown-row{
+  display:flex;
+  justify-content:flex-end;
+  align-items:flex-end;
+  gap:10px;
+  width:100%;
+}
+.breakdown-sign{
+  width:32px;
+  text-align:center;
+  font-size:26px;
+  font-weight:900;
+  color:#475569;
+  line-height:1;
+  padding-bottom:6px;
+}
+.breakdown-sign.is-placeholder{
+  visibility:hidden;
 }
 .breakdown-group{
   border:1px solid var(--line);
@@ -431,11 +450,16 @@ a{ color:inherit; }
   border-color: rgba(248,113,113,.4);
   background: rgba(254,226,226,.45);
 }
+.breakdown-group.income,
+.breakdown-group.expense{
+  width:min(100%, 300px);
+}
 .breakdown-group.profit{
   border-width:2px;
   border-color: rgba(245,158,11,.65);
   background: linear-gradient(180deg, rgba(254,243,199,.85), rgba(255,255,255,.95));
   box-shadow: 0 12px 26px rgba(245,158,11,.25);
+  width:min(100%, 378px);
 }
 .breakdown-title{
   font-size:12px;
@@ -488,6 +512,8 @@ a{ color:inherit; }
   position:relative;
   font-size:0;
   padding:6px 0;
+  width:min(100%, 300px);
+  align-self:flex-end;
 }
 .breakdown-operator.divider::before{
   content:"";
