@@ -4,6 +4,7 @@
  **************************************************************/
 
 const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 const FX_RATE = 155;
 const APP_VERSION = "v2025.02.22";
 
@@ -206,12 +207,12 @@ const cartTotalCost = $("#cartTotalCost");
 const cartTotalProfit = $("#cartTotalProfit");
 const cartProfitRate = $("#cartProfitRate");
 const cartItemCount = $("#cartItemCount");
-const cartBreakdownIncome = $("#cartBreakdownIncome");
-const cartBreakdownExpense = $("#cartBreakdownExpense");
-const cartBreakdownShipping = $("#cartBreakdownShipping");
-const cartBreakdownTariff = $("#cartBreakdownTariff");
-const cartBreakdownProfit = $("#cartBreakdownProfit");
-const cartBreakdownRate = $("#cartBreakdownRate");
+const cartBreakdownIncome = $$(".js-cartBreakdownIncome");
+const cartBreakdownExpense = $$(".js-cartBreakdownExpense");
+const cartBreakdownShipping = $$(".js-cartBreakdownShipping");
+const cartBreakdownTariff = $$(".js-cartBreakdownTariff");
+const cartBreakdownProfit = $$(".js-cartBreakdownProfit");
+const cartBreakdownRate = $$(".js-cartBreakdownRate");
 
 /* sort */
 const sortBar = $("#sortBar");
@@ -1493,24 +1494,24 @@ function updateCartSummary() {
   if (cartItemCount) {
     cartItemCount.textContent = `${itemCount}個`;
   }
-  if (cartBreakdownIncome) {
-    cartBreakdownIncome.textContent = fmtJPY(totalRevenueJPY);
-  }
-  if (cartBreakdownExpense) {
-    cartBreakdownExpense.textContent = fmtJPY(totalCost);
-  }
-  if (cartBreakdownShipping) {
-    cartBreakdownShipping.textContent = fmtJPY(totalShipping);
-  }
-  if (cartBreakdownTariff) {
-    cartBreakdownTariff.textContent = fmtJPY(totalTariff);
-  }
-  if (cartBreakdownProfit) {
-    cartBreakdownProfit.textContent = fmtJPY(profit);
-  }
-  if (cartBreakdownRate) {
-    cartBreakdownRate.textContent = `${profitRate.toFixed(1)}%`;
-  }
+  cartBreakdownIncome.forEach((node) => {
+    node.textContent = fmtJPY(totalRevenueJPY);
+  });
+  cartBreakdownExpense.forEach((node) => {
+    node.textContent = fmtJPY(totalCost);
+  });
+  cartBreakdownShipping.forEach((node) => {
+    node.textContent = fmtJPY(totalShipping);
+  });
+  cartBreakdownTariff.forEach((node) => {
+    node.textContent = fmtJPY(totalTariff);
+  });
+  cartBreakdownProfit.forEach((node) => {
+    node.textContent = fmtJPY(profit);
+  });
+  cartBreakdownRate.forEach((node) => {
+    node.textContent = `${profitRate.toFixed(1)}%`;
+  });
 }
 
 /* =========================
@@ -1744,23 +1745,42 @@ function createProductCard(asin, data) {
               <div class="breakdown-group income">
                 <div class="breakdown-title">収入</div>
                 <div class="breakdown-items">
-                  <div class="breakdown-item">入金額</div>
+                  <div class="breakdown-item">
+                    <span>入金額</span>
+                    <b class="js-cartBreakdownIncome">￥0</b>
+                  </div>
                 </div>
               </div>
-              <div class="breakdown-operator" aria-hidden="true">−</div>
+              <div class="breakdown-operator" aria-hidden="true">-支出</div>
               <div class="breakdown-group expense">
                 <div class="breakdown-title">支出</div>
                 <div class="breakdown-items">
-                  <div class="breakdown-item">仕入れ価格</div>
-                  <div class="breakdown-item">送料</div>
-                  <div class="breakdown-item">関税</div>
+                  <div class="breakdown-item">
+                    <span>仕入れ価格</span>
+                    <b class="js-cartBreakdownExpense">￥0</b>
+                  </div>
+                  <div class="breakdown-item">
+                    <span>送料</span>
+                    <b class="js-cartBreakdownShipping">￥0</b>
+                  </div>
+                  <div class="breakdown-item">
+                    <span>関税</span>
+                    <b class="js-cartBreakdownTariff">￥0</b>
+                  </div>
                 </div>
               </div>
-              <div class="breakdown-operator" aria-hidden="true">＝</div>
+              <div class="breakdown-operator divider" aria-hidden="true">—</div>
               <div class="breakdown-group profit">
-                <div class="breakdown-title">粗利益額</div>
+                <div class="breakdown-title">粗利</div>
                 <div class="breakdown-items">
-                  <div class="breakdown-item highlight">粗利益額</div>
+                  <div class="breakdown-item highlight">
+                    <span>粗利益額</span>
+                    <b class="js-cartBreakdownProfit">￥0</b>
+                  </div>
+                  <div class="breakdown-item">
+                    <span>粗利益率</span>
+                    <b class="js-cartBreakdownRate">0.0%</b>
+                  </div>
                 </div>
               </div>
             </div>
