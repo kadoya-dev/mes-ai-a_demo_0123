@@ -206,6 +206,12 @@ const cartTotalCost = $("#cartTotalCost");
 const cartTotalProfit = $("#cartTotalProfit");
 const cartProfitRate = $("#cartProfitRate");
 const cartItemCount = $("#cartItemCount");
+const cartBreakdownIncome = $("#cartBreakdownIncome");
+const cartBreakdownExpense = $("#cartBreakdownExpense");
+const cartBreakdownShipping = $("#cartBreakdownShipping");
+const cartBreakdownTariff = $("#cartBreakdownTariff");
+const cartBreakdownProfit = $("#cartBreakdownProfit");
+const cartBreakdownRate = $("#cartBreakdownRate");
 
 /* sort */
 const sortBar = $("#sortBar");
@@ -1443,17 +1449,23 @@ function updateCartSummary() {
   let totalCost = 0;
   let totalRevenueJPY = 0;
   let totalSalesUSD = 0;
+  let totalShipping = 0;
+  let totalTariff = 0;
   let itemCount = 0;
 
   cart.forEach((v) => {
     const qty = Math.max(1, Number(v.qty || 1));
     const sellUSD = Number(v.sellUSD || 0);
     const costJPY = Number(v.costJPY || 0);
+    const shippingJPY = Number(v.shipping || 0);
+    const tariffJPY = Number(v.tariff || 0);
 
     itemCount += qty;
     totalCost += costJPY * qty;
     totalRevenueJPY += sellUSD * FX_RATE * qty;
     totalSalesUSD += sellUSD * qty;
+    totalShipping += shippingJPY * qty;
+    totalTariff += tariffJPY * qty;
   });
 
   const profit = totalRevenueJPY - totalCost;
@@ -1480,6 +1492,24 @@ function updateCartSummary() {
   }
   if (cartItemCount) {
     cartItemCount.textContent = `${itemCount}個`;
+  }
+  if (cartBreakdownIncome) {
+    cartBreakdownIncome.textContent = fmtJPY(totalRevenueJPY);
+  }
+  if (cartBreakdownExpense) {
+    cartBreakdownExpense.textContent = fmtJPY(totalCost);
+  }
+  if (cartBreakdownShipping) {
+    cartBreakdownShipping.textContent = fmtJPY(totalShipping);
+  }
+  if (cartBreakdownTariff) {
+    cartBreakdownTariff.textContent = fmtJPY(totalTariff);
+  }
+  if (cartBreakdownProfit) {
+    cartBreakdownProfit.textContent = fmtJPY(profit);
+  }
+  if (cartBreakdownRate) {
+    cartBreakdownRate.textContent = `${profitRate.toFixed(1)}%`;
   }
 }
 
@@ -2040,6 +2070,8 @@ function createProductCard(asin, data) {
   const updateVariableMetrics = () => {
     const sellUSD = num(sellInput.value);
     const costJPY = num(costInput.value);
+    const shipping = num(data["送料"]);
+    const tariff = num(data["関税"]);
     const revenueJPY = sellUSD * FX_RATE;
 
     if (varSellEl) {
@@ -2255,7 +2287,7 @@ card.querySelector(".js-addCart").addEventListener("click", () => {
     if (costJPY <= 0) return alert("仕入れ額（￥）を入力してください");
     if (qty <= 0) return alert("個数を入力してください");
 
-    cart.set(asin, { qty, sellUSD, costJPY });
+    cart.set(asin, { qty, sellUSD, costJPY, shipping, tariff });
     updateCartSummary();
   });
 
