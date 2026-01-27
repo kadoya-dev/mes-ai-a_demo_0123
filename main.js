@@ -1751,7 +1751,7 @@ function createProductCard(asin, data) {
                   </div>
                 </div>
               </div>
-              <div class="breakdown-operator" aria-hidden="true">−</div>
+              <div class="breakdown-operator" aria-hidden="true">-支出</div>
               <div class="breakdown-group expense">
                 <div class="breakdown-title">支出</div>
                 <div class="breakdown-items">
@@ -1769,7 +1769,7 @@ function createProductCard(asin, data) {
                   </div>
                 </div>
               </div>
-              <div class="breakdown-operator" aria-hidden="true">＝</div>
+              <div class="breakdown-operator divider" aria-hidden="true">—</div>
               <div class="breakdown-group profit">
                 <div class="breakdown-title">粗利</div>
                 <div class="breakdown-items">
