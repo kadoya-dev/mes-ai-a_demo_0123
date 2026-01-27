@@ -1740,6 +1740,31 @@ function createProductCard(asin, data) {
               </div>
             </div>
 
+            <div class="cart-breakdown">
+              <div class="breakdown-group income">
+                <div class="breakdown-title">収入</div>
+                <div class="breakdown-items">
+                  <div class="breakdown-item">入金額</div>
+                </div>
+              </div>
+              <div class="breakdown-operator" aria-hidden="true">−</div>
+              <div class="breakdown-group expense">
+                <div class="breakdown-title">支出</div>
+                <div class="breakdown-items">
+                  <div class="breakdown-item">仕入れ価格</div>
+                  <div class="breakdown-item">送料</div>
+                  <div class="breakdown-item">関税</div>
+                </div>
+              </div>
+              <div class="breakdown-operator" aria-hidden="true">＝</div>
+              <div class="breakdown-group profit">
+                <div class="breakdown-title">粗利益額</div>
+                <div class="breakdown-items">
+                  <div class="breakdown-item highlight">粗利益額</div>
+                </div>
+              </div>
+            </div>
+
             <div class="shop-actions">
               <button class="ghost-btn js-later" type="button">後で仕入れる</button>
               <button class="cart-btn js-addCart" type="button">仕入れリスト</button>
