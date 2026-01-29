@@ -4,6 +4,7 @@
  **************************************************************/
 
 const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 const FX_RATE = 155;
 const APP_VERSION = "v2025.02.22";
 
