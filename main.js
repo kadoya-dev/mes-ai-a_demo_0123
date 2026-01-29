@@ -206,12 +206,6 @@ const cartTotalCost = $("#cartTotalCost");
 const cartTotalProfit = $("#cartTotalProfit");
 const cartProfitRate = $("#cartProfitRate");
 const cartItemCount = $("#cartItemCount");
-const cartBreakdownIncome = $("#cartBreakdownIncome");
-const cartBreakdownExpense = $("#cartBreakdownExpense");
-const cartBreakdownShipping = $("#cartBreakdownShipping");
-const cartBreakdownTariff = $("#cartBreakdownTariff");
-const cartBreakdownProfit = $("#cartBreakdownProfit");
-const cartBreakdownRate = $("#cartBreakdownRate");
 
 /* sort */
 const sortBar = $("#sortBar");
@@ -1493,24 +1487,6 @@ function updateCartSummary() {
   if (cartItemCount) {
     cartItemCount.textContent = `${itemCount}個`;
   }
-  if (cartBreakdownIncome) {
-    cartBreakdownIncome.textContent = fmtJPY(totalRevenueJPY);
-  }
-  if (cartBreakdownExpense) {
-    cartBreakdownExpense.textContent = fmtJPY(totalCost);
-  }
-  if (cartBreakdownShipping) {
-    cartBreakdownShipping.textContent = fmtJPY(totalShipping);
-  }
-  if (cartBreakdownTariff) {
-    cartBreakdownTariff.textContent = fmtJPY(totalTariff);
-  }
-  if (cartBreakdownProfit) {
-    cartBreakdownProfit.textContent = fmtJPY(profit);
-  }
-  if (cartBreakdownRate) {
-    cartBreakdownRate.textContent = `${profitRate.toFixed(1)}%`;
-  }
 }
 
 /* =========================
@@ -1741,26 +1717,51 @@ function createProductCard(asin, data) {
             </div>
 
             <div class="cart-breakdown">
-              <div class="breakdown-group income">
-                <div class="breakdown-title">収入</div>
-                <div class="breakdown-items">
-                  <div class="breakdown-item">入金額</div>
+              <div class="breakdown-row">
+                <div class="breakdown-sign is-placeholder" aria-hidden="true">－</div>
+                <div class="breakdown-group income">
+                  <div class="breakdown-title">収入</div>
+                  <div class="breakdown-items">
+                    <div class="breakdown-item">
+                      <span>入金額</span>
+                      <b class="js-cartBreakdownIncome">￥0</b>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="breakdown-operator" aria-hidden="true">−</div>
-              <div class="breakdown-group expense">
-                <div class="breakdown-title">支出</div>
-                <div class="breakdown-items">
-                  <div class="breakdown-item">仕入れ価格</div>
-                  <div class="breakdown-item">送料</div>
-                  <div class="breakdown-item">関税</div>
+              <div class="breakdown-row">
+                <div class="breakdown-sign" aria-hidden="true">－</div>
+                <div class="breakdown-group expense">
+                  <div class="breakdown-title">支出</div>
+                  <div class="breakdown-items">
+                    <div class="breakdown-item">
+                      <span>仕入れ価格</span>
+                      <b class="js-cartBreakdownExpense">￥0</b>
+                    </div>
+                    <div class="breakdown-item-row">
+                      <div class="breakdown-item is-half">
+                        <span>送料</span>
+                        <b class="js-cartBreakdownShipping">￥0</b>
+                      </div>
+                      <div class="breakdown-item is-half">
+                        <span>関税</span>
+                        <b class="js-cartBreakdownTariff">￥0</b>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="breakdown-operator" aria-hidden="true">＝</div>
-              <div class="breakdown-group profit">
-                <div class="breakdown-title">粗利益額</div>
-                <div class="breakdown-items">
-                  <div class="breakdown-item highlight">粗利益額</div>
+              <div class="breakdown-operator divider" aria-hidden="true">—</div>
+              <div class="breakdown-row">
+                <div class="breakdown-sign is-placeholder" aria-hidden="true">－</div>
+                <div class="breakdown-group profit">
+                  <div class="breakdown-title">粗利</div>
+                  <div class="breakdown-items">
+                    <div class="breakdown-item highlight">
+                      <span>粗利益額(率)</span>
+                      <b class="js-cartBreakdownProfit">￥0</b>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2150,6 +2151,11 @@ function createProductCard(asin, data) {
   const summarySalesEl = summaryEl?.querySelector(".js-summarySales");
   const summaryPaymentEl = summaryEl?.querySelector(".js-summaryPayment");
   const summaryProfitEl = summaryEl?.querySelector(".js-summaryProfit");
+  const breakdownIncomeEl = card.querySelector(".js-cartBreakdownIncome");
+  const breakdownExpenseEl = card.querySelector(".js-cartBreakdownExpense");
+  const breakdownShippingEl = card.querySelector(".js-cartBreakdownShipping");
+  const breakdownTariffEl = card.querySelector(".js-cartBreakdownTariff");
+  const breakdownProfitEl = card.querySelector(".js-cartBreakdownProfit");
   const calcPanel = card.querySelector(".js-calcPanel");
   const unitCostEl = calcPanel?.querySelector(".js-unitCost");
   const totalCostEl = calcPanel?.querySelector(".js-totalCost");
@@ -2220,7 +2226,9 @@ function createProductCard(asin, data) {
     const unitSalesUSD = sellUSD > 0 ? sellUSD : 0;
     const unitPaymentJPY = unitSalesUSD * FX_RATE;
     const unitProfitJPY = unitPaymentJPY - unitCost - shipping - tariff;
-    const totalProfitCalc = totalPaymentJPY - totalCost - shipping - tariff;
+    const totalShipping = shipping * totalQty;
+    const totalTariff = tariff * totalQty;
+    const totalProfitCalc = totalPaymentJPY - totalCost - totalShipping - totalTariff;
     const profitRateCalc = totalPaymentJPY > 0 ? (totalProfitCalc / totalPaymentJPY) * 100 : 0;
 
     if (totalQtyEls) {
@@ -2264,11 +2272,11 @@ function createProductCard(asin, data) {
       formulaCostTotalEl.textContent = `仕入れ目安${costTotalLabel}`;
     }
     if (formulaShippingTotalEl) {
-      const shippingTotalLabel = shipping > 0 ? fmtJPY(Math.round(shipping)) : "—";
+      const shippingTotalLabel = totalShipping > 0 ? fmtJPY(Math.round(totalShipping)) : "—";
       formulaShippingTotalEl.textContent = `送料${shippingTotalLabel}`;
     }
     if (formulaTariffTotalEl) {
-      const tariffTotalLabel = tariff > 0 ? fmtJPY(Math.round(tariff)) : "—";
+      const tariffTotalLabel = totalTariff > 0 ? fmtJPY(Math.round(totalTariff)) : "—";
       formulaTariffTotalEl.textContent = `関税${tariffTotalLabel}`;
     }
     if (formulaProfitTotalEl) {
@@ -2278,6 +2286,22 @@ function createProductCard(asin, data) {
     calcAvgEl.textContent = totalQty > 0 ? fmtJPY(avgCost) : "—";
     calcQtyEl.textContent = totalQty > 0 ? `${totalQty}` : "—";
     calcRateEl.textContent = totalQty > 0 && sellUSD > 0 ? `${profitRateCalc.toFixed(1)}%` : "—";
+
+    if (breakdownIncomeEl) {
+      breakdownIncomeEl.textContent = fmtJPY(Math.round(totalPaymentJPY));
+    }
+    if (breakdownExpenseEl) {
+      breakdownExpenseEl.textContent = fmtJPY(Math.round(totalCost));
+    }
+    if (breakdownShippingEl) {
+      breakdownShippingEl.textContent = fmtJPY(Math.round(totalShipping));
+    }
+    if (breakdownTariffEl) {
+      breakdownTariffEl.textContent = fmtJPY(Math.round(totalTariff));
+    }
+    if (breakdownProfitEl) {
+      breakdownProfitEl.textContent = `${fmtJPY(Math.round(totalProfitCalc))}(${profitRateCalc.toFixed(1)}%)`;
+    }
   };
 
   sellInput.addEventListener("input", () => {
