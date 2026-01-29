@@ -1739,13 +1739,15 @@ function createProductCard(asin, data) {
                       <span>仕入れ価格</span>
                       <b class="js-cartBreakdownExpense">￥0</b>
                     </div>
-                    <div class="breakdown-item">
-                      <span>送料</span>
-                      <b class="js-cartBreakdownShipping">￥0</b>
-                    </div>
-                    <div class="breakdown-item">
-                      <span>関税</span>
-                      <b class="js-cartBreakdownTariff">￥0</b>
+                    <div class="breakdown-item-row">
+                      <div class="breakdown-item is-half">
+                        <span>送料</span>
+                        <b class="js-cartBreakdownShipping">￥0</b>
+                      </div>
+                      <div class="breakdown-item is-half">
+                        <span>関税</span>
+                        <b class="js-cartBreakdownTariff">￥0</b>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1757,12 +1759,8 @@ function createProductCard(asin, data) {
                   <div class="breakdown-title">粗利</div>
                   <div class="breakdown-items">
                     <div class="breakdown-item highlight">
-                      <span>粗利益額</span>
+                      <span>粗利益額(率)</span>
                       <b class="js-cartBreakdownProfit">￥0</b>
-                    </div>
-                    <div class="breakdown-item">
-                      <span>粗利益率</span>
-                      <b class="js-cartBreakdownRate">0.0%</b>
                     </div>
                   </div>
                 </div>
@@ -2159,7 +2157,6 @@ function createProductCard(asin, data) {
   const breakdownShippingEl = card.querySelector(".js-cartBreakdownShipping");
   const breakdownTariffEl = card.querySelector(".js-cartBreakdownTariff");
   const breakdownProfitEl = card.querySelector(".js-cartBreakdownProfit");
-  const breakdownRateEl = card.querySelector(".js-cartBreakdownRate");
   const calcPanel = card.querySelector(".js-calcPanel");
   const unitCostEl = calcPanel?.querySelector(".js-unitCost");
   const totalCostEl = calcPanel?.querySelector(".js-totalCost");
@@ -2304,10 +2301,7 @@ function createProductCard(asin, data) {
       breakdownTariffEl.textContent = fmtJPY(Math.round(totalTariff));
     }
     if (breakdownProfitEl) {
-      breakdownProfitEl.textContent = fmtJPY(Math.round(totalProfitCalc));
-    }
-    if (breakdownRateEl) {
-      breakdownRateEl.textContent = `${profitRateCalc.toFixed(1)}%`;
+      breakdownProfitEl.textContent = `${fmtJPY(Math.round(totalProfitCalc))}(${profitRateCalc.toFixed(1)}%)`;
     }
   };
 
