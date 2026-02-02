@@ -16,7 +16,7 @@
       <h1>MES-AI-A 商品分析 0116-13</h1>
       <div id="appVersion" class="header-version" aria-label="アプリのバージョン"></div>
     </div>
-    <div class="sub">検索条件でASINを表示</div>
+    <div class="sub">ASINクリックでカード追加</div>
   </div>
 
   <div class="header-right">
@@ -25,111 +25,12 @@
 </header>
 
 <main class="page-body">
-  <section class="search-panel card">
-    <div class="search-head">
-      <div class="card-title">検索条件</div>
-      <div class="search-result">該当 <span id="searchResultCount">0</span>件</div>
+  <section class="asin-catalog card">
+    <div class="asin-catalog-head">
+      <div class="asin-catalog-title">ASIN一覧</div>
+      <button id="asinLoadBtn" class="asin-load-btn" type="button">ASIN一覧を表示</button>
     </div>
-    <div class="search-grid">
-      <label class="search-field">
-        <span>キーワード</span>
-        <input id="searchKeyword" type="text" placeholder="ASIN・商品名など" />
-      </label>
-      <label class="search-field">
-        <span>除外キーワード</span>
-        <input id="searchExcludeKeyword" type="text" placeholder="除外したい語句" />
-      </label>
-      <label class="search-field">
-        <span>粗利益率(以上)</span>
-        <input id="searchProfitRateMin" type="number" min="0" step="0.1" placeholder="例: 20" />
-      </label>
-      <label class="search-field">
-        <span>粗利益額(以上)</span>
-        <input id="searchProfitMin" type="number" min="0" step="1" placeholder="例: 2000" />
-      </label>
-      <label class="search-field">
-        <span>販売価格($)範囲</span>
-        <div class="search-range">
-          <input id="searchSellMin" type="number" min="0" step="0.1" placeholder="min" />
-          <span>〜</span>
-          <input id="searchSellMax" type="number" min="0" step="0.1" placeholder="max" />
-        </div>
-      </label>
-      <label class="search-field">
-        <span>FBA最安値(以下)</span>
-        <input id="searchFbaMax" type="number" min="0" step="1" placeholder="例: 2500" />
-      </label>
-      <label class="search-field">
-        <span>仕入れ目安単価(範囲)</span>
-        <div class="search-range">
-          <input id="searchCostMin" type="number" min="0" step="1" placeholder="min" />
-          <span>〜</span>
-          <input id="searchCostMax" type="number" min="0" step="1" placeholder="max" />
-        </div>
-      </label>
-      <label class="search-field">
-        <span>30日販売数(以上)</span>
-        <input id="searchSalesMin" type="number" min="0" step="1" placeholder="例: 10" />
-      </label>
-    </div>
-    <div class="search-advanced" id="searchAdvanced">
-      <div class="search-grid">
-        <label class="search-field">
-          <span>60日販売数(以上)</span>
-          <input id="searchSales60Min" type="number" min="0" step="1" placeholder="例: 20" />
-        </label>
-        <label class="search-field">
-          <span>90日販売数(以上)</span>
-          <input id="searchSales90Min" type="number" min="0" step="1" placeholder="例: 30" />
-        </label>
-        <label class="search-field">
-          <span>予測30日販売数(以上)</span>
-          <input id="searchForecast30Min" type="number" min="0" step="1" placeholder="例: 15" />
-        </label>
-        <label class="search-field">
-          <span>セラー数(以下)</span>
-          <input id="searchSellerMax" type="number" min="0" step="1" placeholder="例: 6" />
-        </label>
-        <label class="search-field">
-          <span>レビュー評価(以上)</span>
-          <input id="searchReviewMin" type="number" min="0" step="0.1" placeholder="例: 4.0" />
-        </label>
-        <label class="search-field">
-          <span>サイズ感(範囲)</span>
-          <div class="search-range">
-            <input id="searchSizeMin" type="number" min="0" step="0.1" placeholder="min" />
-            <span>〜</span>
-            <input id="searchSizeMax" type="number" min="0" step="0.1" placeholder="max" />
-          </div>
-        </label>
-        <label class="search-field">
-          <span>在庫数(以下)</span>
-          <input id="searchStockMax" type="number" min="0" step="1" placeholder="例: 50" />
-        </label>
-        <label class="search-field">
-          <span>返品率(以下)</span>
-          <input id="searchReturnMax" type="number" min="0" step="0.1" placeholder="例: 5" />
-        </label>
-        <div class="search-field">
-          <span>カテゴリ</span>
-          <div class="search-checkboxes" id="searchCategoryFilters"></div>
-        </div>
-        <div class="search-field">
-          <span>材質</span>
-          <div class="search-checkboxes" id="searchMaterialFilters"></div>
-        </div>
-      </div>
-    </div>
-    <div class="search-actions">
-      <button id="searchDetailBtn" class="ghost-btn" type="button">詳細</button>
-      <button id="searchApplyBtn" class="cart-btn" type="button">検索する</button>
-      <button id="searchResetBtn" class="ghost-btn" type="button">リセット</button>
-    </div>
-  </section>
-
-  <section class="asin-list card">
-    <div class="card-title">ASIN一覧</div>
-    <div id="asinListButtons" class="asin-list-buttons"></div>
+    <div class="asin-catalog-body" id="asinCatalog"></div>
   </section>
 
   <section id="cartSummary" class="cart-summary card">
@@ -148,11 +49,10 @@
   </section>
 
   <div id="emptyState" class="empty card">
-    検索条件を設定してASINを表示してください
+    検索後にASINをクリックして商品を表示してください
   </div>
 
   <div id="itemsContainer" class="items-stack"></div>
-  </div>
 </main>
 
 <script src="./asin-data.js?v=20250219"></script>
