@@ -39,21 +39,21 @@
         <span>除外キーワード</span>
         <input id="searchExcludeKeyword" type="text" placeholder="除外したい語句" />
       </label>
-      <div class="search-field">
+      <div class="search-field meter-field">
         <span>粗利益率(以上)</span>
         <div class="search-meter">
           <input id="searchProfitRateMin" type="range" min="0" max="100" step="0.1" value="0" />
           <output class="search-meter-value" for="searchProfitRateMin" data-unit="%">0%</output>
         </div>
       </div>
-      <div class="search-field">
+      <div class="search-field meter-field">
         <span>粗利益額(以上)</span>
         <div class="search-meter">
           <input id="searchProfitMin" type="range" min="0" max="100000" step="100" value="0" />
           <output class="search-meter-value" for="searchProfitMin" data-unit="円">0円</output>
         </div>
       </div>
-      <div class="search-field">
+      <div class="search-field meter-field">
         <span>販売価格($)範囲</span>
         <div class="search-meter-range">
           <div class="search-meter">
@@ -66,14 +66,14 @@
           </div>
         </div>
       </div>
-      <div class="search-field">
+      <div class="search-field meter-field">
         <span>FBA最安値(以下)</span>
         <div class="search-meter">
           <input id="searchFbaMax" type="range" min="0" max="10000" step="100" value="0" />
           <output class="search-meter-value" for="searchFbaMax" data-unit="円">0円</output>
         </div>
       </div>
-      <div class="search-field">
+      <div class="search-field meter-field">
         <span>仕入れ目安単価(範囲)</span>
         <div class="search-meter-range">
           <div class="search-meter">
@@ -90,25 +90,25 @@
         <span>30日販売数(以上)</span>
         <input id="searchSalesMin" type="number" min="0" step="1" placeholder="例: 10" />
       </label>
-      <label class="search-field">
-        <span>60日販売数(以上)</span>
-        <input id="searchSales60Min" type="number" min="0" step="1" placeholder="例: 20" />
-      </label>
-      <label class="search-field">
-        <span>90日販売数(以上)</span>
-        <input id="searchSales90Min" type="number" min="0" step="1" placeholder="例: 30" />
-      </label>
-      <label class="search-field">
-        <span>予測30日販売数(以上)</span>
-        <input id="searchForecast30Min" type="number" min="0" step="1" placeholder="例: 15" />
-      </label>
-      <label class="search-field">
-        <span>セラー数(以下)</span>
-        <input id="searchSellerMax" type="number" min="0" step="1" placeholder="例: 6" />
-      </label>
     </div>
     <div class="search-advanced" id="searchAdvanced">
       <div class="search-grid">
+        <label class="search-field">
+          <span>60日販売数(以上)</span>
+          <input id="searchSales60Min" type="number" min="0" step="1" placeholder="例: 20" />
+        </label>
+        <label class="search-field">
+          <span>90日販売数(以上)</span>
+          <input id="searchSales90Min" type="number" min="0" step="1" placeholder="例: 30" />
+        </label>
+        <label class="search-field">
+          <span>予測30日販売数(以上)</span>
+          <input id="searchForecast30Min" type="number" min="0" step="1" placeholder="例: 15" />
+        </label>
+        <label class="search-field">
+          <span>セラー数(以下)</span>
+          <input id="searchSellerMax" type="number" min="0" step="1" placeholder="例: 6" />
+        </label>
         <label class="search-field">
           <span>レビュー評価(以上)</span>
           <input id="searchReviewMin" type="number" min="0" step="0.1" placeholder="例: 4.0" />
@@ -125,7 +125,7 @@
           <span>在庫数(以下)</span>
           <input id="searchStockMax" type="number" min="0" step="1" placeholder="例: 50" />
         </label>
-        <label class="search-field">
+        <label class="search-field meter-field">
           <span>返品率(以下)</span>
           <div class="search-meter">
             <input id="searchReturnMax" type="range" min="0" max="30" step="0.1" value="0" />

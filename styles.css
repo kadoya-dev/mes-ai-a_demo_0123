@@ -40,7 +40,7 @@ body.fifth-layout .search-panel{
   display:flex;
   flex-direction:column;
   gap:12px;
-  padding:16px;
+  padding:20px;
 }
 body.fifth-layout .search-head{
   display:flex;
@@ -54,9 +54,9 @@ body.fifth-layout .search-result{
 }
 body.fifth-layout .search-grid{
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap:12px;
-  padding:4px 2px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:18px 20px;
+  padding:8px 6px;
 }
 body.fifth-layout .search-field{
   display:flex;
@@ -65,6 +65,10 @@ body.fifth-layout .search-field{
   font-size:12px;
   font-weight:800;
   color:#334155;
+}
+body.fifth-layout .search-field.meter-field{
+  gap:10px;
+  padding-bottom:12px;
 }
 body.fifth-layout .search-field input,
 body.fifth-layout .search-field select{
@@ -118,7 +122,7 @@ body.fifth-layout .search-meter input[type="range"]{
 body.fifth-layout .search-meter-value{
   position:absolute;
   left:var(--meter-pos, 0%);
-  transform:translate(-50%, -32px);
+  transform:translate(-50%, -36px);
   background:#2563eb;
   color:#fff;
   padding:4px 10px;
@@ -149,9 +153,9 @@ body.fifth-layout .search-range{
 }
 body.fifth-layout .search-advanced{
   display:none;
-  margin-top:6px;
+  margin-top:10px;
   border-top:1px solid var(--line);
-  padding-top:12px;
+  padding-top:16px;
 }
 body.fifth-layout .search-advanced.is-open{
   display:block;

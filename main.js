@@ -622,8 +622,7 @@ function initCatalog() {
       if (event.key === "Enter") runSearch();
     });
   });
-  renderCards([]);
-  if (searchResultCount) searchResultCount.textContent = "0";
+  runSearch();
 }
 
 function addOrFocusCard(asin) {
