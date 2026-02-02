@@ -189,8 +189,9 @@ const clearCartBtn = $("#clearCartBtn");
 
 /* catalog */
 const searchKeyword = $("#searchKeyword");
-const searchCategory = $("#searchCategory");
-const searchMaterial = $("#searchMaterial");
+const searchExcludeKeyword = $("#searchExcludeKeyword");
+const searchCategoryFilters = $("#searchCategoryFilters");
+const searchMaterialFilters = $("#searchMaterialFilters");
 const searchProfitRateMin = $("#searchProfitRateMin");
 const searchProfitMin = $("#searchProfitMin");
 const searchSellMin = $("#searchSellMin");
@@ -316,19 +317,32 @@ function initCatalog() {
     materials.forEach((material) => materialSet.add(material));
   });
 
-  const buildSelectOptions = (items, selectEl, placeholder) => {
-    if (!selectEl) return;
-    selectEl.innerHTML = "";
-    const defaultOption = document.createElement("option");
-    defaultOption.value = "";
-    defaultOption.textContent = placeholder;
-    selectEl.appendChild(defaultOption);
+  const buildCheckboxOptions = (items, container) => {
+    if (!container) return;
+    container.innerHTML = "";
     items.forEach((item) => {
-      const option = document.createElement("option");
-      option.value = item;
-      option.textContent = item;
-      selectEl.appendChild(option);
+      const label = document.createElement("label");
+      label.className = "checkbox-item";
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.value = item;
+      input.checked = true;
+      input.addEventListener("change", runSearch);
+      const span = document.createElement("span");
+      span.textContent = item;
+      label.appendChild(input);
+      label.appendChild(span);
+      container.appendChild(label);
     });
+  };
+
+  const getCheckedValues = (container) => {
+    if (!container) return new Set();
+    return new Set(
+      Array.from(container.querySelectorAll("input[type=checkbox]"))
+        .filter((input) => input.checked)
+        .map((input) => input.value)
+    );
   };
 
   const renderCards = (asins) => {
@@ -355,6 +369,7 @@ function initCatalog() {
 
   const runSearch = () => {
     const keyword = String(searchKeyword?.value || "").trim().toLowerCase();
+    const excludeKeyword = String(searchExcludeKeyword?.value || "").trim().toLowerCase();
     const minProfitRate = num(searchProfitRateMin?.value);
     const minProfit = num(searchProfitMin?.value);
     const sellMin = num(searchSellMin?.value);
@@ -372,8 +387,8 @@ function initCatalog() {
     const sizeMax = num(searchSizeMax?.value);
     const stockMax = num(searchStockMax?.value);
     const returnMax = num(searchReturnMax?.value);
-    const selectedCategory = String(searchCategory?.value || "").trim();
-    const selectedMaterial = String(searchMaterial?.value || "").trim();
+    const selectedCategories = getCheckedValues(searchCategoryFilters);
+    const selectedMaterials = getCheckedValues(searchMaterialFilters);
     const filtered = allAsins.filter((asin) => {
       const data = window.ASIN_DATA?.[asin] || {};
       const title = String(data["品名"] || data["商品名"] || data["商品タイトル"] || "").toLowerCase();
@@ -399,6 +414,12 @@ function initCatalog() {
 
       if (keyword && !(asin.toLowerCase().includes(keyword) || title.includes(keyword))) {
         return false;
+      }
+      if (excludeKeyword) {
+        const terms = excludeKeyword.split(/[\s,]+/).filter(Boolean);
+        if (terms.some((term) => asin.toLowerCase().includes(term) || title.includes(term))) {
+          return false;
+        }
       }
       if (minProfitRate && profitRate < minProfitRate) {
         return false;
@@ -451,6 +472,18 @@ function initCatalog() {
       if (returnMax && returns > 0 && returns > returnMax) {
         return false;
       }
+      if (selectedCategories.size && category && !selectedCategories.has(category)) {
+        return false;
+      }
+      if (sizeMax && size > 0 && size > sizeMax) {
+        return false;
+      }
+      if (stockMax && stock > 0 && stock > stockMax) {
+        return false;
+      }
+      if (returnMax && returns > 0 && returns > returnMax) {
+        return false;
+      }
       if (selectedCategory && category && selectedCategory !== category) {
         return false;
       }
@@ -465,8 +498,69 @@ function initCatalog() {
 
   const categories = Array.from(categorySet).sort((a, b) => a.localeCompare(b, "ja"));
   const materials = Array.from(materialSet).sort((a, b) => a.localeCompare(b, "ja"));
-  buildSelectOptions(categories, searchCategory, "すべてのカテゴリ");
-  buildSelectOptions(materials, searchMaterial, "すべての材質");
+  buildCheckboxOptions(categories, searchCategoryFilters);
+  buildCheckboxOptions(materials, searchMaterialFilters);
+
+  const formatMeterValue = (value, unit) => {
+    if (unit === "%") return `${value}%`;
+    if (unit === "$") return `$${value}`;
+    if (unit === "円") return `${Number(value).toLocaleString("ja-JP")}円`;
+    return `${value}${unit || ""}`;
+  };
+
+  const updateMeter = (input) => {
+    if (!(input instanceof HTMLInputElement)) return;
+    const output = input.parentElement?.querySelector(".search-meter-value");
+    if (!(output instanceof HTMLElement)) return;
+    const min = Number(input.min || 0);
+    const max = Number(input.max || 100);
+    const value = Number(input.value || 0);
+    const percent = max > min ? ((value - min) / (max - min)) * 100 : 0;
+    output.style.setProperty("--meter-pos", `${percent}%`);
+    const unit = output.dataset.unit || "";
+    output.textContent = formatMeterValue(value, unit);
+  };
+
+  const setupMeter = (input) => {
+    if (!input) return;
+    updateMeter(input);
+    input.addEventListener("input", () => updateMeter(input));
+  };
+
+  const setupRangePair = (minInput, maxInput) => {
+    if (!minInput || !maxInput) return;
+    const syncMin = () => {
+      if (Number(minInput.value) > Number(maxInput.value)) {
+        maxInput.value = minInput.value;
+      }
+      updateMeter(minInput);
+      updateMeter(maxInput);
+    };
+    const syncMax = () => {
+      if (Number(maxInput.value) < Number(minInput.value)) {
+        minInput.value = maxInput.value;
+      }
+      updateMeter(minInput);
+      updateMeter(maxInput);
+    };
+    minInput.addEventListener("input", syncMin);
+    maxInput.addEventListener("input", syncMax);
+    syncMin();
+  };
+
+  const meterInputs = [
+    searchProfitRateMin,
+    searchProfitMin,
+    searchFbaMax,
+    searchReturnMax,
+    searchSellMin,
+    searchSellMax,
+    searchCostMin,
+    searchCostMax
+  ];
+  meterInputs.forEach((input) => setupMeter(input));
+  setupRangePair(searchSellMin, searchSellMax);
+  setupRangePair(searchCostMin, searchCostMax);
 
   searchDetailBtn?.addEventListener("click", () => {
     if (!searchAdvanced) return;
@@ -476,15 +570,14 @@ function initCatalog() {
   searchApplyBtn?.addEventListener("click", runSearch);
   searchResetBtn?.addEventListener("click", () => {
     if (searchKeyword) searchKeyword.value = "";
-    if (searchCategory) searchCategory.value = "";
-    if (searchMaterial) searchMaterial.value = "";
-    if (searchProfitRateMin) searchProfitRateMin.value = "";
-    if (searchProfitMin) searchProfitMin.value = "";
-    if (searchSellMin) searchSellMin.value = "";
-    if (searchSellMax) searchSellMax.value = "";
-    if (searchFbaMax) searchFbaMax.value = "";
-    if (searchCostMin) searchCostMin.value = "";
-    if (searchCostMax) searchCostMax.value = "";
+    if (searchExcludeKeyword) searchExcludeKeyword.value = "";
+    if (searchProfitRateMin) searchProfitRateMin.value = searchProfitRateMin.defaultValue || "0";
+    if (searchProfitMin) searchProfitMin.value = searchProfitMin.defaultValue || "0";
+    if (searchSellMin) searchSellMin.value = searchSellMin.defaultValue || "0";
+    if (searchSellMax) searchSellMax.value = searchSellMax.defaultValue || "0";
+    if (searchFbaMax) searchFbaMax.value = searchFbaMax.defaultValue || "0";
+    if (searchCostMin) searchCostMin.value = searchCostMin.defaultValue || "0";
+    if (searchCostMax) searchCostMax.value = searchCostMax.defaultValue || "0";
     if (searchSalesMin) searchSalesMin.value = "";
     if (searchSales60Min) searchSales60Min.value = "";
     if (searchSales90Min) searchSales90Min.value = "";
@@ -494,11 +587,19 @@ function initCatalog() {
     if (searchSizeMin) searchSizeMin.value = "";
     if (searchSizeMax) searchSizeMax.value = "";
     if (searchStockMax) searchStockMax.value = "";
-    if (searchReturnMax) searchReturnMax.value = "";
+    if (searchReturnMax) searchReturnMax.value = searchReturnMax.defaultValue || "0";
+    searchCategoryFilters?.querySelectorAll("input[type=checkbox]").forEach((input) => {
+      input.checked = true;
+    });
+    searchMaterialFilters?.querySelectorAll("input[type=checkbox]").forEach((input) => {
+      input.checked = true;
+    });
+    meterInputs.forEach((input) => updateMeter(input));
     runSearch();
   });
   [
     searchKeyword,
+    searchExcludeKeyword,
     searchProfitRateMin,
     searchProfitMin,
     searchSellMin,
@@ -521,10 +622,6 @@ function initCatalog() {
       if (event.key === "Enter") runSearch();
     });
   });
-  [searchCategory, searchMaterial].forEach((select) => {
-    select?.addEventListener("change", runSearch);
-  });
-
   renderCards([]);
   if (searchResultCount) searchResultCount.textContent = "0";
 }
