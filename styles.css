@@ -72,10 +72,25 @@ body.fifth-layout .search-field select{
   font-size:13px;
   background:#fff;
 }
+body.fifth-layout .search-range{
+  display:grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap:6px;
+  align-items:center;
+}
+body.fifth-layout .search-advanced{
+  display:none;
+}
+body.fifth-layout .search-advanced.is-open{
+  display:block;
+}
 body.fifth-layout .search-actions{
   display:flex;
   gap:10px;
   justify-content:flex-end;
+}
+body.fifth-layout #searchApplyBtn{
+  width:100px;
 }
 
 /* =========================
