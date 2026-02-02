@@ -305,6 +305,9 @@ function initCatalog() {
   const allAsins = Object.keys(window.ASIN_DATA || {});
   const categorySet = new Set();
   const materialSet = new Set();
+  let maxSellUSD = 0;
+  let maxCost = 0;
+  let maxFba = 0;
 
   allAsins.forEach((asin) => {
     const data = window.ASIN_DATA?.[asin] || {};
@@ -315,6 +318,9 @@ function initCatalog() {
       .map((item) => item.trim())
       .filter(Boolean);
     materials.forEach((material) => materialSet.add(material));
+    maxSellUSD = Math.max(maxSellUSD, num(data["販売額（ドル）"]));
+    maxCost = Math.max(maxCost, num(data["仕入れ目安単価"]), num(data["FBA最安値"]));
+    maxFba = Math.max(maxFba, num(data["FBA最安値"]));
   });
 
   const buildCheckboxOptions = (items, container) => {
@@ -501,6 +507,19 @@ function initCatalog() {
   buildCheckboxOptions(categories, searchCategoryFilters);
   buildCheckboxOptions(materials, searchMaterialFilters);
 
+  const setRangeMax = (input, maxValue) => {
+    if (!input) return;
+    const resolved = Number.isFinite(maxValue) && maxValue > 0 ? Math.ceil(maxValue) : Number(input.max || 0);
+    if (!resolved) return;
+    input.max = String(resolved);
+    input.value = String(resolved);
+    input.defaultValue = String(resolved);
+  };
+
+  setRangeMax(searchSellMax, maxSellUSD);
+  setRangeMax(searchCostMax, maxCost);
+  setRangeMax(searchFbaMax, maxFba);
+
   const formatMeterValue = (value, unit) => {
     if (unit === "%") return `${value}%`;
     if (unit === "$") return `$${value}`;
@@ -510,7 +529,7 @@ function initCatalog() {
 
   const updateMeter = (input) => {
     if (!(input instanceof HTMLInputElement)) return;
-    const output = input.parentElement?.querySelector(".search-meter-value");
+    const output = input.parentElement?.querySelector(`.search-meter-value[for="${input.id}"]`);
     if (!(output instanceof HTMLElement)) return;
     const min = Number(input.min || 0);
     const max = Number(input.max || 100);
@@ -521,31 +540,47 @@ function initCatalog() {
     output.textContent = formatMeterValue(value, unit);
   };
 
+  const updateDualMeter = (wrapper) => {
+    if (!wrapper) return;
+    const minId = wrapper.dataset.minTarget;
+    const maxId = wrapper.dataset.maxTarget;
+    if (!minId || !maxId) return;
+    const minInput = wrapper.querySelector(`#${minId}`);
+    const maxInput = wrapper.querySelector(`#${maxId}`);
+    if (!(minInput instanceof HTMLInputElement) || !(maxInput instanceof HTMLInputElement)) return;
+    const minValue = Number(minInput.value || 0);
+    const maxValue = Number(maxInput.value || 0);
+    if (minValue > maxValue) {
+      maxInput.value = minInput.value;
+    }
+    const min = Number(minInput.min || 0);
+    const max = Number(minInput.max || 100);
+    const minPercent = max > min ? ((Number(minInput.value) - min) / (max - min)) * 100 : 0;
+    const maxPercent = max > min ? ((Number(maxInput.value) - min) / (max - min)) * 100 : 0;
+    wrapper.style.setProperty("--min-pos", `${minPercent}%`);
+    wrapper.style.setProperty("--max-pos", `${maxPercent}%`);
+    updateMeter(minInput);
+    updateMeter(maxInput);
+  };
+
   const setupMeter = (input) => {
     if (!input) return;
     updateMeter(input);
     input.addEventListener("input", () => updateMeter(input));
   };
 
-  const setupRangePair = (minInput, maxInput) => {
-    if (!minInput || !maxInput) return;
-    const syncMin = () => {
-      if (Number(minInput.value) > Number(maxInput.value)) {
-        maxInput.value = minInput.value;
-      }
-      updateMeter(minInput);
-      updateMeter(maxInput);
-    };
-    const syncMax = () => {
-      if (Number(maxInput.value) < Number(minInput.value)) {
-        minInput.value = maxInput.value;
-      }
-      updateMeter(minInput);
-      updateMeter(maxInput);
-    };
-    minInput.addEventListener("input", syncMin);
-    maxInput.addEventListener("input", syncMax);
-    syncMin();
+  const setupRangePair = (wrapper) => {
+    if (!wrapper) return;
+    const minId = wrapper.dataset.minTarget;
+    const maxId = wrapper.dataset.maxTarget;
+    if (!minId || !maxId) return;
+    const minInput = wrapper.querySelector(`#${minId}`);
+    const maxInput = wrapper.querySelector(`#${maxId}`);
+    if (!(minInput instanceof HTMLInputElement) || !(maxInput instanceof HTMLInputElement)) return;
+    const sync = () => updateDualMeter(wrapper);
+    minInput.addEventListener("input", sync);
+    maxInput.addEventListener("input", sync);
+    sync();
   };
 
   const meterInputs = [
@@ -559,8 +594,9 @@ function initCatalog() {
     searchCostMax
   ];
   meterInputs.forEach((input) => setupMeter(input));
-  setupRangePair(searchSellMin, searchSellMax);
-  setupRangePair(searchCostMin, searchCostMax);
+  document.querySelectorAll(".search-meter.dual").forEach((wrapper) => {
+    setupRangePair(wrapper);
+  });
 
   searchDetailBtn?.addEventListener("click", () => {
     if (!searchAdvanced) return;
@@ -574,10 +610,10 @@ function initCatalog() {
     if (searchProfitRateMin) searchProfitRateMin.value = searchProfitRateMin.defaultValue || "0";
     if (searchProfitMin) searchProfitMin.value = searchProfitMin.defaultValue || "0";
     if (searchSellMin) searchSellMin.value = searchSellMin.defaultValue || "0";
-    if (searchSellMax) searchSellMax.value = searchSellMax.defaultValue || "0";
-    if (searchFbaMax) searchFbaMax.value = searchFbaMax.defaultValue || "0";
+    if (searchSellMax) searchSellMax.value = searchSellMax.defaultValue || searchSellMax.max || "0";
+    if (searchFbaMax) searchFbaMax.value = searchFbaMax.max || searchFbaMax.defaultValue || "0";
     if (searchCostMin) searchCostMin.value = searchCostMin.defaultValue || "0";
-    if (searchCostMax) searchCostMax.value = searchCostMax.defaultValue || "0";
+    if (searchCostMax) searchCostMax.value = searchCostMax.defaultValue || searchCostMax.max || "0";
     if (searchSalesMin) searchSalesMin.value = "";
     if (searchSales60Min) searchSales60Min.value = "";
     if (searchSales90Min) searchSales90Min.value = "";
@@ -587,7 +623,7 @@ function initCatalog() {
     if (searchSizeMin) searchSizeMin.value = "";
     if (searchSizeMax) searchSizeMax.value = "";
     if (searchStockMax) searchStockMax.value = "";
-    if (searchReturnMax) searchReturnMax.value = searchReturnMax.defaultValue || "0";
+    if (searchReturnMax) searchReturnMax.value = searchReturnMax.max || searchReturnMax.defaultValue || "0";
     searchCategoryFilters?.querySelectorAll("input[type=checkbox]").forEach((input) => {
       input.checked = true;
     });
@@ -595,6 +631,9 @@ function initCatalog() {
       input.checked = true;
     });
     meterInputs.forEach((input) => updateMeter(input));
+    document.querySelectorAll(".search-meter.dual").forEach((wrapper) => {
+      updateDualMeter(wrapper);
+    });
     runSearch();
   });
   [

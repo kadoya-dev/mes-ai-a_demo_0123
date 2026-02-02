@@ -55,15 +55,12 @@
       </div>
       <div class="search-field meter-field">
         <span>販売価格($)範囲</span>
-        <div class="search-meter-range">
-          <div class="search-meter">
-            <input id="searchSellMin" type="range" min="0" max="200" step="1" value="0" />
-            <output class="search-meter-value" for="searchSellMin" data-unit="$">0$</output>
-          </div>
-          <div class="search-meter">
-            <input id="searchSellMax" type="range" min="0" max="200" step="1" value="200" />
-            <output class="search-meter-value" for="searchSellMax" data-unit="$">200$</output>
-          </div>
+        <div class="search-meter dual" data-min-target="searchSellMin" data-max-target="searchSellMax">
+          <input id="searchSellMin" type="range" min="0" max="200" step="1" value="0" />
+          <input id="searchSellMax" type="range" min="0" max="200" step="1" value="200" />
+          <div class="search-meter-track"><span class="search-meter-selected"></span></div>
+          <output class="search-meter-value is-min" for="searchSellMin" data-unit="$">0$</output>
+          <output class="search-meter-value is-max" for="searchSellMax" data-unit="$">200$</output>
         </div>
       </div>
       <div class="search-field meter-field">
@@ -75,15 +72,12 @@
       </div>
       <div class="search-field meter-field">
         <span>仕入れ目安単価(範囲)</span>
-        <div class="search-meter-range">
-          <div class="search-meter">
-            <input id="searchCostMin" type="range" min="0" max="10000" step="100" value="0" />
-            <output class="search-meter-value" for="searchCostMin" data-unit="円">0円</output>
-          </div>
-          <div class="search-meter">
-            <input id="searchCostMax" type="range" min="0" max="10000" step="100" value="10000" />
-            <output class="search-meter-value" for="searchCostMax" data-unit="円">10000円</output>
-          </div>
+        <div class="search-meter dual" data-min-target="searchCostMin" data-max-target="searchCostMax">
+          <input id="searchCostMin" type="range" min="0" max="10000" step="100" value="0" />
+          <input id="searchCostMax" type="range" min="0" max="10000" step="100" value="10000" />
+          <div class="search-meter-track"><span class="search-meter-selected"></span></div>
+          <output class="search-meter-value is-min" for="searchCostMin" data-unit="円">0円</output>
+          <output class="search-meter-value is-max" for="searchCostMax" data-unit="円">10000円</output>
         </div>
       </div>
       <label class="search-field">
