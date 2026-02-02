@@ -42,7 +42,7 @@
     </div>
 
     <div class="search-grid">
-      <div class="search-block">
+      <div class="search-block search-block-main">
         <div class="search-block-title">メイン検索項目</div>
         <div class="search-fields">
           <label class="field">
@@ -50,20 +50,32 @@
             <input type="text" class="search-input" placeholder="例：アウトドア 収納" />
           </label>
           <label class="field">
-            <span>返品率 ～以下</span>
-            <input type="number" class="search-input" placeholder="%" />
+            <span>返品率</span>
+            <div class="field-inline">
+              <input type="number" class="search-input" placeholder="%" />
+              <span class="unit-chip">% 以下</span>
+            </div>
           </label>
           <label class="field">
-            <span>粗利益額 ～以上</span>
-            <input type="number" class="search-input" placeholder="円" />
+            <span>粗利益額</span>
+            <div class="field-inline">
+              <input type="number" class="search-input" placeholder="円" />
+              <span class="unit-chip">円 以上</span>
+            </div>
           </label>
           <label class="field">
-            <span>粗利益率 ～以上</span>
-            <input type="number" class="search-input" placeholder="%" />
+            <span>粗利益率</span>
+            <div class="field-inline">
+              <input type="number" class="search-input" placeholder="%" />
+              <span class="unit-chip">% 以上</span>
+            </div>
           </label>
           <label class="field">
-            <span>ASINスコア ～以上</span>
-            <input type="number" class="search-input" placeholder="スコア" />
+            <span>ASINスコア</span>
+            <div class="field-inline">
+              <input type="number" class="search-input" placeholder="スコア" />
+              <span class="unit-chip">以上</span>
+            </div>
           </label>
         </div>
       </div>
@@ -71,7 +83,7 @@
 
     <details class="search-details">
       <summary class="search-details-toggle">詳細検索</summary>
-      <div class="search-block">
+      <div class="search-block search-block-advanced">
         <div class="search-block-title">詳細検索項目</div>
         <div class="search-fields">
           <label class="field">
@@ -79,7 +91,7 @@
             <input type="text" class="search-input" placeholder="例：中古, 互換品" />
           </label>
           <label class="field">
-            <span>評価</span>
+            <span>評価 ★★★☆☆ 以上</span>
             <select class="search-input">
               <option>★★★☆☆</option>
               <option>★★★★☆</option>
@@ -111,30 +123,45 @@
             </div>
           </div>
           <label class="field">
-            <span>セラー数 ～以下</span>
-            <input type="number" class="search-input" placeholder="件" />
+            <span>セラー数</span>
+            <div class="field-inline">
+              <input type="number" class="search-input" placeholder="件" />
+              <span class="unit-chip">件 以下</span>
+            </div>
           </label>
           <label class="field">
-            <span>サイズ感 ～以下</span>
-            <input type="number" class="search-input" placeholder="cm" />
+            <span>サイズ感</span>
+            <div class="field-inline">
+              <input type="number" class="search-input" placeholder="cm" />
+              <span class="unit-chip">cm 以下</span>
+            </div>
           </label>
           <label class="field">
-            <span>FBA最安値 ～以上</span>
-            <input type="number" class="search-input" placeholder="円" />
+            <span>FBA最安値</span>
+            <div class="field-inline">
+              <input type="number" class="search-input" placeholder="円" />
+              <span class="unit-chip">円 以上</span>
+            </div>
           </label>
           <label class="field">
-            <span>過去3ヶ月FBA最安値 ～以上</span>
-            <input type="number" class="search-input" placeholder="円" />
+            <span>過去3ヶ月FBA最安値</span>
+            <div class="field-inline">
+              <input type="number" class="search-input" placeholder="円" />
+              <span class="unit-chip">円 以上</span>
+            </div>
           </label>
           <label class="field">
-            <span>日本最安値 ～以下</span>
-            <input type="number" class="search-input" placeholder="円" />
+            <span>日本最安値</span>
+            <div class="field-inline">
+              <input type="number" class="search-input" placeholder="円" />
+              <span class="unit-chip">円 以下</span>
+            </div>
           </label>
         </div>
       </div>
     </details>
 
-    <div class="sort-panel">
+    <div class="sort-panel sort-panel-accent">
       <div class="sort-panel-title">ソート順</div>
       <div class="sort-panel-controls">
         <select class="search-input">
