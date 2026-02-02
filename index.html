@@ -25,6 +25,18 @@
 </header>
 
 <main class="page-body">
+  <section id="menuScreen" class="menu-screen card">
+    <div class="menu-head">
+      <h2>メニュー</h2>
+      <p>利用するリサーチ画面を選択してください</p>
+    </div>
+    <div class="menu-actions">
+      <button id="sellerResearchBtn" class="ghost-btn" type="button">セラーリサーチ</button>
+      <button id="asinResearchBtn" class="cart-btn" type="button">ASINリサーチ</button>
+    </div>
+  </section>
+
+  <div id="appScreen" class="app-screen is-hidden">
   <section class="search-panel card">
     <div class="search-head">
       <div class="card-title">検索条件</div>
@@ -147,6 +159,7 @@
   </div>
 
   <div id="itemsContainer" class="items-stack"></div>
+  </div>
 </main>
 
 <script src="./asin-data.js?v=20250219"></script>

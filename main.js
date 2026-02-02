@@ -218,6 +218,10 @@ const itemsContainer = $("#itemsContainer");
 const emptyState = $("#emptyState");
 const headerStatus = $("#headerStatus");
 const appVersion = $("#appVersion");
+const menuScreen = $("#menuScreen");
+const appScreen = $("#appScreen");
+const sellerResearchBtn = $("#sellerResearchBtn");
+const asinResearchBtn = $("#asinResearchBtn");
 
 /* cart */
 const cartTotalPayment = $("#cartTotalPayment");
@@ -249,6 +253,21 @@ function init() {
   updateHeaderStatus();
   if (appVersion) appVersion.textContent = `Version ${APP_VERSION}`;
   renderTopZones();
+  initMenu();
+}
+
+function initMenu() {
+  if (menuScreen && appScreen) {
+    appScreen.classList.add("is-hidden");
+    menuScreen.classList.remove("is-hidden");
+  }
+  sellerResearchBtn?.addEventListener("click", () => {
+    alert("セラーリサーチは準備中です。");
+  });
+  asinResearchBtn?.addEventListener("click", () => {
+    if (menuScreen) menuScreen.classList.add("is-hidden");
+    if (appScreen) appScreen.classList.remove("is-hidden");
+  });
 }
 
 function initPoolUI() {
