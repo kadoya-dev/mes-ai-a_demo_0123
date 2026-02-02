@@ -414,109 +414,131 @@ function initCatalog() {
     const returnMax = num(searchReturnMax?.value);
     const selectedCategories = getCheckedValues(searchCategoryFilters);
     const selectedMaterials = getCheckedValues(searchMaterialFilters);
-    const filtered = allAsins.filter((asin) => {
-      const data = window.ASIN_DATA?.[asin] || {};
-      const title = String(data["品名"] || data["商品名"] || data["商品タイトル"] || "").toLowerCase();
-      const category = String(data["親カテゴリ"] || data["カテゴリ"] || "").trim();
-      const materials = String(data["材質"] || "")
-        .split(/[,\s/]+/)
-        .map((item) => item.trim())
-        .filter(Boolean);
-      const profitRate = num(data["粗利益率"]);
-      const profit = num(data["粗利益"]);
-      const sellUSD = num(data["販売額（ドル）"]);
-      const fbaPrice = num(data["FBA最安値"]);
-      const cost = num(data["仕入れ目安単価"]);
-      const sales30 = num(data["30日販売数"]);
-      const sales60 = num(data["60日販売数"]);
-      const sales90 = num(data["90日販売数"]);
-      const forecast30 = num(data["予測30日販売数"]);
-      const sellers = num(data["セラー数"]);
-      const review = num(data["レビュー評価"]);
-      const size = num(data["サイズ感"]);
-      const stock = num(data["在庫数"]);
-      const returns = num(data["返品率"]);
+    const hasCategoryFilter =
+      !!searchCategoryFilters &&
+      Array.from(searchCategoryFilters.querySelectorAll("input[type=checkbox]")).some((input) => !input.checked);
+    const hasMaterialFilter =
+      !!searchMaterialFilters &&
+      Array.from(searchMaterialFilters.querySelectorAll("input[type=checkbox]")).some((input) => !input.checked);
+    const hasTextFilter = Boolean(keyword || excludeKeyword);
+    const hasNumericFilter = [
+      minProfitRate,
+      minProfit,
+      sellMin,
+      sellMax,
+      maxFbaPrice,
+      costMin,
+      costMax,
+      minSales,
+      minSales60,
+      minSales90,
+      minForecast30,
+      maxSellers,
+      minReview,
+      sizeMin,
+      sizeMax,
+      stockMax,
+      returnMax
+    ].some((value) => value > 0);
+    const hasFilters = hasTextFilter || hasNumericFilter || hasCategoryFilter || hasMaterialFilter;
+    const filtered = hasFilters
+      ? allAsins.filter((asin) => {
+          const data = window.ASIN_DATA?.[asin] || {};
+          const title = String(data["品名"] || data["商品名"] || data["商品タイトル"] || "").toLowerCase();
+          const category = String(data["親カテゴリ"] || data["カテゴリ"] || "").trim();
+          const materials = String(data["材質"] || "")
+            .split(/[,\s/]+/)
+            .map((item) => item.trim())
+            .filter(Boolean);
+          const profitRate = num(data["粗利益率"]);
+          const profit = num(data["粗利益"]);
+          const sellUSD = num(data["販売額（ドル）"]);
+          const fbaPrice = num(data["FBA最安値"]);
+          const cost = num(data["仕入れ目安単価"]);
+          const sales30 = num(data["30日販売数"]);
+          const sales60 = num(data["60日販売数"]);
+          const sales90 = num(data["90日販売数"]);
+          const forecast30 = num(data["予測30日販売数"]);
+          const sellers = num(data["セラー数"]);
+          const review = num(data["レビュー評価"]);
+          const size = num(data["サイズ感"]);
+          const stock = num(data["在庫数"]);
+          const returns = num(data["返品率"]);
 
-      if (keyword && !(asin.toLowerCase().includes(keyword) || title.includes(keyword))) {
-        return false;
-      }
-      if (excludeKeyword) {
-        const terms = excludeKeyword.split(/[\s,]+/).filter(Boolean);
-        if (terms.some((term) => asin.toLowerCase().includes(term) || title.includes(term))) {
-          return false;
-        }
-      }
-      if (minProfitRate && profitRate < minProfitRate) {
-        return false;
-      }
-      if (minProfit && profit > 0 && profit < minProfit) {
-        return false;
-      }
-      if (sellMin && sellUSD > 0 && sellUSD < sellMin) {
-        return false;
-      }
-      if (sellMax && sellUSD > 0 && sellUSD > sellMax) {
-        return false;
-      }
-      if (maxFbaPrice && fbaPrice > 0 && fbaPrice > maxFbaPrice) {
-        return false;
-      }
-      if (costMin && cost > 0 && cost < costMin) {
-        return false;
-      }
-      if (costMax && cost > 0 && cost > costMax) {
-        return false;
-      }
-      if (minSales && sales30 > 0 && sales30 < minSales) {
-        return false;
-      }
-      if (minSales60 && sales60 > 0 && sales60 < minSales60) {
-        return false;
-      }
-      if (minSales90 && sales90 > 0 && sales90 < minSales90) {
-        return false;
-      }
-      if (minForecast30 && forecast30 > 0 && forecast30 < minForecast30) {
-        return false;
-      }
-      if (maxSellers && sellers > 0 && sellers > maxSellers) {
-        return false;
-      }
-      if (minReview && review > 0 && review < minReview) {
-        return false;
-      }
-      if (sizeMin && size > 0 && size < sizeMin) {
-        return false;
-      }
-      if (sizeMax && size > 0 && size > sizeMax) {
-        return false;
-      }
-      if (stockMax && stock > 0 && stock > stockMax) {
-        return false;
-      }
-      if (returnMax && returns > 0 && returns > returnMax) {
-        return false;
-      }
-      if (selectedCategories.size && category && !selectedCategories.has(category)) {
-        return false;
-      }
-      if (sizeMax && size > 0 && size > sizeMax) {
-        return false;
-      }
-      if (stockMax && stock > 0 && stock > stockMax) {
-        return false;
-      }
-      if (returnMax && returns > 0 && returns > returnMax) {
-        return false;
-      }
-      if (selectedCategory && category && selectedCategory !== category) {
-        return false;
-      }
-      if (selectedMaterial && materials.length && !materials.includes(selectedMaterial)) {
-        return false;
-      }
-      return true;
-    });
+          if (keyword && !(asin.toLowerCase().includes(keyword) || title.includes(keyword))) {
+            return false;
+          }
+          if (excludeKeyword) {
+            const terms = excludeKeyword.split(/[\s,]+/).filter(Boolean);
+            if (terms.some((term) => asin.toLowerCase().includes(term) || title.includes(term))) {
+              return false;
+            }
+          }
+          if (minProfitRate && profitRate < minProfitRate) {
+            return false;
+          }
+          if (minProfit && profit > 0 && profit < minProfit) {
+            return false;
+          }
+          if (sellMin && sellUSD > 0 && sellUSD < sellMin) {
+            return false;
+          }
+          if (sellMax && sellUSD > 0 && sellUSD > sellMax) {
+            return false;
+          }
+          if (maxFbaPrice && fbaPrice > 0 && fbaPrice > maxFbaPrice) {
+            return false;
+          }
+          if (costMin && cost > 0 && cost < costMin) {
+            return false;
+          }
+          if (costMax && cost > 0 && cost > costMax) {
+            return false;
+          }
+          if (minSales && sales30 > 0 && sales30 < minSales) {
+            return false;
+          }
+          if (minSales60 && sales60 > 0 && sales60 < minSales60) {
+            return false;
+          }
+          if (minSales90 && sales90 > 0 && sales90 < minSales90) {
+            return false;
+          }
+          if (minForecast30 && forecast30 > 0 && forecast30 < minForecast30) {
+            return false;
+          }
+          if (maxSellers && sellers > 0 && sellers > maxSellers) {
+            return false;
+          }
+          if (minReview && review > 0 && review < minReview) {
+            return false;
+          }
+          if (sizeMin && size > 0 && size < sizeMin) {
+            return false;
+          }
+          if (sizeMax && size > 0 && size > sizeMax) {
+            return false;
+          }
+          if (stockMax && stock > 0 && stock > stockMax) {
+            return false;
+          }
+          if (returnMax && returns > 0 && returns > returnMax) {
+            return false;
+          }
+          if (hasCategoryFilter && selectedCategories.size && category && !selectedCategories.has(category)) {
+            return false;
+          }
+          if (
+            hasMaterialFilter &&
+            selectedMaterials.size &&
+            materials.length &&
+            !materials.some((m) => selectedMaterials.has(m))
+          ) {
+            return false;
+          }
+          return true;
+        })
+      : allAsins;
     if (searchResultCount) searchResultCount.textContent = String(filtered.length);
     renderCards(filtered);
   };
