@@ -481,7 +481,19 @@ function initCatalog() {
       if (selectedCategories.size && category && !selectedCategories.has(category)) {
         return false;
       }
-      if (selectedMaterials.size && materials.length && !materials.some((m) => selectedMaterials.has(m))) {
+      if (sizeMax && size > 0 && size > sizeMax) {
+        return false;
+      }
+      if (stockMax && stock > 0 && stock > stockMax) {
+        return false;
+      }
+      if (returnMax && returns > 0 && returns > returnMax) {
+        return false;
+      }
+      if (selectedCategory && category && selectedCategory !== category) {
+        return false;
+      }
+      if (selectedMaterial && materials.length && !materials.includes(selectedMaterial)) {
         return false;
       }
       return true;
