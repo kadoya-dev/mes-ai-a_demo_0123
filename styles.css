@@ -1615,7 +1615,7 @@ body:is(.fourth-layout, .fifth-layout) .l4-keepa{
   background:#f3f4f6;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-keepa .keepa-mini{
-  height:130px;
+  height:400px;
   border-radius:14px;
   overflow:hidden;
   border:1px solid var(--line);
