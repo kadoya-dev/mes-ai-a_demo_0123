@@ -115,6 +115,34 @@ body.fifth-layout .search-checkboxes .checkbox-item{
   border-radius:999px;
 }
 
+body.fifth-layout .asin-list{
+  display:grid;
+  gap:14px;
+}
+
+body.fifth-layout .asin-list-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+body.fifth-layout .asin-list-buttons .asin-btn{
+  border:1px solid #c5d4f2;
+  border-radius:999px;
+  padding:8px 16px;
+  background:#f5f8ff;
+  color:#2c3a55;
+  font-weight:600;
+  cursor:pointer;
+  transition:background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+body.fifth-layout .asin-list-buttons .asin-btn:hover{
+  background:#2c66ff;
+  border-color:#2c66ff;
+  color:#fff;
+}
+
 /* =========================
    Header
 ========================= */

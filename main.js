@@ -214,6 +214,7 @@ const searchAdvanced = $("#searchAdvanced");
 const searchApplyBtn = $("#searchApplyBtn");
 const searchResetBtn = $("#searchResetBtn");
 const searchResultCount = $("#searchResultCount");
+const asinListButtons = $("#asinListButtons");
 const itemsContainer = $("#itemsContainer");
 const emptyState = $("#emptyState");
 const headerStatus = $("#headerStatus");
@@ -370,6 +371,19 @@ function initCatalog() {
     );
   };
 
+  const renderAsinList = () => {
+    if (!asinListButtons) return;
+    asinListButtons.innerHTML = "";
+    allAsins.forEach((asin) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "asin-btn";
+      button.textContent = asin;
+      button.addEventListener("click", () => addOrFocusCard(asin));
+      asinListButtons.appendChild(button);
+    });
+  };
+
   const renderCards = (asins) => {
     cardState.forEach((entry) => {
       if (entry.chart) entry.chart.destroy();
@@ -403,6 +417,7 @@ function initCatalog() {
   const materials = Array.from(materialSet).sort((a, b) => a.localeCompare(b, "ja"));
   buildCheckboxOptions(categories, searchCategoryFilters);
   buildCheckboxOptions(materials, searchMaterialFilters);
+  renderAsinList();
 
   searchDetailBtn?.addEventListener("click", () => {
     if (!searchAdvanced) return;
