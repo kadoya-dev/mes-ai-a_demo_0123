@@ -324,6 +324,9 @@ function initCatalog() {
   const allAsins = Object.keys(window.ASIN_DATA || {});
   const categorySet = new Set();
   const materialSet = new Set();
+  let maxSellUSD = 0;
+  let maxCost = 0;
+  let maxFba = 0;
 
   allAsins.forEach((asin) => {
     const data = window.ASIN_DATA?.[asin] || {};
@@ -334,6 +337,9 @@ function initCatalog() {
       .map((item) => item.trim())
       .filter(Boolean);
     materials.forEach((material) => materialSet.add(material));
+    maxSellUSD = Math.max(maxSellUSD, num(data["販売額（ドル）"]));
+    maxCost = Math.max(maxCost, num(data["仕入れ目安単価"]), num(data["FBA最安値"]));
+    maxFba = Math.max(maxFba, num(data["FBA最安値"]));
   });
 
   const buildCheckboxOptions = (items, container) => {
@@ -494,7 +500,19 @@ function initCatalog() {
       if (selectedCategories.size && category && !selectedCategories.has(category)) {
         return false;
       }
-      if (selectedMaterials.size && materials.length && !materials.some((m) => selectedMaterials.has(m))) {
+      if (sizeMax && size > 0 && size > sizeMax) {
+        return false;
+      }
+      if (stockMax && stock > 0 && stock > stockMax) {
+        return false;
+      }
+      if (returnMax && returns > 0 && returns > returnMax) {
+        return false;
+      }
+      if (selectedCategory && category && selectedCategory !== category) {
+        return false;
+      }
+      if (selectedMaterial && materials.length && !materials.includes(selectedMaterial)) {
         return false;
       }
       return true;
