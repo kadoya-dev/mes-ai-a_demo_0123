@@ -44,6 +44,12 @@ body.fifth-layout .menu-screen{
   padding:36px 24px;
   text-align:center;
 }
+body.fifth-layout .menu-screen.is-hidden{
+  display:none;
+}
+body.fifth-layout .app-screen{
+  display:block;
+}
 body.fifth-layout .menu-head h2{
   margin:0;
   font-size:20px;
