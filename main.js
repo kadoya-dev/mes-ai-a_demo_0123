@@ -377,9 +377,10 @@ function initCatalog() {
     itemsContainer.innerHTML = "";
     cardState.clear();
     if (!asins.length) {
+      if (emptyState) emptyState.textContent = "該当するASINがありません";
       emptyState.style.display = "block";
       updateHeaderStatus();
-      return;
+      return 0;
     }
     asins.forEach((asin) => {
       const data = window.ASIN_DATA?.[asin];
@@ -390,6 +391,7 @@ function initCatalog() {
     });
     emptyState.style.display = "none";
     updateHeaderStatus();
+    return asins.length;
   };
 
   const runSearch = () => {
@@ -540,7 +542,7 @@ function initCatalog() {
         })
       : allAsins;
     if (searchResultCount) searchResultCount.textContent = String(filtered.length);
-    renderCards(filtered);
+    return renderCards(filtered);
   };
 
   const categories = Array.from(categorySet).sort((a, b) => a.localeCompare(b, "ja"));
@@ -553,7 +555,12 @@ function initCatalog() {
     searchAdvanced.classList.toggle("is-open");
     searchDetailBtn.textContent = searchAdvanced.classList.contains("is-open") ? "詳細を閉じる" : "詳細";
   });
-  searchApplyBtn?.addEventListener("click", runSearch);
+  searchApplyBtn?.addEventListener("click", () => {
+    const count = runSearch();
+    if (count && itemsContainer) {
+      itemsContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
   searchResetBtn?.addEventListener("click", () => {
     if (searchKeyword) searchKeyword.value = "";
     if (searchExcludeKeyword) searchExcludeKeyword.value = "";
