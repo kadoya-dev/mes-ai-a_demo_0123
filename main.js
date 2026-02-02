@@ -219,6 +219,10 @@ const itemsContainer = $("#itemsContainer");
 const emptyState = $("#emptyState");
 const headerStatus = $("#headerStatus");
 const appVersion = $("#appVersion");
+const menuScreen = $("#menuScreen");
+const appScreen = $("#appScreen");
+const sellerResearchBtn = $("#sellerResearchBtn");
+const asinResearchBtn = $("#asinResearchBtn");
 
 /* cart */
 const cartTotalPayment = $("#cartTotalPayment");
@@ -250,6 +254,21 @@ function init() {
   updateHeaderStatus();
   if (appVersion) appVersion.textContent = `Version ${APP_VERSION}`;
   renderTopZones();
+  initMenu();
+}
+
+function initMenu() {
+  if (menuScreen && appScreen) {
+    appScreen.classList.add("is-hidden");
+    menuScreen.classList.remove("is-hidden");
+  }
+  sellerResearchBtn?.addEventListener("click", () => {
+    alert("セラーリサーチは準備中です。");
+  });
+  asinResearchBtn?.addEventListener("click", () => {
+    if (menuScreen) menuScreen.classList.add("is-hidden");
+    if (appScreen) appScreen.classList.remove("is-hidden");
+  });
 }
 
 function initPoolUI() {
@@ -306,6 +325,9 @@ function initCatalog() {
   const allAsins = Object.keys(window.ASIN_DATA || {});
   const categorySet = new Set();
   const materialSet = new Set();
+  let maxSellUSD = 0;
+  let maxCost = 0;
+  let maxFba = 0;
 
   allAsins.forEach((asin) => {
     const data = window.ASIN_DATA?.[asin] || {};
@@ -316,6 +338,9 @@ function initCatalog() {
       .map((item) => item.trim())
       .filter(Boolean);
     materials.forEach((material) => materialSet.add(material));
+    maxSellUSD = Math.max(maxSellUSD, num(data["販売額（ドル）"]));
+    maxCost = Math.max(maxCost, num(data["仕入れ目安単価"]), num(data["FBA最安値"]));
+    maxFba = Math.max(maxFba, num(data["FBA最安値"]));
   });
 
   const buildCheckboxOptions = (items, container) => {
