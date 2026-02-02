@@ -189,12 +189,16 @@ const clearCartBtn = $("#clearCartBtn");
 
 /* catalog */
 const asinCatalog = $("#asinCatalog");
-const asinSearchInput = $("#asinSearchInput");
-const asinSearchBtn = $("#asinSearchBtn");
-const asinLoadBtn = $("#asinLoadBtn");
-const profitRateMin = $("#profitRateMin");
-const categoryFilters = $("#categoryFilters");
-const materialFilters = $("#materialFilters");
+const searchKeyword = $("#searchKeyword");
+const searchCategory = $("#searchCategory");
+const searchMaterial = $("#searchMaterial");
+const searchProfitRateMin = $("#searchProfitRateMin");
+const searchFbaMax = $("#searchFbaMax");
+const searchSalesMin = $("#searchSalesMin");
+const searchSellerMax = $("#searchSellerMax");
+const searchApplyBtn = $("#searchApplyBtn");
+const searchResetBtn = $("#searchResetBtn");
+const searchResultCount = $("#searchResultCount");
 const itemsContainer = $("#itemsContainer");
 const emptyState = $("#emptyState");
 const headerStatus = $("#headerStatus");
@@ -286,9 +290,6 @@ function initCatalog() {
       empty.textContent = "ASINデータを読み込み中...";
       asinCatalog.appendChild(empty);
     }
-    if (asinLoadBtn) {
-      asinLoadBtn.disabled = true;
-    }
     window.setTimeout(initCatalog, 200);
     return;
   }
@@ -308,23 +309,18 @@ function initCatalog() {
     materials.forEach((material) => materialSet.add(material));
   });
 
-  const buildFilterList = (items, container, name) => {
-    if (!container) return;
-    container.innerHTML = "";
-    items.forEach((item, idx) => {
-      const label = document.createElement("label");
-      label.className = "filter-item";
-      const input = document.createElement("input");
-      input.type = "checkbox";
-      input.name = name;
-      input.value = item;
-      input.checked = true;
-      input.addEventListener("change", runSearch);
-      const span = document.createElement("span");
-      span.textContent = item;
-      label.appendChild(input);
-      label.appendChild(span);
-      container.appendChild(label);
+  const buildSelectOptions = (items, selectEl, placeholder) => {
+    if (!selectEl) return;
+    selectEl.innerHTML = "";
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = placeholder;
+    selectEl.appendChild(defaultOption);
+    items.forEach((item) => {
+      const option = document.createElement("option");
+      option.value = item;
+      option.textContent = item;
+      selectEl.appendChild(option);
     });
   };
 
@@ -346,20 +342,36 @@ function initCatalog() {
     });
   };
 
-  const getCheckedValues = (container) => {
-    if (!container) return new Set();
-    return new Set(
-      Array.from(container.querySelectorAll("input[type=checkbox]"))
-        .filter((input) => input.checked)
-        .map((input) => input.value)
-    );
+  const renderCards = (asins) => {
+    cardState.forEach((entry) => {
+      if (entry.chart) entry.chart.destroy();
+    });
+    itemsContainer.innerHTML = "";
+    cardState.clear();
+    if (!asins.length) {
+      emptyState.style.display = "block";
+      updateHeaderStatus();
+      return;
+    }
+    asins.forEach((asin) => {
+      const data = window.ASIN_DATA?.[asin];
+      if (!data) return;
+      const card = createProductCard(asin, data);
+      itemsContainer.appendChild(card);
+      cardState.set(asin, { el: card, data, chart: card.__chart || null });
+    });
+    emptyState.style.display = "none";
+    updateHeaderStatus();
   };
 
   const runSearch = () => {
-    const keyword = String(asinSearchInput?.value || "").trim().toLowerCase();
-    const minProfitRate = num(profitRateMin?.value);
-    const selectedCategories = getCheckedValues(categoryFilters);
-    const selectedMaterials = getCheckedValues(materialFilters);
+    const keyword = String(searchKeyword?.value || "").trim().toLowerCase();
+    const minProfitRate = num(searchProfitRateMin?.value);
+    const maxFbaPrice = num(searchFbaMax?.value);
+    const minSales = num(searchSalesMin?.value);
+    const maxSellers = num(searchSellerMax?.value);
+    const selectedCategory = String(searchCategory?.value || "").trim();
+    const selectedMaterial = String(searchMaterial?.value || "").trim();
     const filtered = allAsins.filter((asin) => {
       const data = window.ASIN_DATA?.[asin] || {};
       const title = String(data["品名"] || data["商品名"] || data["商品タイトル"] || "").toLowerCase();
@@ -369,6 +381,9 @@ function initCatalog() {
         .map((item) => item.trim())
         .filter(Boolean);
       const profitRate = num(data["粗利益率"]);
+      const fbaPrice = num(data["FBA最安値"]);
+      const sales30 = num(data["30日販売数"]);
+      const sellers = num(data["セラー数"]);
 
       if (keyword && !(asin.toLowerCase().includes(keyword) || title.includes(keyword))) {
         return false;
@@ -376,39 +391,56 @@ function initCatalog() {
       if (minProfitRate && profitRate < minProfitRate) {
         return false;
       }
-      if (selectedCategories.size && category && !selectedCategories.has(category)) {
+      if (maxFbaPrice && fbaPrice > 0 && fbaPrice > maxFbaPrice) {
         return false;
       }
-      if (selectedMaterials.size && materials.length && !materials.some((m) => selectedMaterials.has(m))) {
+      if (minSales && sales30 > 0 && sales30 < minSales) {
+        return false;
+      }
+      if (maxSellers && sellers > 0 && sellers > maxSellers) {
+        return false;
+      }
+      if (selectedCategory && category && selectedCategory !== category) {
+        return false;
+      }
+      if (selectedMaterial && materials.length && !materials.includes(selectedMaterial)) {
         return false;
       }
       return true;
     });
+    if (searchResultCount) searchResultCount.textContent = String(filtered.length);
     renderAsinList(filtered);
+    renderCards(filtered);
   };
 
   const categories = Array.from(categorySet).sort((a, b) => a.localeCompare(b, "ja"));
   const materials = Array.from(materialSet).sort((a, b) => a.localeCompare(b, "ja"));
-  buildFilterList(categories, categoryFilters, "categoryFilter");
-  buildFilterList(materials, materialFilters, "materialFilter");
+  buildSelectOptions(categories, searchCategory, "すべてのカテゴリ");
+  buildSelectOptions(materials, searchMaterial, "すべての材質");
 
-  asinSearchBtn?.addEventListener("click", runSearch);
-  asinSearchInput?.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") runSearch();
+  searchApplyBtn?.addEventListener("click", runSearch);
+  searchResetBtn?.addEventListener("click", () => {
+    if (searchKeyword) searchKeyword.value = "";
+    if (searchCategory) searchCategory.value = "";
+    if (searchMaterial) searchMaterial.value = "";
+    if (searchProfitRateMin) searchProfitRateMin.value = "";
+    if (searchFbaMax) searchFbaMax.value = "";
+    if (searchSalesMin) searchSalesMin.value = "";
+    if (searchSellerMax) searchSellerMax.value = "";
+    runSearch();
   });
-  profitRateMin?.addEventListener("change", runSearch);
-
-  if (asinLoadBtn && !asinLoadBtn.dataset.ready) {
-    asinLoadBtn.dataset.ready = "true";
-    asinLoadBtn.disabled = false;
-    asinLoadBtn.addEventListener("click", () => {
-      renderAsinList(allAsins);
+  [searchKeyword, searchProfitRateMin, searchFbaMax, searchSalesMin, searchSellerMax].forEach((input) => {
+    input?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") runSearch();
     });
-  } else if (asinLoadBtn) {
-    asinLoadBtn.disabled = false;
-  }
+  });
+  [searchCategory, searchMaterial].forEach((select) => {
+    select?.addEventListener("change", runSearch);
+  });
 
-  renderAsinList(allAsins);
+  renderAsinList([]);
+  renderCards([]);
+  if (searchResultCount) searchResultCount.textContent = "0";
 }
 
 function addOrFocusCard(asin) {
