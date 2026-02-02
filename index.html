@@ -39,47 +39,34 @@
         <span>除外キーワード</span>
         <input id="searchExcludeKeyword" type="text" placeholder="除外したい語句" />
       </label>
-      <div class="search-field meter-field">
+      <label class="search-field">
         <span>粗利益率(以上)</span>
-        <div class="search-meter">
-          <input id="searchProfitRateMin" type="range" min="0" max="100" step="0.1" value="0" />
-          <output class="search-meter-value" for="searchProfitRateMin" data-unit="%">0%</output>
-        </div>
-      </div>
-      <div class="search-field meter-field">
+        <input id="searchProfitRateMin" type="number" min="0" step="0.1" placeholder="例: 20" />
+      </label>
+      <label class="search-field">
         <span>粗利益額(以上)</span>
-        <div class="search-meter">
-          <input id="searchProfitMin" type="range" min="0" max="100000" step="100" value="0" />
-          <output class="search-meter-value" for="searchProfitMin" data-unit="円">0円</output>
-        </div>
-      </div>
-      <div class="search-field meter-field">
+        <input id="searchProfitMin" type="number" min="0" step="1" placeholder="例: 2000" />
+      </label>
+      <label class="search-field">
         <span>販売価格($)範囲</span>
-        <div class="search-meter dual" data-min-target="searchSellMin" data-max-target="searchSellMax">
-          <input id="searchSellMin" type="range" min="0" max="200" step="1" value="0" />
-          <input id="searchSellMax" type="range" min="0" max="200" step="1" value="200" />
-          <div class="search-meter-track"><span class="search-meter-selected"></span></div>
-          <output class="search-meter-value is-min" for="searchSellMin" data-unit="$">0$</output>
-          <output class="search-meter-value is-max" for="searchSellMax" data-unit="$">200$</output>
+        <div class="search-range">
+          <input id="searchSellMin" type="number" min="0" step="0.1" placeholder="min" />
+          <span>〜</span>
+          <input id="searchSellMax" type="number" min="0" step="0.1" placeholder="max" />
         </div>
-      </div>
-      <div class="search-field meter-field">
+      </label>
+      <label class="search-field">
         <span>FBA最安値(以下)</span>
-        <div class="search-meter">
-          <input id="searchFbaMax" type="range" min="0" max="10000" step="100" value="0" />
-          <output class="search-meter-value" for="searchFbaMax" data-unit="円">0円</output>
-        </div>
-      </div>
-      <div class="search-field meter-field">
+        <input id="searchFbaMax" type="number" min="0" step="1" placeholder="例: 2500" />
+      </label>
+      <label class="search-field">
         <span>仕入れ目安単価(範囲)</span>
-        <div class="search-meter dual" data-min-target="searchCostMin" data-max-target="searchCostMax">
-          <input id="searchCostMin" type="range" min="0" max="10000" step="100" value="0" />
-          <input id="searchCostMax" type="range" min="0" max="10000" step="100" value="10000" />
-          <div class="search-meter-track"><span class="search-meter-selected"></span></div>
-          <output class="search-meter-value is-min" for="searchCostMin" data-unit="円">0円</output>
-          <output class="search-meter-value is-max" for="searchCostMax" data-unit="円">10000円</output>
+        <div class="search-range">
+          <input id="searchCostMin" type="number" min="0" step="1" placeholder="min" />
+          <span>〜</span>
+          <input id="searchCostMax" type="number" min="0" step="1" placeholder="max" />
         </div>
-      </div>
+      </label>
       <label class="search-field">
         <span>30日販売数(以上)</span>
         <input id="searchSalesMin" type="number" min="0" step="1" placeholder="例: 10" />
@@ -119,12 +106,9 @@
           <span>在庫数(以下)</span>
           <input id="searchStockMax" type="number" min="0" step="1" placeholder="例: 50" />
         </label>
-        <label class="search-field meter-field">
+        <label class="search-field">
           <span>返品率(以下)</span>
-          <div class="search-meter">
-            <input id="searchReturnMax" type="range" min="0" max="30" step="0.1" value="0" />
-            <output class="search-meter-value" for="searchReturnMax" data-unit="%">0%</output>
-          </div>
+          <input id="searchReturnMax" type="number" min="0" step="0.1" placeholder="例: 5" />
         </label>
         <div class="search-field">
           <span>カテゴリ</span>
