@@ -1150,6 +1150,46 @@ body:is(.fourth-layout, .fifth-layout) .l4-block .head{
   margin-bottom:10px;
   color:#0f172a;
 }
+body:is(.fourth-layout, .fifth-layout) .l4-mes .head-with-score{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-mes .asin-score-meter{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  font-weight:900;
+  color:#0f172a;
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  padding:6px 10px;
+  border-radius:999px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-mes .asin-score-label{
+  color:#334155;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-mes .asin-score-track{
+  position:relative;
+  width:120px;
+  height:8px;
+  border-radius:999px;
+  background:#e2e8f0;
+  overflow:hidden;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-mes .asin-score-fill{
+  height:100%;
+  width:calc(var(--asin-score, 0) * 1%);
+  border-radius:999px;
+  background:linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+}
+body:is(.fourth-layout, .fifth-layout) .l4-mes .asin-score-value{
+  min-width:28px;
+  text-align:right;
+  color:#0f172a;
+}
 
 /* 高さ統一：1段目の3つは必ず同じ高さ */
 body:is(.fourth-layout, .fifth-layout) .l4-info,
