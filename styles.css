@@ -35,43 +35,6 @@ a{ color:inherit; }
   margin: 16px auto 60px;
   padding: 0 16px;
 }
-body.fifth-layout .menu-screen{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:16px;
-  padding:36px 24px;
-  text-align:center;
-}
-body.fifth-layout .menu-screen.is-hidden{
-  display:none;
-}
-body.fifth-layout .app-screen{
-  display:block;
-}
-body.fifth-layout .menu-head h2{
-  margin:0;
-  font-size:20px;
-  font-weight:900;
-  color:#0f172a;
-}
-body.fifth-layout .menu-head p{
-  margin:6px 0 0;
-  color:#64748b;
-  font-size:13px;
-  font-weight:700;
-}
-body.fifth-layout .menu-actions{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
-body.fifth-layout .app-screen.is-hidden{
-  display:none;
-}
-
 body.fifth-layout .search-panel{
   display:flex;
   flex-direction:column;
