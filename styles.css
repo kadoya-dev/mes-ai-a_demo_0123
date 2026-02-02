@@ -1116,7 +1116,7 @@ body.third-layout .l3-keepa{
   background:#f3f4f6;
 }
 body.third-layout .keepa-mini{
-  height:200px;
+  height:400px;
   border-radius:14px;
   overflow:hidden;
   border:1px solid var(--line);
