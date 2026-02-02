@@ -16,7 +16,7 @@
       <h1>MES-AI-A 商品分析 0116-13</h1>
       <div id="appVersion" class="header-version" aria-label="アプリのバージョン"></div>
     </div>
-    <div class="sub">ASINクリックでカード追加</div>
+    <div class="sub">検索条件でASINを表示</div>
   </div>
 
   <div class="header-right">
@@ -25,10 +25,50 @@
 </header>
 
 <main class="page-body">
+  <section class="search-panel card">
+    <div class="search-head">
+      <div class="card-title">検索条件</div>
+      <div class="search-result">該当 <span id="searchResultCount">0</span>件</div>
+    </div>
+    <div class="search-grid">
+      <label class="search-field">
+        <span>キーワード</span>
+        <input id="searchKeyword" type="text" placeholder="ASIN・商品名など" />
+      </label>
+      <label class="search-field">
+        <span>カテゴリ</span>
+        <select id="searchCategory"></select>
+      </label>
+      <label class="search-field">
+        <span>材質</span>
+        <select id="searchMaterial"></select>
+      </label>
+      <label class="search-field">
+        <span>粗利益率(以上)</span>
+        <input id="searchProfitRateMin" type="number" min="0" step="0.1" placeholder="例: 20" />
+      </label>
+      <label class="search-field">
+        <span>FBA最安値(以下)</span>
+        <input id="searchFbaMax" type="number" min="0" step="1" placeholder="例: 2500" />
+      </label>
+      <label class="search-field">
+        <span>30日販売数(以上)</span>
+        <input id="searchSalesMin" type="number" min="0" step="1" placeholder="例: 10" />
+      </label>
+      <label class="search-field">
+        <span>セラー数(以下)</span>
+        <input id="searchSellerMax" type="number" min="0" step="1" placeholder="例: 6" />
+      </label>
+    </div>
+    <div class="search-actions">
+      <button id="searchApplyBtn" class="cart-btn" type="button">検索する</button>
+      <button id="searchResetBtn" class="ghost-btn" type="button">リセット</button>
+    </div>
+  </section>
+
   <section class="asin-catalog card">
     <div class="asin-catalog-head">
-      <div class="asin-catalog-title">ASIN一覧</div>
-      <button id="asinLoadBtn" class="asin-load-btn" type="button">ASIN一覧を表示</button>
+      <div class="asin-catalog-title">検索結果ASIN</div>
     </div>
     <div class="asin-catalog-body" id="asinCatalog"></div>
   </section>
@@ -49,7 +89,7 @@
   </section>
 
   <div id="emptyState" class="empty card">
-    検索後にASINをクリックして商品を表示してください
+    検索条件を設定してASINを表示してください
   </div>
 
   <div id="itemsContainer" class="items-stack"></div>

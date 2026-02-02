@@ -189,12 +189,16 @@ const clearCartBtn = $("#clearCartBtn");
 
 /* catalog */
 const asinCatalog = $("#asinCatalog");
-const asinSearchInput = $("#asinSearchInput");
-const asinSearchBtn = $("#asinSearchBtn");
-const asinLoadBtn = $("#asinLoadBtn");
-const profitRateMin = $("#profitRateMin");
-const categoryFilters = $("#categoryFilters");
-const materialFilters = $("#materialFilters");
+const searchKeyword = $("#searchKeyword");
+const searchCategory = $("#searchCategory");
+const searchMaterial = $("#searchMaterial");
+const searchProfitRateMin = $("#searchProfitRateMin");
+const searchFbaMax = $("#searchFbaMax");
+const searchSalesMin = $("#searchSalesMin");
+const searchSellerMax = $("#searchSellerMax");
+const searchApplyBtn = $("#searchApplyBtn");
+const searchResetBtn = $("#searchResetBtn");
+const searchResultCount = $("#searchResultCount");
 const itemsContainer = $("#itemsContainer");
 const emptyState = $("#emptyState");
 const headerStatus = $("#headerStatus");
@@ -286,9 +290,6 @@ function initCatalog() {
       empty.textContent = "ASINデータを読み込み中...";
       asinCatalog.appendChild(empty);
     }
-    if (asinLoadBtn) {
-      asinLoadBtn.disabled = true;
-    }
     window.setTimeout(initCatalog, 200);
     return;
   }
@@ -308,23 +309,18 @@ function initCatalog() {
     materials.forEach((material) => materialSet.add(material));
   });
 
-  const buildFilterList = (items, container, name) => {
-    if (!container) return;
-    container.innerHTML = "";
-    items.forEach((item, idx) => {
-      const label = document.createElement("label");
-      label.className = "filter-item";
-      const input = document.createElement("input");
-      input.type = "checkbox";
-      input.name = name;
-      input.value = item;
-      input.checked = true;
-      input.addEventListener("change", runSearch);
-      const span = document.createElement("span");
-      span.textContent = item;
-      label.appendChild(input);
-      label.appendChild(span);
-      container.appendChild(label);
+  const buildSelectOptions = (items, selectEl, placeholder) => {
+    if (!selectEl) return;
+    selectEl.innerHTML = "";
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = placeholder;
+    selectEl.appendChild(defaultOption);
+    items.forEach((item) => {
+      const option = document.createElement("option");
+      option.value = item;
+      option.textContent = item;
+      selectEl.appendChild(option);
     });
   };
 
@@ -346,20 +342,36 @@ function initCatalog() {
     });
   };
 
-  const getCheckedValues = (container) => {
-    if (!container) return new Set();
-    return new Set(
-      Array.from(container.querySelectorAll("input[type=checkbox]"))
-        .filter((input) => input.checked)
-        .map((input) => input.value)
-    );
+  const renderCards = (asins) => {
+    cardState.forEach((entry) => {
+      if (entry.chart) entry.chart.destroy();
+    });
+    itemsContainer.innerHTML = "";
+    cardState.clear();
+    if (!asins.length) {
+      emptyState.style.display = "block";
+      updateHeaderStatus();
+      return;
+    }
+    asins.forEach((asin) => {
+      const data = window.ASIN_DATA?.[asin];
+      if (!data) return;
+      const card = createProductCard(asin, data);
+      itemsContainer.appendChild(card);
+      cardState.set(asin, { el: card, data, chart: card.__chart || null });
+    });
+    emptyState.style.display = "none";
+    updateHeaderStatus();
   };
 
   const runSearch = () => {
-    const keyword = String(asinSearchInput?.value || "").trim().toLowerCase();
-    const minProfitRate = num(profitRateMin?.value);
-    const selectedCategories = getCheckedValues(categoryFilters);
-    const selectedMaterials = getCheckedValues(materialFilters);
+    const keyword = String(searchKeyword?.value || "").trim().toLowerCase();
+    const minProfitRate = num(searchProfitRateMin?.value);
+    const maxFbaPrice = num(searchFbaMax?.value);
+    const minSales = num(searchSalesMin?.value);
+    const maxSellers = num(searchSellerMax?.value);
+    const selectedCategory = String(searchCategory?.value || "").trim();
+    const selectedMaterial = String(searchMaterial?.value || "").trim();
     const filtered = allAsins.filter((asin) => {
       const data = window.ASIN_DATA?.[asin] || {};
       const title = String(data["品名"] || data["商品名"] || data["商品タイトル"] || "").toLowerCase();
@@ -369,6 +381,9 @@ function initCatalog() {
         .map((item) => item.trim())
         .filter(Boolean);
       const profitRate = num(data["粗利益率"]);
+      const fbaPrice = num(data["FBA最安値"]);
+      const sales30 = num(data["30日販売数"]);
+      const sellers = num(data["セラー数"]);
 
       if (keyword && !(asin.toLowerCase().includes(keyword) || title.includes(keyword))) {
         return false;
@@ -376,39 +391,56 @@ function initCatalog() {
       if (minProfitRate && profitRate < minProfitRate) {
         return false;
       }
-      if (selectedCategories.size && category && !selectedCategories.has(category)) {
+      if (maxFbaPrice && fbaPrice > 0 && fbaPrice > maxFbaPrice) {
         return false;
       }
-      if (selectedMaterials.size && materials.length && !materials.some((m) => selectedMaterials.has(m))) {
+      if (minSales && sales30 > 0 && sales30 < minSales) {
+        return false;
+      }
+      if (maxSellers && sellers > 0 && sellers > maxSellers) {
+        return false;
+      }
+      if (selectedCategory && category && selectedCategory !== category) {
+        return false;
+      }
+      if (selectedMaterial && materials.length && !materials.includes(selectedMaterial)) {
         return false;
       }
       return true;
     });
+    if (searchResultCount) searchResultCount.textContent = String(filtered.length);
     renderAsinList(filtered);
+    renderCards(filtered);
   };
 
   const categories = Array.from(categorySet).sort((a, b) => a.localeCompare(b, "ja"));
   const materials = Array.from(materialSet).sort((a, b) => a.localeCompare(b, "ja"));
-  buildFilterList(categories, categoryFilters, "categoryFilter");
-  buildFilterList(materials, materialFilters, "materialFilter");
+  buildSelectOptions(categories, searchCategory, "すべてのカテゴリ");
+  buildSelectOptions(materials, searchMaterial, "すべての材質");
 
-  asinSearchBtn?.addEventListener("click", runSearch);
-  asinSearchInput?.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") runSearch();
+  searchApplyBtn?.addEventListener("click", runSearch);
+  searchResetBtn?.addEventListener("click", () => {
+    if (searchKeyword) searchKeyword.value = "";
+    if (searchCategory) searchCategory.value = "";
+    if (searchMaterial) searchMaterial.value = "";
+    if (searchProfitRateMin) searchProfitRateMin.value = "";
+    if (searchFbaMax) searchFbaMax.value = "";
+    if (searchSalesMin) searchSalesMin.value = "";
+    if (searchSellerMax) searchSellerMax.value = "";
+    runSearch();
   });
-  profitRateMin?.addEventListener("change", runSearch);
-
-  if (asinLoadBtn && !asinLoadBtn.dataset.ready) {
-    asinLoadBtn.dataset.ready = "true";
-    asinLoadBtn.disabled = false;
-    asinLoadBtn.addEventListener("click", () => {
-      renderAsinList(allAsins);
+  [searchKeyword, searchProfitRateMin, searchFbaMax, searchSalesMin, searchSellerMax].forEach((input) => {
+    input?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") runSearch();
     });
-  } else if (asinLoadBtn) {
-    asinLoadBtn.disabled = false;
-  }
+  });
+  [searchCategory, searchMaterial].forEach((select) => {
+    select?.addEventListener("change", runSearch);
+  });
 
-  renderAsinList(allAsins);
+  renderAsinList([]);
+  renderCards([]);
+  if (searchResultCount) searchResultCount.textContent = "0";
 }
 
 function addOrFocusCard(asin) {
@@ -1031,9 +1063,9 @@ function buildRecommendBlock(data) {
   labelsCol.appendChild(titleCell);
 
   const rowDefs = [
-    { id: "stable", label: "コツコツ🐢", factor: 0.85 },
-    { id: "balance", label: "ほどよく", factor: 1 },
-    { id: "growth", label: "しっかり🐇", factor: 1.2 }
+    { id: "minimum", label: "ミニマム", factor: 0.85 },
+    { id: "balance", label: "バランス", factor: 1 },
+    { id: "stepup", label: "ステップアップ", factor: 1.2 }
   ];
 
   rowDefs.forEach((rowDef) => {
@@ -1078,9 +1110,35 @@ function buildRecommendBlock(data) {
   columnsViewport.appendChild(columnsInner);
   columnsWrap.appendChild(columnsViewport);
 
+  const head = document.createElement("div");
+  head.className = "recommend-head";
+
+  const title = document.createElement("div");
+  title.className = "recommend-title";
+  title.textContent = "推奨仕入数";
+  head.appendChild(title);
+
+  const actionGroup = document.createElement("div");
+  actionGroup.className = "recommend-action-group";
+
+  const minimumBtn = document.createElement("button");
+  minimumBtn.type = "button";
+  minimumBtn.className = "recommend-btn js-recommendMinimum";
+  minimumBtn.textContent = "ミニマム";
+  actionGroup.appendChild(minimumBtn);
+
+  const stepUpBtn = document.createElement("button");
+  stepUpBtn.type = "button";
+  stepUpBtn.className = "recommend-btn js-recommendStepup";
+  stepUpBtn.textContent = "ステップアップ";
+  actionGroup.appendChild(stepUpBtn);
+
+  head.appendChild(actionGroup);
+
   table.appendChild(labelsCol);
   table.appendChild(columnsWrap);
 
+  wrap.appendChild(head);
   wrap.appendChild(table);
 
   const cardOrder = [
@@ -1091,7 +1149,7 @@ function buildRecommendBlock(data) {
     "推奨仕入数(30日)"
   ];
   const windowSize = cardOrder.length;
-  const rowOrder = ["stable", "balance", "growth"];
+  const rowOrder = ["minimum", "balance", "stepup"];
   const defaultCardId = "推奨仕入数(60日)";
   const defaultRowId = "balance";
   let currentCardIndex = cardOrder.indexOf(defaultCardId);
@@ -1114,9 +1172,37 @@ function buildRecommendBlock(data) {
     updateRecommendVisibility();
   };
 
+  const moveMinimum = () => {
+    if (currentRowIndex > 0) {
+      currentRowIndex -= 1;
+    } else {
+      currentRowIndex = rowOrder.length - 1;
+      currentCardIndex = (currentCardIndex + 1) % windowSize;
+    }
+    applySelection();
+  };
+
+  const moveStepUp = () => {
+    if (currentRowIndex < rowOrder.length - 1) {
+      currentRowIndex += 1;
+    } else {
+      currentRowIndex = 0;
+      currentCardIndex = (currentCardIndex - 1 + windowSize) % windowSize;
+    }
+    applySelection();
+  };
+
   wrap.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
+    if (target.closest(".js-recommendMinimum")) {
+      moveMinimum();
+      return;
+    }
+    if (target.closest(".js-recommendStepup")) {
+      moveStepUp();
+      return;
+    }
     const cell = target.closest(".recommend-cell-value");
     if (!cell) return;
     const cardId = cell.dataset.card;
@@ -1510,7 +1596,6 @@ function createProductCard(asin, data) {
         <div class="title">ASIN: ${asin}</div>
         <input class="asin-memo" type="text" placeholder="メモ" />
         <button class="memo-save" type="button">保存</button>
-        <button class="remove" type="button">この行を削除</button>
       </div>
 
       <div class="layout3-grid">
@@ -1577,7 +1662,6 @@ function createProductCard(asin, data) {
         <div class="title">ASIN: ${asin}</div>
         <input class="asin-memo" type="text" placeholder="メモ" />
         <button class="memo-save" type="button">保存</button>
-        <button class="remove" type="button">この行を削除</button>
       </div>
 
       <div class="layout4-grid">
@@ -1776,78 +1860,7 @@ function createProductCard(asin, data) {
           </div>
         </div>
 
-        <div class="l4-calc l4-block">
-          <div class="calc-panel js-calcPanel">
-            <div class="calc-title">単価・合計サマリー</div>
-            <div class="calc-formula">
-              <div class="formula-row">
-                <span class="formula-title">単価</span>
-                <span class="formula-pill js-formulaPayment">入金額—</span>
-                <span class="formula-symbol">−</span>
-                <span class="formula-symbol">(</span>
-                <span class="formula-pill js-formulaCost">仕入れ目安—</span>
-                <span class="formula-symbol">×</span>
-                <span class="formula-pill js-formulaUnitQty">1</span>
-                <span class="formula-symbol">)</span>
-                <span class="formula-symbol">−</span>
-                <span class="formula-pill js-formulaShipping">送料—</span>
-                <span class="formula-symbol">−</span>
-                <span class="formula-pill js-formulaTariff">関税—</span>
-                <span class="formula-symbol">=</span>
-                <span class="formula-pill is-strong js-formulaProfit">粗利益額—</span>
-              </div>
-              <div class="formula-row">
-                <span class="formula-title">合計</span>
-                <span class="formula-pill js-formulaPaymentTotal">入金額—</span>
-                <span class="formula-symbol">−</span>
-                <span class="formula-symbol">(</span>
-                <span class="formula-pill js-formulaCostTotal">仕入れ目安—</span>
-                <span class="formula-symbol">×</span>
-                <span class="formula-pill js-formulaQty">合計個数—</span>
-                <span class="formula-symbol">)</span>
-                <span class="formula-symbol">−</span>
-                <span class="formula-pill js-formulaShippingTotal">送料—</span>
-                <span class="formula-symbol">−</span>
-                <span class="formula-pill js-formulaTariffTotal">関税—</span>
-                <span class="formula-symbol">=</span>
-                <span class="formula-pill is-strong js-formulaProfitTotal">粗利益額—</span>
-              </div>
-            </div>
-            <div class="calc-meta">
-              <div class="calc-meta-row"><span>仕入れ平均額</span><b class="js-calcAvg">—</b></div>
-              <div class="calc-meta-row"><span>合計仕入れ個数</span><b class="js-calcQty">—</b></div>
-              <div class="calc-meta-row"><span>粗利益率</span><b class="js-calcRate">—</b></div>
-            </div>
-          </div>
-        </div>
-
         <div class="l4-keepa l4-block">
-          <div class="keepa-score-title">商品スコア</div>
-          <div class="keepa-risk">
-            <div class="risk-index">
-              <div class="risk-item warning">
-                <div class="risk-ring" style="--risk-value: 62;">
-                  <div class="risk-num">62</div>
-                  <div class="risk-note">注意</div>
-                </div>
-                <div class="risk-caption">直近重視</div>
-              </div>
-              <div class="risk-item warning">
-                <div class="risk-ring" style="--risk-value: 54;">
-                  <div class="risk-num">54</div>
-                  <div class="risk-note">注意</div>
-                </div>
-                <div class="risk-caption">両方</div>
-              </div>
-              <div class="risk-item safe">
-                <div class="risk-ring" style="--risk-value: 38;">
-                  <div class="risk-num">38</div>
-                  <div class="risk-note">安定</div>
-                </div>
-                <div class="risk-caption">回数重視</div>
-              </div>
-            </div>
-          </div>
           <div class="head">keepaグラフ</div>
           <div class="keepa-mini">
             <img class="keepa-image" src="keepa2graph.png" alt="keepaグラフ" />
@@ -1855,30 +1868,14 @@ function createProductCard(asin, data) {
         </div>
 
         <div class="l4-mes l4-block">
-          <div class="head">
+          <div class="head head-with-score">
             <span>需要供給グラフ（180日）</span>
-            <div class="risk-index">
-              <div class="risk-item warning">
-                <div class="risk-ring" style="--risk-value: 62;">
-                  <div class="risk-num">62</div>
-                  <div class="risk-note">注意</div>
-                </div>
-                <div class="risk-caption">直近重視</div>
+            <div class="asin-score-meter" style="--asin-score: 62;">
+              <span class="asin-score-label">ASINスコア</span>
+              <div class="asin-score-track">
+                <div class="asin-score-fill"></div>
               </div>
-              <div class="risk-item safe">
-                <div class="risk-ring" style="--risk-value: 38;">
-                  <div class="risk-num">38</div>
-                  <div class="risk-note">安定</div>
-                </div>
-                <div class="risk-caption">回数重視</div>
-              </div>
-              <div class="risk-item warning">
-                <div class="risk-ring" style="--risk-value: 54;">
-                  <div class="risk-num">54</div>
-                  <div class="risk-note">注意</div>
-                </div>
-                <div class="risk-caption">両方</div>
-              </div>
+              <span class="asin-score-value">62</span>
             </div>
           </div>
 
@@ -1901,7 +1898,6 @@ function createProductCard(asin, data) {
         <div class="title">ASIN: ${asin}</div>
         <input class="asin-memo" type="text" placeholder="メモ" />
         <button class="memo-save" type="button">保存</button>
-        <button class="remove" type="button">この行を削除</button>
       </div>
 
       <div class="alt-grid">
@@ -1966,7 +1962,6 @@ function createProductCard(asin, data) {
         <div class="title">ASIN: ${asin}</div>
         <input class="asin-memo" type="text" placeholder="メモ" />
         <button class="memo-save" type="button">保存</button>
-        <button class="remove" type="button">この行を削除</button>
       </div>
 
       <div class="summary-row">
@@ -2030,20 +2025,6 @@ function createProductCard(asin, data) {
 
     `;
   }
-
-  // remove
-  card.querySelector(".remove").addEventListener("click", () => {
-    if (cart.has(asin)) {
-      cart.delete(asin);
-      updateCartSummary();
-    }
-    if (card.__chart) card.__chart.destroy();
-    card.remove();
-    cardState.delete(asin);
-
-    if (cardState.size === 0) emptyState.style.display = "block";
-    updateHeaderStatus();
-  });
 
   // inputs
   const sellInput = card.querySelector(".js-sell");
@@ -2206,6 +2187,12 @@ function createProductCard(asin, data) {
     const totalPaymentJPY = totalSalesUSD * FX_RATE;
     const totalProfitJPY = totalPaymentJPY - totalCost;
     const profitRate = totalPaymentJPY > 0 ? (totalProfitJPY / totalPaymentJPY) * 100 : 0;
+    const shipping = num(data["送料"]);
+    const tariff = num(data["関税"]);
+    const totalShipping = shipping * totalQty;
+    const totalTariff = tariff * totalQty;
+    const totalProfitCalc = totalPaymentJPY - totalCost - totalShipping - totalTariff;
+    const profitRateCalc = totalPaymentJPY > 0 ? (totalProfitCalc / totalPaymentJPY) * 100 : 0;
 
     const avgCost = totalQty > 0 ? Math.round(totalCost / totalQty) : 0;
     if (summaryEl) {
@@ -2220,18 +2207,27 @@ function createProductCard(asin, data) {
           : "—";
     }
 
+    if (breakdownIncomeEl) {
+      breakdownIncomeEl.textContent = fmtJPY(Math.round(totalPaymentJPY));
+    }
+    if (breakdownExpenseEl) {
+      breakdownExpenseEl.textContent = fmtJPY(Math.round(totalCost));
+    }
+    if (breakdownShippingEl) {
+      breakdownShippingEl.textContent = fmtJPY(Math.round(totalShipping));
+    }
+    if (breakdownTariffEl) {
+      breakdownTariffEl.textContent = fmtJPY(Math.round(totalTariff));
+    }
+    if (breakdownProfitEl) {
+      breakdownProfitEl.textContent = `${fmtJPY(Math.round(totalProfitCalc))}(${profitRateCalc.toFixed(1)}%)`;
+    }
+
     if (!calcPanel) return;
     const unitCost = num(costInput.value) || num(data["仕入れ目安単価"]);
-    const shipping = num(data["送料"]);
-    const tariff = num(data["関税"]);
     const unitSalesUSD = sellUSD > 0 ? sellUSD : 0;
     const unitPaymentJPY = unitSalesUSD * FX_RATE;
     const unitProfitJPY = unitPaymentJPY - unitCost - shipping - tariff;
-    const totalShipping = shipping * totalQty;
-    const totalTariff = tariff * totalQty;
-    const totalProfitCalc = totalPaymentJPY - totalCost - totalShipping - totalTariff;
-    const profitRateCalc = totalPaymentJPY > 0 ? (totalProfitCalc / totalPaymentJPY) * 100 : 0;
-
     if (totalQtyEls) {
       totalQtyEls.forEach((el) => {
         el.textContent = totalQty > 0 ? `${totalQty}` : "—";
@@ -2288,18 +2284,6 @@ function createProductCard(asin, data) {
     calcQtyEl.textContent = totalQty > 0 ? `${totalQty}` : "—";
     calcRateEl.textContent = totalQty > 0 && sellUSD > 0 ? `${profitRateCalc.toFixed(1)}%` : "—";
 
-    if (breakdownIncomeEl) {
-      breakdownIncomeEl.textContent = fmtJPY(Math.round(totalPaymentJPY));
-    }
-    if (breakdownExpenseEl) {
-      breakdownExpenseEl.textContent = fmtJPY(Math.round(totalCost));
-    }
-    if (breakdownShippingEl) {
-      breakdownShippingEl.textContent = fmtJPY(Math.round(totalShipping));
-    }
-    if (breakdownTariffEl) {
-      breakdownTariffEl.textContent = fmtJPY(Math.round(totalTariff));
-    }
     if (breakdownProfitEl) {
       breakdownProfitEl.textContent = `${fmtJPY(Math.round(totalProfitCalc))}(${profitRateCalc.toFixed(1)}%)`;
     }
