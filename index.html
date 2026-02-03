@@ -39,10 +39,6 @@
           <label><input type="radio" name="searchMode" /> 後で買う</label>
         </div>
       </div>
-      <div class="search-panel-actions">
-        <button class="search-run" type="button">検索</button>
-        <button class="search-action" type="button">ソートを反映</button>
-      </div>
     </div>
 
     <div class="search-grid">
@@ -166,54 +162,42 @@
     </details>
 
     <div class="sort-panel sort-panel-accent">
-      <div class="sort-panel-title">ソート順</div>
+      <div class="sort-panel-title">並び替え</div>
       <div class="sort-panel-controls">
-        <div class="sort-priority">
-          <select class="search-input">
-            <option>粗利益額</option>
-            <option>粗利益率</option>
-            <option>返品率</option>
-            <option>ASINスコア</option>
-            <option>FBA最安値</option>
-            <option>日本最安値</option>
-          </select>
-          <div class="sort-order-toggle" role="group" aria-label="並び順">
-            <button type="button" class="sort-order-btn">▼</button>
-            <button type="button" class="sort-order-btn">▲</button>
-          </div>
+        <div class="sort-chip-list" role="group" aria-label="並び替えの優先順">
+          <button type="button" class="sort-chip" data-sort="粗利益額">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">粗利益額</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="sort-chip" data-sort="粗利益率">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">粗利益率</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="sort-chip" data-sort="返品率">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">返品率</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="sort-chip" data-sort="ASINスコア">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">ASINスコア</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="sort-chip" data-sort="FBA最安値">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">FBA最安値</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="sort-chip" data-sort="日本最安値">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">日本最安値</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
         </div>
-        <span class="sort-separator" aria-hidden="true">＞</span>
-        <div class="sort-priority">
-          <select class="search-input">
-            <option>粗利益額</option>
-            <option>粗利益率</option>
-            <option>返品率</option>
-            <option>ASINスコア</option>
-            <option>FBA最安値</option>
-            <option>日本最安値</option>
-          </select>
-          <div class="sort-order-toggle" role="group" aria-label="並び順">
-            <button type="button" class="sort-order-btn">▼</button>
-            <button type="button" class="sort-order-btn">▲</button>
-          </div>
-        </div>
-        <span class="sort-separator" aria-hidden="true">＞</span>
-        <div class="sort-priority">
-          <select class="search-input">
-            <option>粗利益額</option>
-            <option>粗利益率</option>
-            <option>返品率</option>
-            <option>ASINスコア</option>
-            <option>FBA最安値</option>
-            <option>日本最安値</option>
-          </select>
-          <div class="sort-order-toggle" role="group" aria-label="並び順">
-            <button type="button" class="sort-order-btn">▼</button>
-            <button type="button" class="sort-order-btn">▲</button>
-          </div>
-        </div>
-        <div class="sort-panel-actions">
-          <button class="search-action" type="button">ソートを反映</button>
+        <div class="sort-panel-search">
+          <button class="search-action search-reset" type="button">条件リセット</button>
           <button class="search-run" type="button">検索</button>
         </div>
       </div>
