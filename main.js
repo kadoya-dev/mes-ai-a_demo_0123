@@ -198,6 +198,120 @@ const materialFilters = $("#materialFilters");
 const itemsContainer = $("#itemsContainer");
 const emptyState = $("#emptyState");
 const headerStatus = $("#headerStatus");
+
+const modeInputs = $$('input[name="searchMode"]');
+const bulkDeleteBtn = $(".search-bulk");
+const sortChips = $$(".sort-chip");
+const sortResetBtn = $(".search-reset");
+let sortOrder = [];
+const MODE_STORAGE_KEY = "mes-search-mode";
+const stockCompareToggle = $(".js-stockCompareToggle");
+const stockCompareDays = $(".js-stockCompareDays");
+
+function getCurrentMode() {
+  return modeInputs.find((input) => input.checked)?.value || "seller";
+}
+
+function applyModeToCard(card) {
+  const mode = getCurrentMode();
+  const laterBtn = card.querySelector(".js-later");
+  if (laterBtn) {
+    laterBtn.textContent = mode === "later" ? "削除" : "後で仕入れる";
+  }
+  const blockBtn = card.querySelector(".js-blockToggle");
+  if (blockBtn && !blockBtn.dataset.bound) {
+    blockBtn.dataset.bound = "true";
+    blockBtn.addEventListener("click", () => {
+      const isBlocked = blockBtn.dataset.blocked === "true";
+      blockBtn.dataset.blocked = (!isBlocked).toString();
+      blockBtn.textContent = isBlocked ? "表示ブロック🚫" : "ブロック🚫解除";
+    });
+  }
+  if (blockBtn) {
+    const isBlocked = blockBtn.dataset.blocked === "true";
+    blockBtn.textContent = isBlocked ? "ブロック🚫解除" : "表示ブロック🚫";
+  }
+}
+
+function updateModeUI() {
+  const mode = getCurrentMode();
+  if (bulkDeleteBtn) {
+    bulkDeleteBtn.classList.toggle("is-hidden", mode !== "stock");
+  }
+  $$(".product-card").forEach(applyModeToCard);
+}
+
+function initModeState() {
+  const storedMode = localStorage.getItem(MODE_STORAGE_KEY);
+  if (storedMode) {
+    const target = modeInputs.find((input) => input.value === storedMode);
+    if (target) {
+      target.checked = true;
+    }
+  } else {
+    localStorage.setItem(MODE_STORAGE_KEY, getCurrentMode());
+  }
+  updateModeUI();
+}
+
+function initStockCompareToggle() {
+  if (!stockCompareToggle || !stockCompareDays) return;
+  const syncState = () => {
+    const isEnabled = stockCompareToggle.checked;
+    stockCompareDays.disabled = !isEnabled;
+    stockCompareDays.required = isEnabled;
+    if (!isEnabled) {
+      stockCompareDays.value = "";
+    }
+  };
+  stockCompareToggle.addEventListener("change", syncState);
+  syncState();
+}
+
+modeInputs.forEach((input) => {
+  input.addEventListener("change", () => {
+    if (input.checked) {
+      localStorage.setItem(MODE_STORAGE_KEY, input.value);
+      window.location.reload();
+    }
+  });
+});
+
+function updateSortChips() {
+  sortChips.forEach((chip) => {
+    const key = chip.dataset.sort;
+    const index = sortOrder.indexOf(key);
+    const isActive = index !== -1;
+    chip.classList.toggle("is-active", isActive);
+    chip.setAttribute("aria-pressed", String(isActive));
+    const orderEl = chip.querySelector(".sort-chip-order");
+    if (orderEl) {
+      orderEl.textContent = isActive ? String(index + 1) : "";
+    }
+  });
+}
+
+sortChips.forEach((chip) => {
+  chip.addEventListener("click", () => {
+    const key = chip.dataset.sort;
+    const index = sortOrder.indexOf(key);
+    if (index === -1) {
+      sortOrder.push(key);
+    } else {
+      sortOrder.splice(index, 1);
+    }
+    updateSortChips();
+  });
+});
+
+sortResetBtn?.addEventListener("click", () => {
+  sortOrder = [];
+  updateSortChips();
+});
+
+updateSortChips();
+initModeState();
+initStockCompareToggle();
 const appVersion = $("#appVersion");
 
 /* cart */
@@ -422,6 +536,7 @@ function addOrFocusCard(asin) {
 
   const card = createProductCard(asin, data);
   itemsContainer.appendChild(card);
+  applyModeToCard(card);
 
   emptyState.style.display = "none";
   cardState.set(asin, { el: card, data, chart: card.__chart || null });
@@ -1822,6 +1937,9 @@ function createProductCard(asin, data) {
             <div class="shop-actions">
               <button class="ghost-btn js-later" type="button">後で仕入れる</button>
               <button class="cart-btn js-addCart" type="button">仕入れリスト</button>
+            </div>
+            <div class="shop-actions-secondary">
+              <button class="ghost-btn js-blockToggle" type="button">表示ブロック🚫</button>
             </div>
 
             <input class="js-sell" type="hidden" />
