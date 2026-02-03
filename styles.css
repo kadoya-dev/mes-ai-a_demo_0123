@@ -100,15 +100,16 @@ a{ color:inherit; }
 .search-panel-actions{
   display:flex;
   align-items:center;
+  gap:10px;
 }
 .search-run{
-  height:40px;
-  padding:0 18px;
-  border-radius:12px;
+  height:46px;
+  padding:0 26px;
+  border-radius:14px;
   border:1px solid rgba(16,185,129,.4);
   background: rgba(16,185,129,.15);
   color:#065f46;
-  font-size:13px;
+  font-size:15px;
   font-weight:900;
   cursor:pointer;
 }
@@ -267,6 +268,19 @@ a{ color:inherit; }
   align-items:stretch;
   flex-wrap:wrap;
 }
+.sort-separator{
+  display:inline-flex;
+  align-items:center;
+  font-size:16px;
+  font-weight:900;
+  color:#92400e;
+}
+.sort-panel-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-left:auto;
+}
 .sort-priority{
   display:flex;
   align-items:center;
@@ -277,27 +291,31 @@ a{ color:inherit; }
   background: linear-gradient(135deg, rgba(255,247,237,.9), rgba(254,215,170,.35));
   box-shadow: 0 8px 18px rgba(245,158,11,.15);
 }
-.sort-priority-label{
-  font-size:11px;
-  font-weight:900;
-  color:#92400e;
-  background:#fff7ed;
-  border:1px solid rgba(245,158,11,.35);
-  border-radius:999px;
-  padding:4px 8px;
-  min-width:40px;
-  text-align:center;
-}
 .sort-priority select{
-  min-width:130px;
+  min-width:100px;
+}
+.sort-order-toggle{
+  display:inline-flex;
+  gap:4px;
+}
+.sort-order-btn{
+  height:30px;
+  min-width:36px;
+  border-radius:8px;
+  border:1px solid rgba(148,163,184,.7);
+  background:#fff;
+  font-size:12px;
+  font-weight:900;
+  color:#0f172a;
+  cursor:pointer;
 }
 .search-action{
-  height:34px;
-  border-radius:10px;
+  height:40px;
+  border-radius:12px;
   border:1px solid rgba(91,92,255,.35);
   background: rgba(91,92,255,.12);
-  padding:0 12px;
-  font-size:12px;
+  padding:0 16px;
+  font-size:13px;
   font-weight:900;
   cursor:pointer;
 }
