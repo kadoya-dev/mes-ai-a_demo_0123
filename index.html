@@ -41,6 +41,7 @@
       </div>
       <div class="search-panel-actions">
         <button class="search-run" type="button">検索</button>
+        <button class="search-action" type="button">ソートを反映</button>
       </div>
     </div>
 
@@ -51,13 +52,6 @@
           <label class="field">
             <span>キーワード</span>
             <input type="text" class="search-input" placeholder="例：アウトドア 収納" />
-          </label>
-          <label class="field">
-            <span>返品率</span>
-            <div class="field-inline">
-              <input type="number" class="search-input input-percent" placeholder="%" />
-              <span class="unit-chip">% 以下</span>
-            </div>
           </label>
           <label class="field">
             <span>粗利益額</span>
@@ -78,6 +72,13 @@
             <div class="field-inline">
               <input type="number" class="search-input input-score" placeholder="スコア" />
               <span class="unit-chip">以上</span>
+            </div>
+          </label>
+          <label class="field">
+            <span>返品率</span>
+            <div class="field-inline">
+              <input type="number" class="search-input input-percent" placeholder="%" />
+              <span class="unit-chip">% 以下</span>
             </div>
           </label>
         </div>
@@ -168,7 +169,6 @@
       <div class="sort-panel-title">ソート順</div>
       <div class="sort-panel-controls">
         <div class="sort-priority">
-          <span class="sort-priority-label">第1</span>
           <select class="search-input">
             <option>粗利益額</option>
             <option>粗利益率</option>
@@ -177,13 +177,13 @@
             <option>FBA最安値</option>
             <option>日本最安値</option>
           </select>
-          <select class="search-input">
-            <option>降順</option>
-            <option>昇順</option>
+          <select class="search-input sort-order" aria-label="並び順">
+            <option>▼</option>
+            <option>▲</option>
           </select>
         </div>
+        <span class="sort-separator" aria-hidden="true">＞</span>
         <div class="sort-priority">
-          <span class="sort-priority-label">第2</span>
           <select class="search-input">
             <option>粗利益額</option>
             <option>粗利益率</option>
@@ -192,13 +192,13 @@
             <option>FBA最安値</option>
             <option>日本最安値</option>
           </select>
-          <select class="search-input">
-            <option>降順</option>
-            <option>昇順</option>
+          <select class="search-input sort-order" aria-label="並び順">
+            <option>▼</option>
+            <option>▲</option>
           </select>
         </div>
+        <span class="sort-separator" aria-hidden="true">＞</span>
         <div class="sort-priority">
-          <span class="sort-priority-label">第3</span>
           <select class="search-input">
             <option>粗利益額</option>
             <option>粗利益率</option>
@@ -207,12 +207,11 @@
             <option>FBA最安値</option>
             <option>日本最安値</option>
           </select>
-          <select class="search-input">
-            <option>降順</option>
-            <option>昇順</option>
+          <select class="search-input sort-order" aria-label="並び順">
+            <option>▼</option>
+            <option>▲</option>
           </select>
         </div>
-        <button class="search-action" type="button">ソートを反映</button>
       </div>
     </div>
   </section>
