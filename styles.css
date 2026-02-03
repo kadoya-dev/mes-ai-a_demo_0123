@@ -196,7 +196,7 @@ a{ color:inherit; }
   width:80px;
 }
 .input-currency{
-  width:100px;
+  width:80px;
 }
 .check-group{
   display:flex;
@@ -238,23 +238,33 @@ a{ color:inherit; }
 }
 .sort-panel-controls{
   display:flex;
-  gap:8px;
-  align-items:center;
+  gap:12px;
+  align-items:stretch;
   flex-wrap:wrap;
 }
 .sort-priority{
   display:flex;
   align-items:center;
-  gap:6px;
-  padding:6px 8px;
-  border-radius:10px;
-  border:1px solid rgba(245,158,11,.2);
-  background: rgba(255,247,237,.6);
+  gap:8px;
+  padding:8px 10px;
+  border-radius:14px;
+  border:1px solid rgba(245,158,11,.35);
+  background: linear-gradient(135deg, rgba(255,247,237,.9), rgba(254,215,170,.35));
+  box-shadow: 0 8px 18px rgba(245,158,11,.15);
 }
 .sort-priority-label{
   font-size:11px;
   font-weight:900;
   color:#92400e;
+  background:#fff7ed;
+  border:1px solid rgba(245,158,11,.35);
+  border-radius:999px;
+  padding:4px 8px;
+  min-width:40px;
+  text-align:center;
+}
+.sort-priority select{
+  min-width:130px;
 }
 .search-action{
   height:34px;
