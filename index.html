@@ -25,19 +25,28 @@
 </header>
 
 <main class="page-body">
+  <div class="mode-tabs" role="tablist" aria-label="検索モード切替">
+    <span class="mode-tabs-label">モード切替</span>
+    <div class="mode-tabs-group">
+      <label class="mode-tab">
+        <input type="radio" name="searchMode" checked />
+        <span>セラー <span class="mode-shop">SAMURAI SHOP</span></span>
+      </label>
+      <label class="mode-tab">
+        <input type="radio" name="searchMode" />
+        <span>ストック</span>
+      </label>
+      <label class="mode-tab">
+        <input type="radio" name="searchMode" />
+        <span>後で買う</span>
+      </label>
+    </div>
+  </div>
   <section class="search-panel card" aria-label="検索条件">
     <div class="search-panel-head">
       <div>
         <div class="card-title">検索条件</div>
         <div class="search-note">※ 現在はダミー表示です（検索機能は未実装）</div>
-      </div>
-      <div class="search-mode">
-        <span class="search-mode-label">モード切替</span>
-        <div class="mode-toggle">
-          <label><input type="radio" name="searchMode" checked /> セラー <span class="mode-shop">SAMURAI SHOP</span></label>
-          <label><input type="radio" name="searchMode" /> ストック</label>
-          <label><input type="radio" name="searchMode" /> 後で買う</label>
-        </div>
       </div>
     </div>
 
