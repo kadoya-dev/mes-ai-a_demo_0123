@@ -25,23 +25,28 @@
 </header>
 
 <main class="page-body">
+    <div class="mode-tabs" role="tablist" aria-label="検索モード切替">
+      <span class="mode-tabs-label">モード切替</span>
+      <div class="mode-tabs-group">
+        <label class="mode-tab">
+          <input type="radio" name="searchMode" value="seller" checked />
+          <span>セラー <span class="mode-shop">SAMURAI SHOP</span></span>
+        </label>
+        <label class="mode-tab">
+          <input type="radio" name="searchMode" value="stock" />
+          <span>ストック</span>
+        </label>
+        <label class="mode-tab">
+          <input type="radio" name="searchMode" value="later" />
+          <span>後で買う</span>
+        </label>
+      </div>
+    </div>
   <section class="search-panel card" aria-label="検索条件">
     <div class="search-panel-head">
       <div>
         <div class="card-title">検索条件</div>
         <div class="search-note">※ 現在はダミー表示です（検索機能は未実装）</div>
-      </div>
-      <div class="search-mode">
-        <span class="search-mode-label">モード切替</span>
-        <div class="mode-toggle">
-          <label><input type="radio" name="searchMode" checked /> セラー <span class="mode-shop">SAMURAI SHOP</span></label>
-          <label><input type="radio" name="searchMode" /> ストック</label>
-          <label><input type="radio" name="searchMode" /> 後で買う</label>
-        </div>
-      </div>
-      <div class="search-panel-actions">
-        <button class="search-run" type="button">検索</button>
-        <button class="search-action" type="button">ソートを反映</button>
       </div>
     </div>
 
@@ -80,6 +85,64 @@
               <input type="number" class="search-input input-percent" placeholder="%" />
               <span class="unit-chip">% 以下</span>
             </div>
+          </label>
+          <label class="field">
+            <span>推奨仕入数</span>
+            <div class="field-inline">
+              <select class="search-input input-compact">
+                <option>ミニマム</option>
+                <option selected>バランス</option>
+                <option>ステップアップ</option>
+              </select>
+              <select class="search-input input-compact">
+                <option>30日間</option>
+                <option>60日間</option>
+                <option>90日間</option>
+                <option>120日間</option>
+                <option>180日間</option>
+              </select>
+              <input type="number" class="search-input input-compact" placeholder="個数" />
+            </div>
+          </label>
+          <label class="field">
+            <span>比較条件</span>
+            <div class="field-inline">
+              <span class="compare-text">在庫数＜</span>
+              <select class="search-input input-compact js-stockCompareDays" disabled>
+                <option value="">日間</option>
+                <option value="30">30日間</option>
+                <option value="60">60日間</option>
+                <option value="90">90日間</option>
+                <option value="120">120日間</option>
+                <option value="180">180日間</option>
+              </select>
+              <span class="compare-text">推奨仕入れ数</span>
+              <label class="inline-check inline-check-right">
+                <input type="checkbox" class="search-check js-stockCompareToggle" aria-label="在庫数と推奨仕入れ数の比較条件を有効化" />
+              </label>
+            </div>
+          </label>
+          <label class="field">
+            <span>販売数(実績)</span>
+            <div class="field-inline">
+              <select class="search-input input-compact">
+                <option>30日間</option>
+              </select>
+              <input type="number" class="search-input input-compact" placeholder="個数" />
+            </div>
+          </label>
+          <label class="field">
+            <span>販売数(予測)</span>
+            <div class="field-inline">
+              <select class="search-input input-compact">
+                <option>30日間</option>
+              </select>
+              <input type="number" class="search-input input-compact" placeholder="個数" />
+            </div>
+          </label>
+          <label class="field">
+            <span>最終仕入れ日</span>
+            <input type="date" class="search-input input-date" />
           </label>
         </div>
       </div>
@@ -137,6 +200,13 @@
               <span class="unit-chip">円 以下</span>
             </div>
           </label>
+          <label class="field">
+            <span>在庫数</span>
+            <div class="field-inline">
+              <input type="number" class="search-input input-compact" placeholder="個" />
+              <span class="unit-chip">個 以下</span>
+            </div>
+          </label>
           <div class="field">
             <span>注意事項</span>
             <div class="check-group">
@@ -145,75 +215,53 @@
               <label><input type="checkbox" /> 出荷制限</label>
             </div>
           </div>
-          <div class="field">
-            <span>カテゴリー</span>
-            <div class="check-group">
-              <label><input type="checkbox" checked /> 家電</label>
-              <label><input type="checkbox" checked /> ホーム</label>
-              <label><input type="checkbox" checked /> ビューティー</label>
-            </div>
-          </div>
-          <div class="field">
-            <span>材質</span>
-            <div class="check-group">
-              <label><input type="checkbox" checked /> プラスチック</label>
-              <label><input type="checkbox" checked /> 金属</label>
-              <label><input type="checkbox" checked /> 木材</label>
-            </div>
-          </div>
         </div>
       </div>
     </details>
 
     <div class="sort-panel sort-panel-accent">
-      <div class="sort-panel-title">ソート順</div>
+      <div class="sort-panel-title">並び替え</div>
       <div class="sort-panel-controls">
-        <div class="sort-priority">
-          <select class="search-input">
-            <option>粗利益額</option>
-            <option>粗利益率</option>
-            <option>返品率</option>
-            <option>ASINスコア</option>
-            <option>FBA最安値</option>
-            <option>日本最安値</option>
-          </select>
-          <div class="sort-order-toggle" role="group" aria-label="並び順">
-            <button type="button" class="sort-order-btn">▼</button>
-            <button type="button" class="sort-order-btn">▲</button>
-          </div>
+        <div class="sort-chip-list" role="group" aria-label="並び替えの優先順">
+          <button type="button" class="sort-chip" data-sort="粗利益額">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">粗利益額</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="sort-chip" data-sort="粗利益率">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">粗利益率</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="sort-chip" data-sort="返品率">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">返品率</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="sort-chip" data-sort="ASINスコア">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">ASINスコア</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="sort-chip" data-sort="FBA最安値">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">FBA最安値</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="sort-chip" data-sort="日本最安値">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">日本最安値</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="sort-chip" data-sort="最終仕入れ日">
+            <span class="sort-chip-check" aria-hidden="true">✓</span>
+            <span class="sort-chip-label">最終仕入れ日</span>
+            <span class="sort-chip-order" aria-hidden="true"></span>
+          </button>
         </div>
-        <span class="sort-separator" aria-hidden="true">＞</span>
-        <div class="sort-priority">
-          <select class="search-input">
-            <option>粗利益額</option>
-            <option>粗利益率</option>
-            <option>返品率</option>
-            <option>ASINスコア</option>
-            <option>FBA最安値</option>
-            <option>日本最安値</option>
-          </select>
-          <div class="sort-order-toggle" role="group" aria-label="並び順">
-            <button type="button" class="sort-order-btn">▼</button>
-            <button type="button" class="sort-order-btn">▲</button>
-          </div>
-        </div>
-        <span class="sort-separator" aria-hidden="true">＞</span>
-        <div class="sort-priority">
-          <select class="search-input">
-            <option>粗利益額</option>
-            <option>粗利益率</option>
-            <option>返品率</option>
-            <option>ASINスコア</option>
-            <option>FBA最安値</option>
-            <option>日本最安値</option>
-          </select>
-          <div class="sort-order-toggle" role="group" aria-label="並び順">
-            <button type="button" class="sort-order-btn">▼</button>
-            <button type="button" class="sort-order-btn">▲</button>
-          </div>
-        </div>
-        <div class="sort-panel-actions">
-          <button class="search-action" type="button">ソートを反映</button>
+        <div class="sort-panel-search">
+          <button class="search-action search-bulk is-hidden" type="button">一括削除</button>
+          <button class="search-action search-reset" type="button">条件リセット</button>
           <button class="search-run" type="button">検索</button>
         </div>
       </div>
