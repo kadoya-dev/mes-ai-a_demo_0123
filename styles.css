@@ -332,7 +332,7 @@ a{ color:inherit; }
   font-weight:900;
 }
 .compare-select{
-  width:120px;
+  width:80px;
 }
 .field-compare .field-inline{
   flex-wrap:wrap;
