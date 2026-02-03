@@ -105,12 +105,9 @@
             </div>
           </label>
           <label class="field">
-            <span>在庫数＜「日間」推奨仕入れ数</span>
+            <span>比較条件</span>
             <div class="field-inline">
-              <label class="inline-check">
-                <input type="checkbox" class="search-check js-stockCompareToggle" />
-                <span>ON</span>
-              </label>
+              <span class="compare-text">在庫数＜</span>
               <select class="search-input input-compact js-stockCompareDays" disabled>
                 <option value="">日間</option>
                 <option value="30">30日間</option>
@@ -119,6 +116,10 @@
                 <option value="120">120日間</option>
                 <option value="180">180日間</option>
               </select>
+              <span class="compare-text">推奨仕入れ数</span>
+              <label class="inline-check inline-check-right">
+                <input type="checkbox" class="search-check js-stockCompareToggle" aria-label="在庫数と推奨仕入れ数の比較条件を有効化" />
+              </label>
             </div>
           </label>
           <label class="field">
