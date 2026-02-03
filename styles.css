@@ -275,6 +275,12 @@ a{ color:inherit; }
   font-weight:900;
   color:#92400e;
 }
+.sort-panel-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-left:auto;
+}
 .sort-priority{
   display:flex;
   align-items:center;
@@ -286,7 +292,22 @@ a{ color:inherit; }
   box-shadow: 0 8px 18px rgba(245,158,11,.15);
 }
 .sort-priority select{
-  min-width:130px;
+  min-width:100px;
+}
+.sort-order-toggle{
+  display:inline-flex;
+  gap:4px;
+}
+.sort-order-btn{
+  height:30px;
+  min-width:36px;
+  border-radius:8px;
+  border:1px solid rgba(148,163,184,.7);
+  background:#fff;
+  font-size:12px;
+  font-weight:900;
+  color:#0f172a;
+  cursor:pointer;
 }
 .sort-priority .sort-order{
   min-width:60px;
