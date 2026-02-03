@@ -309,6 +309,11 @@ a{ color:inherit; }
   color:#0f172a;
   cursor:pointer;
 }
+.sort-priority .sort-order{
+  min-width:60px;
+  text-align:center;
+  font-weight:900;
+}
 .search-action{
   height:40px;
   border-radius:12px;
