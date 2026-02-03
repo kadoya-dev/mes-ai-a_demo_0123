@@ -274,6 +274,9 @@ a{ color:inherit; }
 .input-currency{
   width:100px;
 }
+.input-date{
+  width:160px;
+}
 .check-group{
   display:flex;
   flex-wrap:wrap;
@@ -355,6 +358,22 @@ a{ color:inherit; }
   color:transparent;
   font-size:12px;
   font-weight:900;
+  opacity:0;
+}
+.sort-chip.is-active{
+  background:#1d4ed8;
+  color:#fff;
+  border-color:#1d4ed8;
+}
+.sort-chip.is-active .sort-chip-check{
+  background:#fff;
+  border-color:#fff;
+  color:#1d4ed8;
+}
+.sort-chip.is-active .sort-chip-order{
+  opacity:1;
+  background:#fff;
+  color:#1d4ed8;
 }
 .sort-chip-order{
   display:inline-flex;
@@ -397,6 +416,12 @@ a{ color:inherit; }
 }
 .search-reset{
   min-width:140px;
+}
+.search-bulk{
+  min-width:120px;
+}
+.is-hidden{
+  display:none !important;
 }
 .sort-panel-search .search-run{
   min-width:160px;
@@ -2375,6 +2400,18 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .shop-actions{
   grid-template-columns: 1fr 1fr;
   gap:8px;
   margin-top:12px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .shop-actions-secondary{
+  margin-top:10px;
+}
+body:is(.fourth-layout, .fifth-layout) .l4-buy .shop-actions-secondary .ghost-btn{
+  width:100%;
+  height:38px;
+  border-radius:12px;
+  font-weight:900;
+  border:1px dashed rgba(148,163,184,.8);
+  background:#f8fafc;
+  cursor:pointer;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-buy .shop-actions .ghost-btn,
 body:is(.fourth-layout, .fifth-layout) .l4-buy .shop-actions .cart-btn{

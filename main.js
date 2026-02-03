@@ -199,9 +199,52 @@ const itemsContainer = $("#itemsContainer");
 const emptyState = $("#emptyState");
 const headerStatus = $("#headerStatus");
 
+const modeInputs = $$('input[name="searchMode"]');
+const bulkDeleteBtn = $(".search-bulk");
 const sortChips = $$(".sort-chip");
 const sortResetBtn = $(".search-reset");
 let sortOrder = [];
+
+function getCurrentMode() {
+  return modeInputs.find((input) => input.checked)?.value || "seller";
+}
+
+function applyModeToCard(card) {
+  const mode = getCurrentMode();
+  const laterBtn = card.querySelector(".js-later");
+  if (laterBtn) {
+    laterBtn.textContent = mode === "later" ? "削除" : "後で仕入れる";
+  }
+  const blockBtn = card.querySelector(".js-blockToggle");
+  if (blockBtn && !blockBtn.dataset.bound) {
+    blockBtn.dataset.bound = "true";
+    blockBtn.addEventListener("click", () => {
+      const isBlocked = blockBtn.dataset.blocked === "true";
+      blockBtn.dataset.blocked = (!isBlocked).toString();
+      blockBtn.textContent = isBlocked ? "表示ブロック🚫" : "ブロック🚫解除";
+    });
+  }
+  if (blockBtn) {
+    const isBlocked = blockBtn.dataset.blocked === "true";
+    blockBtn.textContent = isBlocked ? "ブロック🚫解除" : "表示ブロック🚫";
+  }
+}
+
+function updateModeUI() {
+  const mode = getCurrentMode();
+  if (bulkDeleteBtn) {
+    bulkDeleteBtn.classList.toggle("is-hidden", mode !== "stock");
+  }
+  $$(".product-card").forEach(applyModeToCard);
+}
+
+modeInputs.forEach((input) => {
+  input.addEventListener("change", () => {
+    if (input.checked) {
+      window.location.reload();
+    }
+  });
+});
 
 function updateSortChips() {
   sortChips.forEach((chip) => {
@@ -236,6 +279,7 @@ sortResetBtn?.addEventListener("click", () => {
 });
 
 updateSortChips();
+updateModeUI();
 const appVersion = $("#appVersion");
 
 /* cart */
@@ -460,6 +504,7 @@ function addOrFocusCard(asin) {
 
   const card = createProductCard(asin, data);
   itemsContainer.appendChild(card);
+  applyModeToCard(card);
 
   emptyState.style.display = "none";
   cardState.set(asin, { el: card, data, chart: card.__chart || null });
@@ -1860,6 +1905,9 @@ function createProductCard(asin, data) {
             <div class="shop-actions">
               <button class="ghost-btn js-later" type="button">後で仕入れる</button>
               <button class="cart-btn js-addCart" type="button">仕入れリスト</button>
+            </div>
+            <div class="shop-actions-secondary">
+              <button class="ghost-btn js-blockToggle" type="button">表示ブロック🚫</button>
             </div>
 
             <input class="js-sell" type="hidden" />
