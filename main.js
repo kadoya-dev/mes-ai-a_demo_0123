@@ -205,8 +205,6 @@ const sortChips = $$(".sort-chip");
 const sortResetBtn = $(".search-reset");
 let sortOrder = [];
 const MODE_STORAGE_KEY = "mes-search-mode";
-const stockCompareToggle = $(".js-stockCompareToggle");
-const stockCompareDays = $(".js-stockCompareDays");
 
 function getCurrentMode() {
   return modeInputs.find((input) => input.checked)?.value || "seller";
@@ -254,19 +252,6 @@ function initModeState() {
   updateModeUI();
 }
 
-function initStockCompareToggle() {
-  if (!stockCompareToggle || !stockCompareDays) return;
-  const syncState = () => {
-    const isEnabled = stockCompareToggle.checked;
-    stockCompareDays.disabled = !isEnabled;
-    stockCompareDays.required = isEnabled;
-    if (!isEnabled) {
-      stockCompareDays.value = "";
-    }
-  };
-  stockCompareToggle.addEventListener("change", syncState);
-  syncState();
-}
 
 modeInputs.forEach((input) => {
   input.addEventListener("change", () => {
@@ -311,7 +296,6 @@ sortResetBtn?.addEventListener("click", () => {
 
 updateSortChips();
 initModeState();
-initStockCompareToggle();
 const appVersion = $("#appVersion");
 
 /* cart */
