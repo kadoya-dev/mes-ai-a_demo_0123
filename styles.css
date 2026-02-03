@@ -374,6 +374,80 @@ a{ color:inherit; }
   color:transparent;
   font-size:12px;
   font-weight:900;
+  opacity:0;
+}
+.sort-chip.is-active{
+  background:#1d4ed8;
+  color:#fff;
+  border-color:#1d4ed8;
+}
+.sort-chip.is-active .sort-chip-check{
+  background:#fff;
+  border-color:#fff;
+  color:#1d4ed8;
+}
+.sort-chip.is-active .sort-chip-order{
+  opacity:1;
+  background:#fff;
+  color:#1d4ed8;
+}
+.sort-chip-order{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:18px;
+  height:18px;
+  padding:0 4px;
+  border-radius:999px;
+  background:rgba(59,130,246,.12);
+  color:#1d4ed8;
+  font-size:11px;
+  font-weight:900;
+  opacity:0;
+}
+.sort-chip.is-active{
+  background:#1d4ed8;
+  color:#fff;
+  border-color:#1d4ed8;
+}
+.sort-chip.is-active .sort-chip-check{
+  background:#fff;
+  border-color:#fff;
+  color:#1d4ed8;
+}
+.sort-chip.is-active .sort-chip-order{
+  opacity:1;
+  background:#fff;
+  color:#1d4ed8;
+}
+.sort-chip-order{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:18px;
+  height:18px;
+  padding:0 4px;
+  border-radius:999px;
+  background:rgba(59,130,246,.12);
+  color:#1d4ed8;
+  font-size:11px;
+  font-weight:900;
+  opacity:0;
+}
+.sort-chip.is-active{
+  background:#1d4ed8;
+  color:#fff;
+  border-color:#1d4ed8;
+}
+.sort-chip.is-active .sort-chip-check{
+  background:#fff;
+  border-color:#fff;
+  color:#1d4ed8;
+}
+.sort-chip.is-active .sort-chip-order{
+  opacity:1;
+  background:#fff;
+  color:#1d4ed8;
 }
 .sort-chip-order{
   display:inline-flex;
