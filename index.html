@@ -52,28 +52,28 @@
           <label class="field">
             <span>返品率</span>
             <div class="field-inline">
-              <input type="number" class="search-input" placeholder="%" />
+              <input type="number" class="search-input input-percent" placeholder="%" />
               <span class="unit-chip">% 以下</span>
             </div>
           </label>
           <label class="field">
             <span>粗利益額</span>
             <div class="field-inline">
-              <input type="number" class="search-input" placeholder="円" />
+              <input type="number" class="search-input input-currency" placeholder="円" />
               <span class="unit-chip">円 以上</span>
             </div>
           </label>
           <label class="field">
             <span>粗利益率</span>
             <div class="field-inline">
-              <input type="number" class="search-input" placeholder="%" />
+              <input type="number" class="search-input input-percent" placeholder="%" />
               <span class="unit-chip">% 以上</span>
             </div>
           </label>
           <label class="field">
             <span>ASINスコア</span>
             <div class="field-inline">
-              <input type="number" class="search-input" placeholder="スコア" />
+              <input type="number" class="search-input input-score" placeholder="スコア" />
               <span class="unit-chip">以上</span>
             </div>
           </label>
@@ -97,6 +97,41 @@
               <option>★★★★☆</option>
               <option>★★★★★</option>
             </select>
+          </label>
+          <label class="field">
+            <span>セラー数</span>
+            <div class="field-inline">
+              <input type="number" class="search-input input-compact" placeholder="件" />
+              <span class="unit-chip">件 以下</span>
+            </div>
+          </label>
+          <label class="field">
+            <span>サイズ感</span>
+            <div class="field-inline">
+              <input type="number" class="search-input input-compact" placeholder="cm" />
+              <span class="unit-chip">cm 以下</span>
+            </div>
+          </label>
+          <label class="field">
+            <span>FBA最安値</span>
+            <div class="field-inline">
+              <input type="number" class="search-input input-currency" placeholder="円" />
+              <span class="unit-chip">円 以上</span>
+            </div>
+          </label>
+          <label class="field">
+            <span>過去3ヶ月FBA最安値</span>
+            <div class="field-inline">
+              <input type="number" class="search-input input-currency" placeholder="円" />
+              <span class="unit-chip">円 以上</span>
+            </div>
+          </label>
+          <label class="field">
+            <span>日本最安値</span>
+            <div class="field-inline">
+              <input type="number" class="search-input input-currency" placeholder="円" />
+              <span class="unit-chip">円 以下</span>
+            </div>
           </label>
           <div class="field">
             <span>注意事項</span>
@@ -122,41 +157,6 @@
               <label><input type="checkbox" /> 木材</label>
             </div>
           </div>
-          <label class="field">
-            <span>セラー数</span>
-            <div class="field-inline">
-              <input type="number" class="search-input" placeholder="件" />
-              <span class="unit-chip">件 以下</span>
-            </div>
-          </label>
-          <label class="field">
-            <span>サイズ感</span>
-            <div class="field-inline">
-              <input type="number" class="search-input" placeholder="cm" />
-              <span class="unit-chip">cm 以下</span>
-            </div>
-          </label>
-          <label class="field">
-            <span>FBA最安値</span>
-            <div class="field-inline">
-              <input type="number" class="search-input" placeholder="円" />
-              <span class="unit-chip">円 以上</span>
-            </div>
-          </label>
-          <label class="field">
-            <span>過去3ヶ月FBA最安値</span>
-            <div class="field-inline">
-              <input type="number" class="search-input" placeholder="円" />
-              <span class="unit-chip">円 以上</span>
-            </div>
-          </label>
-          <label class="field">
-            <span>日本最安値</span>
-            <div class="field-inline">
-              <input type="number" class="search-input" placeholder="円" />
-              <span class="unit-chip">円 以下</span>
-            </div>
-          </label>
         </div>
       </div>
     </details>
@@ -164,18 +164,51 @@
     <div class="sort-panel sort-panel-accent">
       <div class="sort-panel-title">ソート順</div>
       <div class="sort-panel-controls">
-        <select class="search-input">
-          <option>粗利益額</option>
-          <option>粗利益率</option>
-          <option>返品率</option>
-          <option>ASINスコア</option>
-          <option>FBA最安値</option>
-          <option>日本最安値</option>
-        </select>
-        <select class="search-input">
-          <option>降順</option>
-          <option>昇順</option>
-        </select>
+        <div class="sort-priority">
+          <span class="sort-priority-label">第1</span>
+          <select class="search-input">
+            <option>粗利益額</option>
+            <option>粗利益率</option>
+            <option>返品率</option>
+            <option>ASINスコア</option>
+            <option>FBA最安値</option>
+            <option>日本最安値</option>
+          </select>
+          <select class="search-input">
+            <option>降順</option>
+            <option>昇順</option>
+          </select>
+        </div>
+        <div class="sort-priority">
+          <span class="sort-priority-label">第2</span>
+          <select class="search-input">
+            <option>粗利益額</option>
+            <option>粗利益率</option>
+            <option>返品率</option>
+            <option>ASINスコア</option>
+            <option>FBA最安値</option>
+            <option>日本最安値</option>
+          </select>
+          <select class="search-input">
+            <option>降順</option>
+            <option>昇順</option>
+          </select>
+        </div>
+        <div class="sort-priority">
+          <span class="sort-priority-label">第3</span>
+          <select class="search-input">
+            <option>粗利益額</option>
+            <option>粗利益率</option>
+            <option>返品率</option>
+            <option>ASINスコア</option>
+            <option>FBA最安値</option>
+            <option>日本最安値</option>
+          </select>
+          <select class="search-input">
+            <option>降順</option>
+            <option>昇順</option>
+          </select>
+        </div>
         <button class="search-action" type="button">ソートを反映</button>
       </div>
     </div>
