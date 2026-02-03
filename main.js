@@ -198,6 +198,19 @@ const materialFilters = $("#materialFilters");
 const itemsContainer = $("#itemsContainer");
 const emptyState = $("#emptyState");
 const headerStatus = $("#headerStatus");
+
+const sortOrderButtons = $$(".sort-order-btn");
+sortOrderButtons.forEach((btn) => {
+  const initialIsAsc = btn.textContent.trim() === "▲";
+  btn.dataset.order = initialIsAsc ? "asc" : "desc";
+  btn.setAttribute("aria-label", initialIsAsc ? "昇順" : "降順");
+  btn.addEventListener("click", () => {
+    const nextIsAsc = btn.dataset.order !== "asc";
+    btn.dataset.order = nextIsAsc ? "asc" : "desc";
+    btn.textContent = nextIsAsc ? "▲" : "▼";
+    btn.setAttribute("aria-label", nextIsAsc ? "昇順" : "降順");
+  });
+});
 const appVersion = $("#appVersion");
 
 /* cart */

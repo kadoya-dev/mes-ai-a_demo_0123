@@ -267,6 +267,7 @@ a{ color:inherit; }
   gap:12px;
   align-items:stretch;
   flex-wrap:wrap;
+  width:100%;
 }
 .sort-separator{
   display:inline-flex;
@@ -275,10 +276,7 @@ a{ color:inherit; }
   font-weight:900;
   color:#92400e;
 }
-.sort-panel-actions{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.sort-panel-search{
   margin-left:auto;
 }
 .sort-priority{
@@ -323,6 +321,10 @@ a{ color:inherit; }
   font-size:13px;
   font-weight:900;
   cursor:pointer;
+}
+.sort-panel-search .search-run{
+  min-width:160px;
+  font-size:18px;
 }
 
 /* =========================
