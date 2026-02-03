@@ -199,18 +199,43 @@ const itemsContainer = $("#itemsContainer");
 const emptyState = $("#emptyState");
 const headerStatus = $("#headerStatus");
 
-const sortOrderButtons = $$(".sort-order-btn");
-sortOrderButtons.forEach((btn) => {
-  const initialIsAsc = btn.textContent.trim() === "▲";
-  btn.dataset.order = initialIsAsc ? "asc" : "desc";
-  btn.setAttribute("aria-label", initialIsAsc ? "昇順" : "降順");
-  btn.addEventListener("click", () => {
-    const nextIsAsc = btn.dataset.order !== "asc";
-    btn.dataset.order = nextIsAsc ? "asc" : "desc";
-    btn.textContent = nextIsAsc ? "▲" : "▼";
-    btn.setAttribute("aria-label", nextIsAsc ? "昇順" : "降順");
+const sortChips = $$(".sort-chip");
+const sortResetBtn = $(".search-reset");
+let sortOrder = [];
+
+function updateSortChips() {
+  sortChips.forEach((chip) => {
+    const key = chip.dataset.sort;
+    const index = sortOrder.indexOf(key);
+    const isActive = index !== -1;
+    chip.classList.toggle("is-active", isActive);
+    chip.setAttribute("aria-pressed", String(isActive));
+    const orderEl = chip.querySelector(".sort-chip-order");
+    if (orderEl) {
+      orderEl.textContent = isActive ? String(index + 1) : "";
+    }
+  });
+}
+
+sortChips.forEach((chip) => {
+  chip.addEventListener("click", () => {
+    const key = chip.dataset.sort;
+    const index = sortOrder.indexOf(key);
+    if (index === -1) {
+      sortOrder.push(key);
+    } else {
+      sortOrder.splice(index, 1);
+    }
+    updateSortChips();
   });
 });
+
+sortResetBtn?.addEventListener("click", () => {
+  sortOrder = [];
+  updateSortChips();
+});
+
+updateSortChips();
 const appVersion = $("#appVersion");
 
 /* cart */
