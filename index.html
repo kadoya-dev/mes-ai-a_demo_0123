@@ -105,6 +105,23 @@
             </div>
           </label>
           <label class="field">
+            <span>在庫数＜「日間」推奨仕入れ数</span>
+            <div class="field-inline">
+              <label class="inline-check">
+                <input type="checkbox" class="search-check js-stockCompareToggle" />
+                <span>ON</span>
+              </label>
+              <select class="search-input input-compact js-stockCompareDays" disabled>
+                <option value="">日間</option>
+                <option value="30">30日間</option>
+                <option value="60">60日間</option>
+                <option value="90">90日間</option>
+                <option value="120">120日間</option>
+                <option value="180">180日間</option>
+              </select>
+            </div>
+          </label>
+          <label class="field">
             <span>販売数(実績)</span>
             <div class="field-inline">
               <select class="search-input input-compact">
