@@ -64,7 +64,7 @@ a{ color:inherit; }
   display:flex;
   flex-direction:column;
   gap:6px;
-  align-items:flex-end;
+  align-items:flex-start;
 }
 .search-mode-label{
   font-size:12px;
@@ -87,6 +87,30 @@ a{ color:inherit; }
   font-size:15px;
   font-weight:900;
   color:#1e1b4b;
+}
+.mode-shop{
+  font-size:12px;
+  font-weight:800;
+  color:#4338ca;
+  background:#e0e7ff;
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid rgba(99,102,241,.35);
+}
+.search-panel-actions{
+  display:flex;
+  align-items:center;
+}
+.search-run{
+  height:40px;
+  padding:0 18px;
+  border-radius:12px;
+  border:1px solid rgba(16,185,129,.4);
+  background: rgba(16,185,129,.15);
+  color:#065f46;
+  font-size:13px;
+  font-weight:900;
+  cursor:pointer;
 }
 .mode-toggle input{
   accent-color: var(--blue);
@@ -178,6 +202,7 @@ a{ color:inherit; }
 }
 .search-input{
   height:34px;
+  width:100px;
   border:1px solid var(--line);
   border-radius:10px;
   padding:0 10px;
@@ -187,16 +212,16 @@ a{ color:inherit; }
   min-width:0;
 }
 .input-compact{
-  width:80px;
+  width:100px;
 }
 .input-percent{
-  width:80px;
+  width:100px;
 }
 .input-score{
-  width:80px;
+  width:100px;
 }
 .input-currency{
-  width:80px;
+  width:100px;
 }
 .check-group{
   display:flex;
