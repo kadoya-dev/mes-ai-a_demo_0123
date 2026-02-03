@@ -39,10 +39,6 @@
           <label><input type="radio" name="searchMode" /> 後で買う</label>
         </div>
       </div>
-      <div class="search-panel-actions">
-        <button class="search-run" type="button">検索</button>
-        <button class="search-action" type="button">ソートを反映</button>
-      </div>
     </div>
 
     <div class="search-grid">
@@ -178,8 +174,7 @@
             <option>日本最安値</option>
           </select>
           <div class="sort-order-toggle" role="group" aria-label="並び順">
-            <button type="button" class="sort-order-btn">▼</button>
-            <button type="button" class="sort-order-btn">▲</button>
+            <button type="button" class="sort-order-btn" aria-label="降順">▼</button>
           </div>
         </div>
         <span class="sort-separator" aria-hidden="true">＞</span>
@@ -193,8 +188,7 @@
             <option>日本最安値</option>
           </select>
           <div class="sort-order-toggle" role="group" aria-label="並び順">
-            <button type="button" class="sort-order-btn">▼</button>
-            <button type="button" class="sort-order-btn">▲</button>
+            <button type="button" class="sort-order-btn" aria-label="降順">▼</button>
           </div>
         </div>
         <span class="sort-separator" aria-hidden="true">＞</span>
@@ -208,12 +202,11 @@
             <option>日本最安値</option>
           </select>
           <div class="sort-order-toggle" role="group" aria-label="並び順">
-            <button type="button" class="sort-order-btn">▼</button>
-            <button type="button" class="sort-order-btn">▲</button>
+            <button type="button" class="sort-order-btn" aria-label="降順">▼</button>
           </div>
         </div>
-        <div class="sort-panel-actions">
-          <button class="search-action" type="button">ソートを反映</button>
+        <button class="search-action sort-apply" type="button">ソートを反映</button>
+        <div class="sort-panel-search">
           <button class="search-run" type="button">検索</button>
         </div>
       </div>
