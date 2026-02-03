@@ -204,6 +204,7 @@ const bulkDeleteBtn = $(".search-bulk");
 const sortChips = $$(".sort-chip");
 const sortResetBtn = $(".search-reset");
 let sortOrder = [];
+const MODE_STORAGE_KEY = "mes-search-mode";
 
 function getCurrentMode() {
   return modeInputs.find((input) => input.checked)?.value || "seller";
@@ -238,9 +239,23 @@ function updateModeUI() {
   $$(".product-card").forEach(applyModeToCard);
 }
 
+function initModeState() {
+  const storedMode = localStorage.getItem(MODE_STORAGE_KEY);
+  if (storedMode) {
+    const target = modeInputs.find((input) => input.value === storedMode);
+    if (target) {
+      target.checked = true;
+    }
+  } else {
+    localStorage.setItem(MODE_STORAGE_KEY, getCurrentMode());
+  }
+  updateModeUI();
+}
+
 modeInputs.forEach((input) => {
   input.addEventListener("change", () => {
     if (input.checked) {
+      localStorage.setItem(MODE_STORAGE_KEY, input.value);
       window.location.reload();
     }
   });
@@ -279,7 +294,7 @@ sortResetBtn?.addEventListener("click", () => {
 });
 
 updateSortChips();
-updateModeUI();
+initModeState();
 const appVersion = $("#appVersion");
 
 /* cart */
