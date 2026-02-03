@@ -280,9 +280,6 @@ a{ color:inherit; }
 .input-date{
   width:80px;
 }
-.input-date{
-  width:160px;
-}
 .check-group{
   display:flex;
   flex-wrap:wrap;
@@ -322,10 +319,17 @@ a{ color:inherit; }
 .inline-check-right{
   margin-left:auto;
 }
+.inline-check-left{
+  margin-right:6px;
+}
 .compare-text{
   font-size:12px;
   font-weight:900;
   color:#1f2937;
+}
+.compare-text-lg{
+  font-size:16px;
+  font-weight:900;
 }
 .field-compare{
   grid-column: span 2;
@@ -391,22 +395,6 @@ a{ color:inherit; }
   color:transparent;
   font-size:12px;
   font-weight:900;
-  opacity:0;
-}
-.sort-chip.is-active{
-  background:#1d4ed8;
-  color:#fff;
-  border-color:#1d4ed8;
-}
-.sort-chip.is-active .sort-chip-check{
-  background:#fff;
-  border-color:#fff;
-  color:#1d4ed8;
-}
-.sort-chip.is-active .sort-chip-order{
-  opacity:1;
-  background:#fff;
-  color:#1d4ed8;
 }
 .sort-chip-order{
   display:inline-flex;
