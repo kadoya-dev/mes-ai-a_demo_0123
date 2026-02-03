@@ -331,6 +331,14 @@ a{ color:inherit; }
   font-size:16px;
   font-weight:900;
 }
+.compare-select{
+  width:120px;
+}
+.field-compare .field-inline{
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+}
 .field-compare{
   grid-column: span 2;
 }
@@ -395,6 +403,22 @@ a{ color:inherit; }
   color:transparent;
   font-size:12px;
   font-weight:900;
+  opacity:0;
+}
+.sort-chip.is-active{
+  background:#1d4ed8;
+  color:#fff;
+  border-color:#1d4ed8;
+}
+.sort-chip.is-active .sort-chip-check{
+  background:#fff;
+  border-color:#fff;
+  color:#1d4ed8;
+}
+.sort-chip.is-active .sort-chip-order{
+  opacity:1;
+  background:#fff;
+  color:#1d4ed8;
 }
 .sort-chip-order{
   display:inline-flex;
