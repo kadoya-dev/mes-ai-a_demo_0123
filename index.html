@@ -55,8 +55,12 @@
         <div class="search-block-title">メイン検索項目</div>
         <div class="search-fields">
           <label class="field">
+            <span>最終仕入れ日</span>
+            <input type="date" class="search-input input-date" />
+          </label>
+          <label class="field">
             <span>キーワード</span>
-            <input type="text" class="search-input" placeholder="例：アウトドア 収納" />
+            <input type="text" class="search-input search-input-wide" placeholder="例：アウトドア 収納" />
           </label>
           <label class="field">
             <span>粗利益額</span>
@@ -104,7 +108,7 @@
               <input type="number" class="search-input input-compact" placeholder="個数" />
             </div>
           </label>
-          <label class="field">
+          <label class="field field-compare">
             <span>比較条件</span>
             <div class="field-inline">
               <span class="compare-text">在庫数＜</span>
@@ -120,6 +124,34 @@
               <label class="inline-check inline-check-right">
                 <input type="checkbox" class="search-check js-stockCompareToggle" aria-label="在庫数と推奨仕入れ数の比較条件を有効化" />
               </label>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <details class="search-details">
+      <summary class="search-details-toggle">詳細検索</summary>
+      <div class="search-block search-block-advanced">
+        <div class="search-block-title">詳細検索項目</div>
+        <div class="search-fields">
+          <label class="field">
+            <span>除外キーワード</span>
+            <input type="text" class="search-input search-input-wide" placeholder="例：中古, 互換品" />
+          </label>
+          <label class="field">
+            <span>評価</span>
+            <select class="search-input">
+              <option>★★★☆☆</option>
+              <option>★★★★☆</option>
+              <option>★★★★★</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>セラー数</span>
+            <div class="field-inline">
+              <input type="number" class="search-input input-compact" placeholder="件" />
+              <span class="unit-chip">件 以下</span>
             </div>
           </label>
           <label class="field">
@@ -138,38 +170,6 @@
                 <option>30日間</option>
               </select>
               <input type="number" class="search-input input-compact" placeholder="個数" />
-            </div>
-          </label>
-          <label class="field">
-            <span>最終仕入れ日</span>
-            <input type="date" class="search-input input-date" />
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <details class="search-details">
-      <summary class="search-details-toggle">詳細検索</summary>
-      <div class="search-block search-block-advanced">
-        <div class="search-block-title">詳細検索項目</div>
-        <div class="search-fields">
-          <label class="field">
-            <span>除外キーワード</span>
-            <input type="text" class="search-input" placeholder="例：中古, 互換品" />
-          </label>
-          <label class="field">
-            <span>評価</span>
-            <select class="search-input">
-              <option>★★★☆☆</option>
-              <option>★★★★☆</option>
-              <option>★★★★★</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>セラー数</span>
-            <div class="field-inline">
-              <input type="number" class="search-input input-compact" placeholder="件" />
-              <span class="unit-chip">件 以下</span>
             </div>
           </label>
           <label class="field">
