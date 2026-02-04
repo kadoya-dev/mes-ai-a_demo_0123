@@ -275,7 +275,13 @@ a{ color:inherit; }
   background:#fff;
   min-width:0;
 }
+.search-panel .field .search-input{
+  width:80px;
+}
 .search-input.search-input-wide{
+  width:160px;
+}
+.search-panel .field .search-input.search-input-wide{
   width:160px;
 }
 .input-compact{
@@ -350,6 +356,9 @@ a{ color:inherit; }
   color:#111827;
 }
 .compare-select{
+  width:100px;
+}
+.search-panel .field .compare-select{
   width:100px;
 }
 .field-compare .field-inline{
