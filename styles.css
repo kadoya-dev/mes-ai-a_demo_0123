@@ -299,6 +299,12 @@ a{ color:inherit; }
 .input-date{
   width:80px;
 }
+.input-medium{
+  width:150px;
+}
+.search-panel .field .search-input.input-medium{
+  width:150px;
+}
 .check-group{
   display:flex;
   flex-wrap:wrap;
