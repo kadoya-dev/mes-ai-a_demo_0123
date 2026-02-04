@@ -90,22 +90,20 @@
             <span>最終仕入れ日</span>
             <input type="date" class="search-input input-date" />
           </label>
-          <label class="field">
-            <span>推奨仕入数</span>
+          <label class="field field-compare">
+            <span>在庫数 / 推奨仕入れ数</span>
             <div class="field-inline">
-              <select class="search-input input-compact">
-                <option>ミニマム</option>
-                <option selected>バランス</option>
-                <option>ステップアップ</option>
-              </select>
-              <select class="search-input input-compact">
-                <option>30日間</option>
+              <span class="label-chip">在庫数</span>
+              <span class="compare-operator">&lt;</span>
+              <select class="search-input input-compact compare-select" aria-label="日数">
+                <option selected>30日間</option>
                 <option>60日間</option>
                 <option>90日間</option>
                 <option>120日間</option>
                 <option>180日間</option>
               </select>
-              <input type="number" class="search-input input-compact" placeholder="個数" />
+              <span class="compare-operator">×</span>
+              <span class="label-chip">推奨仕入れ数</span>
             </div>
           </label>
         </div>
