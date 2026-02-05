@@ -217,9 +217,16 @@ function applyModeToCard(card) {
     laterBtn.textContent = mode === "later" ? "削除" : "後で仕入れる";
   }
   const blockBtn = card.querySelector(".js-blockToggle");
+  if (blockBtn && mode === "repeat") {
+    blockBtn.textContent = "削除";
+    return;
+  }
   if (blockBtn && !blockBtn.dataset.bound) {
     blockBtn.dataset.bound = "true";
     blockBtn.addEventListener("click", () => {
+      if (getCurrentMode() === "repeat") {
+        return;
+      }
       const isBlocked = blockBtn.dataset.blocked === "true";
       blockBtn.dataset.blocked = (!isBlocked).toString();
       blockBtn.textContent = isBlocked ? "表示ブロック🚫" : "ブロック🚫解除";
