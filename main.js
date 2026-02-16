@@ -1927,7 +1927,7 @@ function createProductCard(asin, data) {
 
             <div class="shop-actions">
               <button class="ghost-btn js-later" type="button">後で仕入れる</button>
-              <button class="cart-btn js-addCart" type="button">仕入れリスト</button>
+              <button class="cart-btn js-addCart" type="button">仕入れる</button>
             </div>
             <div class="shop-actions-secondary">
               <button class="ghost-btn js-blockToggle" type="button">表示ブロック🚫</button>
