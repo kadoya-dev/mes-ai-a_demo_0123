@@ -2533,14 +2533,16 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .shop-row-actions .shop-remove{
 }
 body:is(.fourth-layout, .fifth-layout) .l4-buy .sku-field{
   margin-top:10px;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:8px;
+  align-items:center;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-buy .sku-field-label{
   font-size:12px;
   font-weight:900;
   color:#334155;
+  white-space:nowrap;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-buy .sku-field-input{
   width:100%;

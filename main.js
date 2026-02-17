@@ -1936,7 +1936,13 @@ function createProductCard(asin, data) {
 
             <div class="sku-field">
               <label class="sku-field-label" for="sku-${asin}">指定SKU</label>
-              <input id="sku-${asin}" class="sku-field-input js-sku" type="text" placeholder="SKUを入力" />
+              <input id="sku-${asin}" class="sku-field-input js-sku" type="text" list="sku-options-${asin}" placeholder="選択または入力" />
+              <datalist id="sku-options-${asin}">
+                <option value="SKU-A01"></option>
+                <option value="SKU-A02"></option>
+                <option value="SKU-B01"></option>
+                <option value="SKU-B02"></option>
+              </datalist>
             </div>
 
             <div class="shop-actions">
