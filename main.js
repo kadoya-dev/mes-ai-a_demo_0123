@@ -1934,6 +1934,11 @@ function createProductCard(asin, data) {
               </div>
             </div>
 
+            <div class="sku-field">
+              <label class="sku-field-label" for="sku-${asin}">指定SKU</label>
+              <input id="sku-${asin}" class="sku-field-input js-sku" type="text" placeholder="SKUを入力" />
+            </div>
+
             <div class="shop-actions">
               <button class="ghost-btn js-later" type="button">後で仕入れる</button>
               <button class="cart-btn js-addCart" type="button">仕入れリスト</button>
