@@ -2559,9 +2559,9 @@ body:is(.fourth-layout, .fifth-layout) .l4-buy .shop-actions .cart-btn{
   cursor:pointer;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-buy .shop-actions .cart-btn{
-  background:#111827;
+  background:#5b5cff;
   color:#fff;
-  border-color:#111827;
+  border-color:#5b5cff;
 }
 body:is(.fourth-layout, .fifth-layout) .l4-buy .asin-summary{
   grid-column: 1 / -1;
