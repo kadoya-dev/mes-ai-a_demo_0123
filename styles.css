@@ -325,6 +325,34 @@ a{ color:inherit; }
 .check-group input{
   accent-color: var(--blue);
 }
+
+.has-tooltip{
+  position:relative;
+}
+.has-tooltip::after{
+  content:attr(data-tooltip);
+  position:absolute;
+  left:0;
+  bottom:calc(100% + 6px);
+  background:#111827;
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.4;
+  padding:6px 8px;
+  border-radius:8px;
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(4px);
+  transition:opacity .15s ease, transform .15s ease;
+  z-index:20;
+}
+.has-tooltip:hover::after,
+.has-tooltip:focus-within::after{
+  opacity:1;
+  transform:translateY(0);
+}
 .inline-check{
   display:inline-flex;
   align-items:center;
@@ -377,28 +405,32 @@ a{ color:inherit; }
 }
 .field-risk{
   grid-column: span 2;
+  margin-top:8px;
+}
+.field-risk + .field{
+  margin-top:2px;
 }
 .risk-inline{
   display:inline-flex;
   align-items:center;
   gap:6px;
-  padding:6px 10px;
+  padding:4px 10px;
   border-radius:999px;
   border:1px solid var(--line);
   background:#fff;
-  font-size:12px;
-  font-weight:900;
+  font-size:11px;
+  font-weight:800;
   color:#1f2937;
   white-space:nowrap;
-  width:max-content;
 }
 .risk-inline input{
   accent-color:var(--blue);
+  margin:0;
 }
 .risk-inline .compare-select{
-  width:92px;
-  height:28px;
-  padding:0 8px;
+  width:116px;
+  height:30px;
+  padding:0 10px;
   border-radius:999px;
 }
 .sort-panel{
