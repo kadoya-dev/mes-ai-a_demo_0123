@@ -213,28 +213,37 @@ function getCurrentMode() {
 function applyModeToCard(card) {
   const mode = getCurrentMode();
   const laterBtn = card.querySelector(".js-later");
+  const primaryBtn = card.querySelector(".js-addCart");
+  const blockBtn = card.querySelector(".js-blockToggle");
+
   if (laterBtn) {
     laterBtn.textContent = mode === "later" ? "削除" : "後で仕入れる";
   }
-  const blockBtn = card.querySelector(".js-blockToggle");
-  if (blockBtn && mode === "repeat") {
+
+  if (primaryBtn) {
+    primaryBtn.textContent = mode === "procurementList" ? "仕入れ情報修正" : "仕入れリスト";
+  }
+
+  if (blockBtn && (mode === "repeat" || mode === "procurementList")) {
     blockBtn.textContent = "削除";
     return;
   }
+
   if (blockBtn && !blockBtn.dataset.bound) {
     blockBtn.dataset.bound = "true";
     blockBtn.addEventListener("click", () => {
-      if (getCurrentMode() === "repeat") {
+      if (["repeat", "procurementList"].includes(getCurrentMode())) {
         return;
       }
       const isBlocked = blockBtn.dataset.blocked === "true";
       blockBtn.dataset.blocked = (!isBlocked).toString();
-      blockBtn.textContent = isBlocked ? "表示ブロック🚫" : "ブロック🚫解除";
+      blockBtn.textContent = isBlocked ? "表示ブロック" : "表示ブロック解除";
     });
   }
+
   if (blockBtn) {
     const isBlocked = blockBtn.dataset.blocked === "true";
-    blockBtn.textContent = isBlocked ? "ブロック🚫解除" : "表示ブロック🚫";
+    blockBtn.textContent = isBlocked ? "表示ブロック解除" : "表示ブロック";
   }
 }
 
@@ -1710,7 +1719,7 @@ function createProductCard(asin, data) {
           <div class="buy-title">仕入れ額（￥）</div>
           <input class="js-cost" type="number" step="1" placeholder="例: 3700" />
 
-          <button class="cart-btn js-addCart" type="button">カートに入れる</button>
+          <button class="cart-btn js-addCart" type="button">仕入れリスト</button>
         </div>
 
         <div class="l3-graph l3-block">
@@ -1772,7 +1781,7 @@ function createProductCard(asin, data) {
         </div>
 
         <div class="l4-buy l4-block">
-          <div class="head">カート</div>
+          <div class="head">仕入れ情報</div>
           <div class="buy-inner">
             <div class="shop-panel">
               <div class="shop-panel-head">
@@ -1925,12 +1934,23 @@ function createProductCard(asin, data) {
               </div>
             </div>
 
+            <div class="sku-field">
+              <label class="sku-field-label" for="sku-${asin}">指定SKU</label>
+              <input id="sku-${asin}" class="sku-field-input js-sku" type="text" list="sku-options-${asin}" placeholder="選択または入力" />
+              <datalist id="sku-options-${asin}">
+                <option value="SKU-A01"></option>
+                <option value="SKU-A02"></option>
+                <option value="SKU-B01"></option>
+                <option value="SKU-B02"></option>
+              </datalist>
+            </div>
+
             <div class="shop-actions">
               <button class="ghost-btn js-later" type="button">後で仕入れる</button>
-              <button class="cart-btn js-addCart" type="button">仕入れる</button>
+              <button class="cart-btn js-addCart" type="button">仕入れリスト</button>
             </div>
             <div class="shop-actions-secondary">
-              <button class="ghost-btn js-blockToggle" type="button">表示ブロック🚫</button>
+              <button class="ghost-btn js-blockToggle" type="button">表示ブロック</button>
             </div>
 
             <input class="js-sell" type="hidden" />
@@ -2029,7 +2049,7 @@ function createProductCard(asin, data) {
           <div class="buy-title">仕入れ額（￥）</div>
           <input class="js-cost" type="number" step="1" placeholder="例: 3700" />
 
-          <button class="cart-btn js-addCart" type="button">カートに入れる</button>
+          <button class="cart-btn js-addCart" type="button">仕入れリスト</button>
         </div>
       </div>
 
@@ -2062,7 +2082,7 @@ function createProductCard(asin, data) {
               <label>仕入れ額（￥）</label>
               <input class="js-cost" type="number" step="1" placeholder="例: 3700" />
 
-              <button class="cart-btn js-addCart" type="button">カートに入れる</button>
+              <button class="cart-btn js-addCart" type="button">仕入れリスト</button>
             </div>
           </div>
 
