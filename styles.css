@@ -427,6 +427,15 @@ a{ color:inherit; }
   accent-color:var(--blue);
   margin:0;
 }
+.risk-inline input[type="checkbox"]{
+  width:16px;
+  min-width:16px;
+  height:16px;
+  padding:0;
+  border:0;
+  box-shadow:none;
+  flex:0 0 16px;
+}
 .risk-inline .compare-select{
   width:116px;
   height:30px;
