@@ -320,7 +320,11 @@ const cartTotalSales = $("#cartTotalSales");
 const cartTotalCost = $("#cartTotalCost");
 const cartTotalProfit = $("#cartTotalProfit");
 const cartProfitRate = $("#cartProfitRate");
+const cartSalesTargetRate = $("#cartSalesTargetRate");
+const cartProfitTargetRate = $("#cartProfitTargetRate");
 const cartItemCount = $("#cartItemCount");
+const SALES_TARGET_STORAGE_KEY = "mes-sales-target-jpy";
+const PROFIT_TARGET_STORAGE_KEY = "mes-profit-target-jpy";
 
 /* sort */
 const sortBar = $("#sortBar");
@@ -1639,6 +1643,10 @@ function updateCartSummary() {
   const avgCost = totalCost / avgDenom;
   const avgProfit = profit / avgDenom;
   const profitRate = totalRevenueJPY > 0 ? (profit / totalRevenueJPY) * 100 : 0;
+  const salesTargetJPY = Number(localStorage.getItem(SALES_TARGET_STORAGE_KEY) || 0);
+  const profitTargetJPY = Number(localStorage.getItem(PROFIT_TARGET_STORAGE_KEY) || 0);
+  const salesTargetRate = salesTargetJPY > 0 ? (totalRevenueJPY / salesTargetJPY) * 100 : null;
+  const profitTargetRate = profitTargetJPY > 0 ? (profit / profitTargetJPY) * 100 : null;
   if (cartTotalPayment) {
     cartTotalPayment.textContent = `${fmtJPY(totalRevenueJPY)}(${fmtJPY(avgPayment)})`;
   }
@@ -1653,6 +1661,12 @@ function updateCartSummary() {
   }
   if (cartProfitRate) {
     cartProfitRate.textContent = `${profitRate.toFixed(1)}%`;
+  }
+  if (cartSalesTargetRate) {
+    cartSalesTargetRate.textContent = salesTargetRate === null ? "—" : `${salesTargetRate.toFixed(1)}%`;
+  }
+  if (cartProfitTargetRate) {
+    cartProfitTargetRate.textContent = profitTargetRate === null ? "—" : `${profitTargetRate.toFixed(1)}%`;
   }
   if (cartItemCount) {
     cartItemCount.textContent = `${itemCount}個`;
