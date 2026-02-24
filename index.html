@@ -37,8 +37,12 @@
           <span>ストック</span>
         </label>
         <label class="mode-tab">
+          <input type="radio" name="searchMode" value="procurementList" />
+          <span>仕入れリスト</span>
+        </label>
+        <label class="mode-tab">
           <input type="radio" name="searchMode" value="later" />
-          <span>後で買う</span>
+          <span>後で仕入れる</span>
         </label>
         <label class="mode-tab">
           <input type="radio" name="searchMode" value="repeat" />
@@ -154,30 +158,22 @@
                 <span class="unit-chip">円 以下</span>
               </div>
             </label>
-            <label class="field field-compare">
-              <span>在庫数 ＜ 推奨仕入れ数</span>
-              <div class="field-inline">
-                <label class="inline-check inline-check-left">
-                  <input type="checkbox" />
-                  適用
-                </label>
-                <span class="label-chip">在庫数</span>
-                <span class="compare-operator">&lt;</span>
-                <select class="search-input input-compact compare-select" aria-label="日数">
+            <div class="field field-risk">
+              <label class="risk-inline has-tooltip" data-tooltip="在庫数 ＜ ○日間 推奨仕入れ数">
+                <input type="checkbox" />
+                <span>欠品リスク</span>
+                <select class="search-input input-compact compare-select" aria-label="欠品リスクの日数">
                   <option selected>30日間</option>
                   <option>60日間</option>
                   <option>90日間</option>
                   <option>120日間</option>
                   <option>180日間</option>
                 </select>
-                <span class="compare-operator">×</span>
-                <span class="label-chip">推奨仕入れ数</span>
-              </div>
-            </label>
+              </label>
+            </div>
             <div class="field">
-              <span>除外条件</span>
               <div class="check-group">
-                <label><input type="checkbox" /> 粗利益率-返品率＝マイナスは除外</label>
+                <label class="has-tooltip" data-tooltip="粗利益率-返品率＝マイナスは除外"><input type="checkbox" /> 返品リスク反映</label>
               </div>
             </div>
             <div class="field">
@@ -272,6 +268,8 @@
       <div><span>入金額合計</span><b id="cartTotalPayment">￥0(￥0)</b></div>
       <div><span>粗利益額合計</span><b id="cartTotalProfit">￥0(￥0)</b></div>
       <div><span>粗利益率</span><b id="cartProfitRate">0.0%</b></div>
+      <div><span>T売上達成率</span><b id="cartSalesTargetRate">—</b></div>
+      <div><span>T利益達成率</span><b id="cartProfitTargetRate">—</b></div>
     </div>
   </section>
 
