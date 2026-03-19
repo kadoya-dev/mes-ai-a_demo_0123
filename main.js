@@ -237,13 +237,13 @@ function applyModeToCard(card) {
       }
       const isBlocked = blockBtn.dataset.blocked === "true";
       blockBtn.dataset.blocked = (!isBlocked).toString();
-      blockBtn.textContent = isBlocked ? "表示ブロック" : "表示ブロック解除";
+      blockBtn.textContent = isBlocked ? "ブロック🚫" : "ブロック🚫解除";
     });
   }
 
   if (blockBtn) {
     const isBlocked = blockBtn.dataset.blocked === "true";
-    blockBtn.textContent = isBlocked ? "表示ブロック解除" : "表示ブロック";
+    blockBtn.textContent = isBlocked ? "ブロック🚫解除" : "ブロック🚫";
   }
 }
 
@@ -1964,7 +1964,7 @@ function createProductCard(asin, data) {
               <button class="cart-btn js-addCart" type="button">仕入れリスト</button>
             </div>
             <div class="shop-actions-secondary">
-              <button class="ghost-btn js-blockToggle" type="button">表示ブロック</button>
+              <button class="ghost-btn js-blockToggle" type="button">ブロック🚫</button>
             </div>
 
             <input class="js-sell" type="hidden" />
