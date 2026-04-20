@@ -1980,7 +1980,7 @@ function createProductCard(asin, data) {
 
         <div class="l4-mes l4-block">
           <div class="head head-with-score">
-            <span>需要供給グラフ（180日）</span>
+            <span>需要供給グラフ</span>
             <div class="asin-score-meter" style="--asin-score: 62;">
               <span class="asin-score-label">ASINスコア</span>
               <div class="asin-score-track">
