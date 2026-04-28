@@ -73,14 +73,14 @@
               <input type="text" class="search-input search-input-wide" placeholder="例：中古, 互換品" />
             </label>
             <label class="field">
-              <span>粗利益額</span>
+              <span>見込み粗利益額</span>
               <div class="field-inline">
                 <input type="number" class="search-input input-compact" placeholder="円" />
                 <span class="unit-chip">円 以上</span>
               </div>
             </label>
             <label class="field">
-              <span>粗利益率</span>
+              <span>見込み粗利益率</span>
               <div class="field-inline">
                 <input type="number" class="search-input input-percent" placeholder="%" />
                 <span class="unit-chip">% 以上</span>
@@ -173,7 +173,7 @@
             </div>
             <div class="field">
               <div class="check-group">
-                <label class="has-tooltip" data-tooltip="粗利益率-返品率＝マイナスは除外"><input type="checkbox" /> 返品リスク反映</label>
+                <label class="has-tooltip" data-tooltip="見込み粗利益率-返品率＝マイナスは除外"><input type="checkbox" /> 返品リスク反映</label>
               </div>
             </div>
             <div class="field">
@@ -195,12 +195,12 @@
         <div class="sort-chip-list" role="group" aria-label="並び替えの優先順">
           <button type="button" class="sort-chip" data-sort="粗利益額">
             <span class="sort-chip-check" aria-hidden="true">✓</span>
-            <span class="sort-chip-label">粗利益額</span>
+            <span class="sort-chip-label">見込み粗利益額</span>
             <span class="sort-chip-order" aria-hidden="true"></span>
           </button>
           <button type="button" class="sort-chip" data-sort="粗利益率">
             <span class="sort-chip-check" aria-hidden="true">✓</span>
-            <span class="sort-chip-label">粗利益率</span>
+            <span class="sort-chip-label">見込み粗利益率</span>
             <span class="sort-chip-order" aria-hidden="true"></span>
           </button>
           <button type="button" class="sort-chip" data-sort="返品率">
@@ -265,11 +265,11 @@
       <div><span>合計数</span><b id="cartItemCount">0個</b></div>
       <div><span>販売額合計</span><b id="cartTotalSales">＄0.00(＄0.00)</b></div>
       <div><span>仕入れ額合計</span><b id="cartTotalCost">￥0(￥0)</b></div>
-      <div><span>入金額合計</span><b id="cartTotalPayment">￥0(￥0)</b></div>
-      <div><span>粗利益額合計</span><b id="cartTotalProfit">￥0(￥0)</b></div>
-      <div><span>粗利益率</span><b id="cartProfitRate">0.0%</b></div>
-      <div><span>T売上達成率</span><b id="cartSalesTargetRate">—</b></div>
-      <div><span>T利益達成率</span><b id="cartProfitTargetRate">—</b></div>
+      <div><span>見込み入金額合計</span><b id="cartTotalPayment">￥0(￥0)</b></div>
+      <div><span>見込み粗利益額合計</span><b id="cartTotalProfit">￥0(￥0)</b></div>
+      <div><span>見込み粗利益率</span><b id="cartProfitRate">0.0%</b></div>
+      <div><span>見込み入金額達成率</span><b id="cartSalesTargetRate">—</b></div>
+      <div><span>見込み粗利益達成率</span><b id="cartProfitTargetRate">—</b></div>
     </div>
   </section>
 
