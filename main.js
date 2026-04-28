@@ -1815,7 +1815,7 @@ function createProductCard(asin, data) {
                           <span class="shop-unit">円</span>
                         </div>
                       </label>
-                      <span class="shop-margin"><span class="shop-margin-label">粗利益率</span><span class="js-shopMargin">0%</span></span>
+                      <span class="shop-margin"><span class="shop-margin-label">見込み粗利益率</span><span class="js-shopMargin">0%</span></span>
                     </div>
                   </div>
                   <div class="shop-qty">
@@ -1835,7 +1835,7 @@ function createProductCard(asin, data) {
                           <span class="shop-unit">円</span>
                         </div>
                       </label>
-                      <span class="shop-margin"><span class="shop-margin-label">粗利益率</span><span class="js-shopMargin">0%</span></span>
+                      <span class="shop-margin"><span class="shop-margin-label">見込み粗利益率</span><span class="js-shopMargin">0%</span></span>
                     </div>
                   </div>
                   <div class="shop-qty">
@@ -1855,7 +1855,7 @@ function createProductCard(asin, data) {
                           <span class="shop-unit">円</span>
                         </div>
                       </label>
-                      <span class="shop-margin"><span class="shop-margin-label">粗利益率</span><span class="js-shopMargin">0%</span></span>
+                      <span class="shop-margin"><span class="shop-margin-label">見込み粗利益率</span><span class="js-shopMargin">0%</span></span>
                     </div>
                   </div>
                   <div class="shop-qty">
@@ -1883,7 +1883,7 @@ function createProductCard(asin, data) {
                         <input class="shop-input js-shopAmount" type="number" step="1" placeholder="金額" />
                         <span class="shop-unit">円</span>
                       </div>
-                      <span class="shop-margin"><span class="shop-margin-label">粗利益率</span><span class="js-shopMargin">0%</span></span>
+                      <span class="shop-margin"><span class="shop-margin-label">見込み粗利益率</span><span class="js-shopMargin">0%</span></span>
                     </div>
                   </div>
                   <div class="shop-qty">
@@ -1905,7 +1905,7 @@ function createProductCard(asin, data) {
                   <div class="breakdown-title">収入</div>
                   <div class="breakdown-items">
                     <div class="breakdown-item">
-                      <span>入金額</span>
+                      <span>見込み入金額</span>
                       <b class="js-cartBreakdownIncome">￥0</b>
                     </div>
                   </div>
@@ -1940,7 +1940,7 @@ function createProductCard(asin, data) {
                   <div class="breakdown-title">粗利</div>
                   <div class="breakdown-items">
                     <div class="breakdown-item highlight">
-                      <span>粗利益額(率)</span>
+                      <span>見込み粗利益額(率)</span>
                       <b class="js-cartBreakdownProfit">￥0</b>
                     </div>
                   </div>
@@ -2347,7 +2347,7 @@ function createProductCard(asin, data) {
     const qtyLabel = totalQty > 0 ? `${totalQty}個` : "—";
     if (formulaPaymentEl) {
       const paymentLabel = unitPaymentJPY > 0 ? fmtJPY(Math.round(unitPaymentJPY)) : "—";
-      formulaPaymentEl.textContent = `入金額${paymentLabel}`;
+      formulaPaymentEl.textContent = `見込み入金額${paymentLabel}`;
     }
     if (formulaCostEl) {
       const costLabel = unitCost > 0 ? fmtJPY(Math.round(unitCost)) : "—";
@@ -2369,11 +2369,11 @@ function createProductCard(asin, data) {
     }
     if (formulaProfitEl) {
       const profitLabel = unitPaymentJPY > 0 ? fmtJPY(Math.round(unitProfitJPY)) : "—";
-      formulaProfitEl.textContent = `粗利益額${profitLabel}`;
+      formulaProfitEl.textContent = `見込み粗利益額${profitLabel}`;
     }
     if (formulaPaymentTotalEl) {
       const paymentTotalLabel = totalQty > 0 && unitPaymentJPY > 0 ? fmtJPY(Math.round(totalPaymentJPY)) : "—";
-      formulaPaymentTotalEl.textContent = `入金額${paymentTotalLabel}`;
+      formulaPaymentTotalEl.textContent = `見込み入金額${paymentTotalLabel}`;
     }
     if (formulaCostTotalEl) {
       const costTotalLabel = unitCost > 0 ? fmtJPY(Math.round(unitCost)) : "—";
@@ -2389,7 +2389,7 @@ function createProductCard(asin, data) {
     }
     if (formulaProfitTotalEl) {
       const profitTotalLabel = totalQty > 0 && unitPaymentJPY > 0 ? fmtJPY(Math.round(totalProfitCalc)) : "—";
-      formulaProfitTotalEl.textContent = `粗利益額${profitTotalLabel}`;
+      formulaProfitTotalEl.textContent = `見込み粗利益額${profitTotalLabel}`;
     }
     calcAvgEl.textContent = totalQty > 0 ? fmtJPY(avgCost) : "—";
     calcQtyEl.textContent = totalQty > 0 ? `${totalQty}` : "—";
@@ -2447,7 +2447,7 @@ card.querySelector(".js-addCart").addEventListener("click", () => {
             <input class="shop-input js-shopAmount" type="number" step="1" placeholder="金額" />
             <span class="shop-unit">円</span>
           </div>
-          <span class="shop-margin"><span class="shop-margin-label">粗利益率</span><span class="js-shopMargin">0%</span></span>
+          <span class="shop-margin"><span class="shop-margin-label">見込み粗利益率</span><span class="js-shopMargin">0%</span></span>
         </div>
       </div>
       <div class="shop-qty">
