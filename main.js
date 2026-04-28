@@ -1787,7 +1787,7 @@ function createProductCard(asin, data) {
                 <input class="v js-sell js-sellInput" type="number" step="0.01" placeholder="例: 39.99" />
               </div>
               <div class="center-card var-profit">
-                <div class="k">粗利益</div>
+                <div class="k">見込み粗利益</div>
                 <div class="v js-varProfitCombined">－</div>
               </div>
             </div>
